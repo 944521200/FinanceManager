@@ -5,18 +5,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ReportComponent } from './report/report.component';
-import { ManageComponent } from './manage/manage.component';
+import { ExpensesComponent } from './expenses/expenses.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ExpenseComponent } from './expenses/expense/expense.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ReportComponent,
-    ManageComponent
+    ExpensesComponent,
+    ExpenseComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

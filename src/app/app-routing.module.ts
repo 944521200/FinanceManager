@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ExpensesComponent } from './expenses/expenses.component';
 import { HomeComponent } from './home/home.component';
-import { ManageComponent } from './manage/manage.component';
 import { ReportComponent } from './report/report.component';
 
 const routes: Routes = [
-  { path: 'manage', component: ManageComponent },
+  { path: 'expenses', component: ExpensesComponent },
   { path: 'report', component: ReportComponent },
   { path: '', component: HomeComponent },
   { path: '**',   redirectTo: '/', pathMatch: 'full' }
