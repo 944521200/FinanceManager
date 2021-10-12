@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 text-center"> <h6><p>SEARCH EXPENSES</p></h6></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1">
+             <p class=" text-end">Name:</p>
+        </div>
+        <div class="col-lg-5">
+            <input type="text" name="" id="" class="form-control">
+        </div>
+        <div class="col-lg-2">
+            <p class=" text-end">Since Date:</p>
+        </div>
+        <div class="col-lg-4">
+            <input type="datetime-local" name="" id=""  class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="list-group">
+                <app-expense  *ngFor="let expense of expenses" [expense]="expense" ></app-expense>
+            </ul>
+        </div>
+    </div>
+    
+</div>
+

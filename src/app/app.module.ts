@@ -8,6 +8,8 @@ import { ReportComponent } from './report/report.component';
 import { ExpensesComponent } from './expenses/expenses.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseComponent } from './expenses/expense/expense.component';
+import { AddExpenseComponent } from './expenses/add-expense/add-expense.component';
+import { SearchExpensesComponent } from './expenses/search-expenses/search-expenses.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { ExpenseComponent } from './expenses/expense/expense.component';
     HomeComponent,
     ReportComponent,
     ExpensesComponent,
-    ExpenseComponent
+    ExpenseComponent,
+    AddExpenseComponent,
+    SearchExpensesComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,7 @@ import { Tag } from "./tag.model";
 
 export class Expense
 {
-    private ID:number;
+    public ID:number;
     public name:string;
     public description:string;
     public amount:number;
@@ -20,7 +20,5 @@ export class Expense
         this.time= time;
         this.tags=tags;
     }
-    getID()
-    {return this.ID;}
 
 }

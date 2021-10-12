@@ -1,9 +1,24 @@
-<!--<li class="list-group-item">( {{expense.getID()}} )expense: {{expense.amount}}-{{expense.name}}=> {{expense.pricePerUnit}}€/u   {{expense.description}} </li>-->
-
-<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-    <div>
-      <h5 class="mb-1">{{expense.name}}</h5>
-      <small>{{expense.description}} </small>
+<div class="list-group-item list-group-item-action flex-column align-items-start">
+  <div class="row">
+    <div class="col-lg-6">
+      <h5 class=>{{expense.name}}</h5>
+      <small class="text-truncate" style="display: block">{{expense.description}} </small>
     </div>
-    <p class="mb-1">Units: {{expense.amount}}    Price per unit:{{expense.pricePerUnit}} </p>
-  </a>
+    <div class="col-lg-6">
+      <p class="mb-1">{{expense.amount}} unit/s {{expense.pricePerUnit}}€/unit </p>
+      <p class="mb-1">{{dateString}} </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2">
+      <button class="btn btn-custom-view btn-sm float-right">Details</button>
+    </div>
+    <div class="col-lg-2 ">
+      <button class="btn btn-custom-edit btn-sm float-right">Edit</button>
+    </div>
+    <div class="col-lg-2 ">
+      <button class="btn btn-custom-delete btn-sm float-right" (click)="deleteExpense()">Delete</button>
+    </div>
+  </div>
+    
+  </div>

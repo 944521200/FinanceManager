@@ -9,8 +9,33 @@ export class ExpenseService {
 
   private expenses:Expense[] = [];
   private IDCount:number=0;
+  private LocalStorageID:string = "Expenses";
+  private localStorage:Storage= window.localStorage;
 
-  constructor() { }
+  constructor() 
+  {
+    const expensesSTR = this.localStorage.getItem(this.LocalStorageID);
+    if(expensesSTR!=null)
+    {
+      console.log("Database found")
+      this.expenses = JSON.parse(expensesSTR)
+      this.expenses.forEach((item:Expense)=>
+      {
+        if(item.ID>this.IDCount)this.IDCount=item.ID;
+      })
+      this.IDCount++;
+    }
+    else
+    {
+      console.log("database not found")
+    }
+
+    this.expensesChanged.subscribe((expenses)=>
+    {
+      this.localStorage.setItem(this.LocalStorageID,JSON.stringify(expenses));
+    });
+
+  }
 
   public expensesChanged:EventEmitter<Expense[]> =  new EventEmitter<Expense[]>();
 
@@ -28,7 +53,7 @@ export class ExpenseService {
   RemoveExpense(ID:number)
   {
     this.expenses = this.expenses.filter(function(item:Expense, idx) {
-      return item.getID()!=ID;
+      return item.ID!=ID;
     });
     this.expensesChanged.emit(this.expenses);
   }

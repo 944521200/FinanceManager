@@ -10,38 +10,12 @@ import { ExpenseService } from '../services/expense.service';
 })
 export class ExpensesComponent implements OnInit {
 
-  constructor(private expenseService:ExpenseService,
-    private formBuilder: FormBuilder,) { }
-
-
-
-  expenseForm = this.formBuilder.group({
-    name: '',
-    description: '',
-    amount:'',
-    pricePerUnit:''
-  });
-
-  expenses:Expense[]=[];
-  
+  constructor(private expenseService:ExpenseService) { }
 
   ngOnInit(): void 
   {
-    this.expenses = this.expenseService.getExpenses();
-    this.expenseService.expensesChanged.subscribe((expenses)=>this.expenses=expenses);
-  }
-  
-  addExpense()
-  {
-    //console.log(this.nameInput+" - "+this.descInput+" - "+this.amountInput)
-    console.log(this.expenseForm.value)
     
-    this.expenseService.AddExpense(this.expenseForm.value['name'],this.expenseForm.value['description'],+this.expenseForm.value['amount'],this.expenseForm.value['pricePerUnit'],[])
-
-    /*this.nameInput ="";
-    this.descInput="";
-    this.amountInput="";*/
-    this.expenseForm.reset();
   }
+ 
 
 }
