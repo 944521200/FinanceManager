@@ -7,9 +7,10 @@ import { Expense } from '../model/expense.model';
 export class FilterExpensesPipe implements PipeTransform {
 
   transform(value: Expense[], nameFilter:string, descFilter:string, amountFilter:string, priceFilter:string, dateSinceFilter?:Date, dateUntilFilter?:Date):  Expense[] {
-    
+     
     var result:Expense[] = value;
 
+    console.log(nameFilter+"-"+descFilter+"-"+amountFilter+"-"+priceFilter+"-"+dateSinceFilter+"-"+dateUntilFilter)
     result = result.filter((item:Expense)=>
     {
       if(item.name.toLowerCase().includes(nameFilter.toLowerCase()))return true;

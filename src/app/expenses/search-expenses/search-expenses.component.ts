@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
 import { Expense } from 'src/app/model/expense.model';
 import { ExpenseService } from 'src/app/services/expense.service';
 
@@ -14,7 +14,10 @@ export class SearchExpensesComponent implements OnInit {
   expenses:Expense[]=[];
   ngOnInit(): void {
     this.expenses = this.expenseService.getExpenses();
-    this.expenseService.expensesChanged.subscribe((expenses)=>this.expenses=expenses);
+    this.expenseService.expensesChanged.subscribe((expenses)=>
+    {
+      this.expenses=[...expenses];
+    });
   }
 
   nameSearch:string="";
