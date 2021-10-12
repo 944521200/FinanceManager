@@ -143,4 +143,13 @@ export class AddExpenseComponent implements OnInit {
     this.resetPrice()
   }
 
+  clearForm()
+  {
+    this.expenseForm.reset();
+    this.resetName()
+    this.resetDescription()
+    this.resetAmount()
+    this.resetPrice()
+  }
+
 }

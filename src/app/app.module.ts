@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseComponent } from './expenses/expense/expense.component';
 import { AddExpenseComponent } from './expenses/add-expense/add-expense.component';
 import { SearchExpensesComponent } from './expenses/search-expenses/search-expenses.component';
+import { FilterExpensesPipe } from './expenses/filter-expenses.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SearchExpensesComponent } from './expenses/search-expenses/search-expen
     ExpensesComponent,
     ExpenseComponent,
     AddExpenseComponent,
-    SearchExpensesComponent
+    SearchExpensesComponent,
+    FilterExpensesPipe
   ],
   imports: [
     BrowserModule,

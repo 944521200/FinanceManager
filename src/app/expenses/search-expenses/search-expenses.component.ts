@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { Expense } from 'src/app/model/expense.model';
 import { ExpenseService } from 'src/app/services/expense.service';
 
@@ -15,6 +15,24 @@ export class SearchExpensesComponent implements OnInit {
   ngOnInit(): void {
     this.expenses = this.expenseService.getExpenses();
     this.expenseService.expensesChanged.subscribe((expenses)=>this.expenses=expenses);
+  }
+
+  nameSearch:string="";
+  desSearch:string="";
+  amountSearch:string="";
+  priceSearch:string="";
+  dateSinceSearch:Date | undefined;
+  dateUntilSearch:Date | undefined;
+
+
+  clearSearch()
+  {
+    this.nameSearch="";
+    this.desSearch="";
+    this.amountSearch="";
+    this.priceSearch="";
+    this.dateSinceSearch=undefined;
+    this.dateUntilSearch=undefined;
   }
 
 }
