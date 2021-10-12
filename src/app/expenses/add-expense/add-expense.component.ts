@@ -17,7 +17,7 @@ export class AddExpenseComponent implements OnInit {
     amount:'',
     pricePerUnit:''
   });
-
+//TODO: ADD LIMITS TO FIELDS, SO NOT TO OVERLOAD DATABASE.
 
   ngOnInit(): void {
   }
