@@ -43,14 +43,14 @@ export class ExpenseService {
   {
     return this.expenses.slice();
   }
-  AddExpense( name:string, description:string, amount:number, pricePerUnit:number,  tags:Tag[],time:Date =new Date())
+  addExpense( name:string, description:string, amount:number, pricePerUnit:number,  tags:Tag[],time:Date =new Date())
   {
     const expense:Expense =  new Expense(this.IDCount++,name,description,amount,pricePerUnit,tags,time);
     this.expenses.push(expense);
     this.expensesChanged.emit(this.expenses);
   }
 
-  RemoveExpense(ID:number)
+  removeExpense(ID:number)
   {
     this.expenses = this.expenses.filter(function(item:Expense, idx) {
       return item.ID!=ID;

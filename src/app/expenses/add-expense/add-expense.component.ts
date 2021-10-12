@@ -131,7 +131,7 @@ export class AddExpenseComponent implements OnInit {
 
     if(this.invalidName|| this.invalidDescription || this.invalidAmount || this.invalidPrice) return;
     
-    this.expenseService.AddExpense(this.expenseForm.value['name'],this.expenseForm.value['description'],+this.expenseForm.value['amount'],this.expenseForm.value['pricePerUnit'],[])
+    this.expenseService.addExpense(this.expenseForm.value['name'],this.expenseForm.value['description'],+this.expenseForm.value['amount'],this.expenseForm.value['pricePerUnit'],[])
 
     /*this.nameInput ="";
     this.descInput="";

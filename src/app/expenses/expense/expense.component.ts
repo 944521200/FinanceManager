@@ -22,7 +22,7 @@ export class ExpenseComponent implements OnInit {
 
   deleteExpense()
   {
-    this.expenseService.RemoveExpense(this.expense.ID);
+    this.expenseService.removeExpense(this.expense.ID);
   }
 
 }
