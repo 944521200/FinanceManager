@@ -1,1 +1,124 @@
-/* You can add global styles to this file, and also import other style files */
+.btn-custom-view {
+    color: #fff;
+    background-color: #559cc2;
+    border-color: #2c878a;
+}
+.btn-custom-view.active,
+.btn-custom-view:active,
+.btn-custom-view:focus,
+.btn-custom-view:hover,
+.open .dropdown-toggle.btn-custom-view {
+    color: #fff;
+    background-color: #246d7a;
+    border-color: #2c878a;
+}
+.btn-custom-view.active,
+.btn-custom-view:active,
+.open .dropdown-toggle.btn-custom-view {
+    background-image: none;
+}
+.btn-custom-view.disabled,
+.btn-custom-view.disabled.active,
+.btn-custom-view.disabled:active,
+.btn-custom-view.disabled:focus,
+.btn-custom-view.disabled:hover,
+.btn-custom-view[disabled],
+.btn-custom-view[disabled].active,
+.btn-custom-view[disabled]:active,
+.btn-custom-view[disabled]:focus,
+.btn-custom-view[disabled]:hover,
+fieldset[disabled] .btn-custom-view,
+fieldset[disabled] .btn-custom-view.active,
+fieldset[disabled] .btn-custom-view:active,
+fieldset[disabled] .btn-custom-view:focus,
+fieldset[disabled] .btn-custom-view:hover {
+    background-color: #559cc2;
+    border-color: #2c878a;
+}
+.btn-custom-view .badge {
+    color: #559cc2;
+    background-color: #fff;
+}
+.btn-custom-edit {
+    color: #fff;
+    background-color: #75a862;
+    border-color: #1d8018;
+}
+.btn-custom-edit.active,
+.btn-custom-edit:active,
+.btn-custom-edit:focus,
+.btn-custom-edit:hover,
+.open .dropdown-toggle.btn-custom-edit {
+    color: #fff;
+    background-color: #2d8520;
+    border-color: #1d8018;
+}
+.btn-custom-edit.active,
+.btn-custom-edit:active,
+.open .dropdown-toggle.btn-custom-edit {
+    background-image: none;
+}
+.btn-custom-edit.disabled,
+.btn-custom-edit.disabled.active,
+.btn-custom-edit.disabled:active,
+.btn-custom-edit.disabled:focus,
+.btn-custom-edit.disabled:hover,
+.btn-custom-edit[disabled],
+.btn-custom-edit[disabled].active,
+.btn-custom-edit[disabled]:active,
+.btn-custom-edit[disabled]:focus,
+.btn-custom-edit[disabled]:hover,
+fieldset[disabled] .btn-custom-edit,
+fieldset[disabled] .btn-custom-edit.active,
+fieldset[disabled] .btn-custom-edit:active,
+fieldset[disabled] .btn-custom-edit:focus,
+fieldset[disabled] .btn-custom-edit:hover {
+    background-color: #75a862;
+    border-color: #1d8018;
+}
+.btn-custom-edit .badge {
+    color: #75a862;
+    background-color: #fff;
+}
+.btn-custom-delete {
+    color: #fff;
+    background-color: #b32e2e;
+    border-color: #750909;
+}
+.btn-custom-delete.active,
+.btn-custom-delete:active,
+.btn-custom-delete:focus,
+.btn-custom-delete:hover,
+.open .dropdown-toggle.btn-custom-delete {
+    color: #fff;
+    background-color: #961b1b;
+    border-color: #750909;
+}
+.btn-custom-delete.active,
+.btn-custom-delete:active,
+.open .dropdown-toggle.btn-custom-delete {
+    background-image: none;
+}
+.btn-custom-delete.disabled,
+.btn-custom-delete.disabled.active,
+.btn-custom-delete.disabled:active,
+.btn-custom-delete.disabled:focus,
+.btn-custom-delete.disabled:hover,
+.btn-custom-delete[disabled],
+.btn-custom-delete[disabled].active,
+.btn-custom-delete[disabled]:active,
+.btn-custom-delete[disabled]:focus,
+.btn-custom-delete[disabled]:hover,
+fieldset[disabled] .btn-custom-delete,
+fieldset[disabled] .btn-custom-delete.active,
+fieldset[disabled] .btn-custom-delete:active,
+fieldset[disabled] .btn-custom-delete:focus,
+fieldset[disabled] .btn-custom-delete:hover {
+    background-color: #b32e2e;
+    border-color: #750909;
+}
+.btn-custom-delete .badge {
+    color: #b32e2e;
+    background-color: #fff;
+}
+/* https://blog.koalite.com/bbg/  CUSTOM BUTTONS*/
