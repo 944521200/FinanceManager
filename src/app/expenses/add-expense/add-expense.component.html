@@ -1,48 +1,35 @@
 <h6>  <p class=" text-center">ADD NEW EXPENSE</p></h6>
-            <form role="form" [formGroup]="expenseForm" (ngSubmit)="addExpense()">
+            <form [formGroup]="expenseForm" (ngSubmit)="addExpense()">
                 <div class="form-group">
                   <label for="inputNameExpense">Name of the expense</label>
-                  <input type="text" class="form-control" [ngClass]="{'is-invalid':invalidName,'is-valid':validName}" id="inputNameExpense" aria-describedby="nameHelp" placeholder="Enter a name" name="inputNameExpense"  formControlName="name"
-                  (focusout)="validateName()" (keyup)="validateName()">
-                  <div class="invalid-feedback">
-                    {{invalidFeebBackName}}
-                  </div>
+                  <input [ngClass]="{'is-valid':expenseForm.controls['name'].valid && expenseForm.controls['name'].touched, 'is-invalid':expenseForm.controls['name'].invalid && expenseForm.controls['name'].touched} " 
+                  type="text" class="form-control" id="inputNameExpense" aria-describedby="nameHelp" placeholder="Enter a name" name="inputNameExpense" formControlName="name">
                   <small id="nameHelp" class="form-text text-muted">Short name</small>
                 </div>
 
                 <div class="form-group">
                     <label for="inputDescriptionExpense">Description of the expense</label>
-                    <textarea type="text" class="form-control" [ngClass]="{'is-invalid':invalidDescription,'is-valid':validDescription}"  name="inputDescriptionExpense" id="inputDescriptionExpense"  rows="5" placeholder="Optional description"  aria-describedby="desHelp"  formControlName="description"
-                    (focusout)="validateDescription()" (keyup)="validateDescription()"></textarea> 
-                    <div class="invalid-feedback">
-                      {{invalidFeebBackDescription}}
-                    </div>
+                    <textarea [ngClass]="{'is-valid':expenseForm.controls['description'].valid && expenseForm.controls['description'].touched, 'is-invalid':expenseForm.controls['description'].invalid && expenseForm.controls['description'].touched} " 
+                    type="text" class="form-control" name="inputDescriptionExpense" id="inputDescriptionExpense"  rows="5" placeholder="Optional description"  aria-describedby="desHelp"  formControlName="description"></textarea> 
                     <small id="desHelp" class="form-text text-muted">Full Description</small>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAmountExpense">Amount</label>
-                  <input type="number" class="form-control" [ngClass]="{'is-invalid':invalidAmount,'is-valid':validAmount}" id="inputAmountExpense" placeholder="" aria-describedby="amntHelp"  name="inputAmountExpense"  formControlName="amount"
-                  (focusout)="validateAmount()" (keyup)="validateAmount()">
-                  <div class="invalid-feedback">
-                    {{invalidFeebBackAmount}}
-                  </div>
+                  <input  [ngClass]="{'is-valid':expenseForm.controls['amount'].valid && expenseForm.controls['amount'].touched, 'is-invalid':expenseForm.controls['amount'].invalid && expenseForm.controls['amount'].touched} " 
+                  type="number" class="form-control" id="inputAmountExpense" placeholder="" aria-describedby="amntHelp"  name="inputAmountExpense"  formControlName="amount">
                   <small id="amntHelp" class="form-text text-muted">Amount of items acquired</small>
-                  
                 </div>
 
                 <div class="form-group">
-                    <label for="inputPricePerUnit">Price per unit</label>
-                    <input type="number" class="form-control" [ngClass]="{'is-invalid':invalidPrice,'is-valid':validPrice}" id="inputPricePerUnit" placeholder="" aria-describedby="amntHelp"  name="inputPricePerUnit"  formControlName="pricePerUnit"
-                    (focusout)="validatePrice()" (keyup)="validatePrice()">
-                    <div class="invalid-feedback">
-                      {{invalidFeebBackPrice}}
-                    </div>
+                    <label for="price">Price per unit</label>
+                    <input  [ngClass]="{'is-valid':expenseForm.controls['price'].valid && expenseForm.controls['price'].touched, 'is-invalid':expenseForm.controls['price'].invalid && expenseForm.controls['price'].touched} " 
+                     type="number" class="form-control" id="price" placeholder="" aria-describedby="amntHelp"  name="price"  formControlName="price">
                     <small id="amntHelp" class="form-text text-muted">The price of each item, separetely</small>
-                    
                   </div>
                   
-                  <button type="button" class="btn btn-custom-edit   me-3 mt-3" (click)="clearForm()">Clear</button>
-                  <button type="submit" class="btn btn-custom-view mt-3">Submit</button> 
+                  
+                  <button type="submit" class="btn btn-custom-view me-3 mt-3" [disabled]="!expenseForm.valid">Submit</button> 
+                  <button type="button" class="btn btn-custom-delete  mt-3" (click)="clearForm()">Clear</button>
                 
             </form>
