@@ -1,16 +1,20 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import {  Injectable, OnDestroy } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 import { Tag } from '../model/tag.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TagService {
+export class TagService implements OnDestroy {
 
   private tags:Tag[] = [];
   private IDCount:number=0;
 
   private LocalStorageID:string = "Tags";
   private localStorage:Storage= window.localStorage;
+
+
+  private subscription!: Subscription;
 
   constructor() 
   {
@@ -31,14 +35,14 @@ export class TagService {
       console.log("database not found")
     }
 
-    this.tagsChanged.subscribe((tags)=>
+    this.subscription = this.tagsChanged.subscribe((tags)=>
     {
       this.localStorage.setItem(this.LocalStorageID,JSON.stringify(tags));
     });
   }
 
   
-  public tagsChanged:EventEmitter<Tag[]> =  new EventEmitter<Tag[]>();
+  public tagsChanged:Subject<Tag[]> =  new Subject<Tag[]>();
 
 
   getTag()
@@ -49,7 +53,7 @@ export class TagService {
   {
     const tag:Tag =  new Tag(this.IDCount++,name,description);
     this.tags.push(tag);
-    this.tagsChanged.emit(this.tags);
+    this.tagsChanged.next(this.tags);
   }
 
   removeTag(ID:number)
@@ -57,9 +61,13 @@ export class TagService {
     this.tags = this.tags.filter(function(item:Tag, idx) {
       return item.ID!=ID;
     });
-    this.tagsChanged.emit(this.tags);
+    this.tagsChanged.next(this.tags);
   }
 
+  ngOnDestroy()
+  {
+    this.subscription.unsubscribe();
+  }
 
 
 

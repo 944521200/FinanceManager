@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Expense } from 'src/app/model/expense.model';
 import { ExpenseService } from 'src/app/services/expense.service';
 
@@ -7,14 +8,18 @@ import { ExpenseService } from 'src/app/services/expense.service';
   templateUrl: './search-expenses.component.html',
   styleUrls: ['./search-expenses.component.css']
 })
-export class SearchExpensesComponent implements OnInit {
+export class SearchExpensesComponent implements OnInit, OnDestroy {
 
   constructor(private expenseService:ExpenseService) { }
 
+
   expenses:Expense[]=[];
+
+  private subscription!: Subscription;
+  
   ngOnInit(): void {
     this.expenses = this.expenseService.getExpenses();
-    this.expenseService.expensesChanged.subscribe((expenses)=>
+    this.subscription = this.expenseService.expensesChanged.subscribe((expenses)=>
     {
       this.expenses=[...expenses];
     });
@@ -37,5 +42,9 @@ export class SearchExpensesComponent implements OnInit {
     this.dateSinceSearch=undefined;
     this.dateUntilSearch=undefined;
   }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
+   }
 
 }

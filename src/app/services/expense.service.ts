@@ -1,16 +1,19 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 import { Expense } from '../model/expense.model';
 import { Tag } from '../model/tag.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ExpenseService {
+export class ExpenseService implements OnDestroy  {
 
   private expenses:Expense[] = [];
   private IDCount:number=0;
   private LocalStorageID:string = "Expenses";
   private localStorage:Storage= window.localStorage;
+
+  private subscription!: Subscription;
 
   constructor() 
   {
@@ -30,14 +33,15 @@ export class ExpenseService {
       console.log("database not found")
     }
 
-    this.expensesChanged.subscribe((expenses)=>
+    this.subscription = this.expensesChanged.subscribe((expenses)=>
     {
       this.localStorage.setItem(this.LocalStorageID,JSON.stringify(expenses));
     });
 
   }
 
-  public expensesChanged:EventEmitter<Expense[]> =  new EventEmitter<Expense[]>();
+
+  public expensesChanged:Subject<Expense[]> =  new Subject<Expense[]>();
 
   getExpenses()
   {
@@ -47,7 +51,7 @@ export class ExpenseService {
   {
     const expense:Expense =  new Expense(this.IDCount++,name,description,amount,pricePerUnit,tags,time);
     this.expenses.push(expense);
-    this.expensesChanged.emit(this.expenses);
+    this.expensesChanged.next(this.expenses);
   }
 
   removeExpense(ID:number)
@@ -55,7 +59,11 @@ export class ExpenseService {
     this.expenses = this.expenses.filter(function(item:Expense, idx) {
       return item.ID!=ID;
     });
-    this.expensesChanged.emit(this.expenses);
+    this.expensesChanged.next(this.expenses);
+  }
+
+  ngOnDestroy(): void {
+   this.subscription.unsubscribe();
   }
 
 }
