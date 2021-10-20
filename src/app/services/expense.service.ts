@@ -51,7 +51,7 @@ export class ExpenseService implements OnDestroy  {
   {
     const expense:Expense =  new Expense(this.IDCount++,name,description,amount,pricePerUnit,tags,time);
     this.expenses.push(expense);
-    this.expensesChanged.next(this.expenses);
+    this.expensesChanged.next([...this.expenses]);
   }
 
   removeExpense(ID:number)
@@ -59,7 +59,7 @@ export class ExpenseService implements OnDestroy  {
     this.expenses = this.expenses.filter(function(item:Expense, idx) {
       return item.ID!=ID;
     });
-    this.expensesChanged.next(this.expenses);
+    this.expensesChanged.next([...this.expenses]);
   }
 
   ngOnDestroy(): void {

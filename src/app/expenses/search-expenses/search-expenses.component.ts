@@ -21,7 +21,7 @@ export class SearchExpensesComponent implements OnInit, OnDestroy {
     this.expenses = this.expenseService.getExpenses();
     this.subscription = this.expenseService.expensesChanged.subscribe((expenses)=>
     {
-      this.expenses=[...expenses];
+      this.expenses=expenses;
     });
   }
 

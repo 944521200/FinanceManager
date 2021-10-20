@@ -45,15 +45,16 @@ export class TagService implements OnDestroy {
   public tagsChanged:Subject<Tag[]> =  new Subject<Tag[]>();
 
 
-  getTag()
+  getTags()
   {
     return this.tags.slice();
   }
-  addTag( name:string, description:string)
+  
+  addTag( name:string, description:string, bgColor:string, txtColor:string)
   {
-    const tag:Tag =  new Tag(this.IDCount++,name,description);
+    const tag:Tag =  new Tag(this.IDCount++,name,description, bgColor, txtColor);
     this.tags.push(tag);
-    this.tagsChanged.next(this.tags);
+    this.tagsChanged.next([...this.tags]);
   }
 
   removeTag(ID:number)
@@ -61,7 +62,7 @@ export class TagService implements OnDestroy {
     this.tags = this.tags.filter(function(item:Tag, idx) {
       return item.ID!=ID;
     });
-    this.tagsChanged.next(this.tags);
+    this.tagsChanged.next([...this.tags]);
   }
 
   ngOnDestroy()

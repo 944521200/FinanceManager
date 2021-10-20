@@ -11,6 +11,11 @@ import { ExpenseComponent } from './expenses/expense/expense.component';
 import { AddExpenseComponent } from './expenses/add-expense/add-expense.component';
 import { SearchExpensesComponent } from './expenses/search-expenses/search-expenses.component';
 import { FilterExpensesPipe } from './expenses/filter-expenses.pipe';
+import { AddTagComponent } from './tags/add-tag/add-tag.component';
+import { TagComponent } from './tags/tag/tag.component';
+import { TagsComponent } from './tags/tags.component';
+import { SearchTagsComponent } from './tags/search-tags/search-tags.component';
+import { FilterTagsPipe } from './tags/filter-tags.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +26,12 @@ import { FilterExpensesPipe } from './expenses/filter-expenses.pipe';
     ExpenseComponent,
     AddExpenseComponent,
     SearchExpensesComponent,
-    FilterExpensesPipe
+    FilterExpensesPipe,
+    AddTagComponent,
+    TagComponent,
+    TagsComponent,
+    SearchTagsComponent,
+    FilterTagsPipe
   ],
   imports: [
     BrowserModule,

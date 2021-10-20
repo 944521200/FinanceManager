@@ -1,0 +1,27 @@
+
+<div class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="row">
+        <div class="col-lg-9">
+            <h5 class="text-truncate">{{tag.name}}</h5>
+        </div>
+        <div class="col-lg-3">
+            <span class="badge me-1" [style]="'background-color:'+tag.bgColor+'; color:'+ tag.txtColor+';'">{{tag.name}}</span> 
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-9">
+            <small class="text-truncate" style="display: block">{{tag.description}} </small>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-9">
+        <button class="btn btn-custom-view btn-sm me-3 mt-3">Details</button>
+        <button class="btn btn-custom-edit btn-sm me-3 mt-3">Edit</button>
+        <button class="btn btn-custom-delete btn-sm me-3 mt-3" (click)="deleteTag()">Delete</button>
+      </div>
+      
+    </div>
+</div>
+  
+  
