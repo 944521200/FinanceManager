@@ -1,7 +1,7 @@
 <div class="list-group-item list-group-item-action flex-column align-items-start">
   <div class="row">
     <div class="col-lg-6">
-      <h5 class=>{{expense.name}}</h5>
+      <h5 class="text-truncate">{{expense.name}}</h5>
       <small class="text-truncate" style="display: block">{{expense.description}} </small>
     </div>
     <div class="col-lg-6">
@@ -11,9 +11,9 @@
   </div>
   <div class="row">
     <div class="col-lg-6">
-      <button class="btn btn-custom-view btn-sm me-3">Details</button>
-      <button class="btn btn-custom-edit btn-sm me-3">Edit</button>
-      <button class="btn btn-custom-delete btn-sm me-3" (click)="deleteExpense()">Delete</button>
+      <button class="btn btn-custom-view btn-sm me-3 mt-3">Details</button>
+      <button class="btn btn-custom-edit btn-sm me-3 mt-3">Edit</button>
+      <button class="btn btn-custom-delete btn-sm me-3 mt-3" (click)="deleteExpense()">Delete</button>
     </div>
     <div class="col-lg-6">
       <span class="badge  badge-pill me-1" style="background-color: red;">Games</span> 
