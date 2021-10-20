@@ -30,9 +30,10 @@ export class AddExpenseComponent implements OnInit {
   {
     if(isNaN(+control.value) || +control.value<1)
     {
-      control.setValue(1);
+      //control.setValue(1);
      // this.expenseForm.patchValue({control.:1});
-      return null;
+     // return null;
+      return { notValidNumber:"not a valid number"}
     }
     return null;
   }
@@ -45,7 +46,7 @@ export class AddExpenseComponent implements OnInit {
   }
 
   clearForm()
-  {this.expenseForm.reset()}
+  {this.expenseForm.reset( {amount:1})}
 
 
 }
