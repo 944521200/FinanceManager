@@ -43,11 +43,20 @@ export class TagService implements OnDestroy {
 
   
   public tagsChanged:Subject<Tag[]> =  new Subject<Tag[]>();
+  public editingTag:Subject<number> =  new Subject<number>();
 
 
   getTags()
   {
     return this.tags.slice();
+  }
+
+  getTag(id:number)
+  {
+    return this.tags.filter(tag=>{
+      if(tag.ID!=id)return false
+      else return true;
+    })[0]
   }
   
   addTag( name:string, description:string, bgColor:string, txtColor:string)
@@ -61,6 +70,33 @@ export class TagService implements OnDestroy {
   {
     this.tags = this.tags.filter(function(item:Tag, idx) {
       return item.ID!=ID;
+    });
+    this.tagsChanged.next([...this.tags]);
+  }
+
+  udpateTag(
+    ID: number,
+    name: string,
+    description: string,
+    bgColor:string,
+    txtColor:string,
+    time: Date = new Date()
+  ) {
+    const newTag: Tag = new Tag(
+      this.IDCount++,
+      name,
+      description,
+      bgColor,
+      txtColor,
+      time
+    );
+
+    this.tags = this.tags.map((tag) => {
+      if (tag.ID == ID) {
+        return newTag;
+      } else {
+        return tag;
+      }
     });
     this.tagsChanged.next([...this.tags]);
   }

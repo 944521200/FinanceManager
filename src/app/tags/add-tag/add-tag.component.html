@@ -29,7 +29,7 @@
                   </div>
                   
                   
-                  <button type="submit" class="btn btn-custom-view me-3 mt-3" [disabled]="!tagForm.valid">Submit</button> 
+                  <button type="submit" [class]="'btn btn-'+(editingIndex != -1?'warning':'custom-view')+' me-3 mt-3'" [disabled]="!tagForm.valid">{{editingIndex != -1?"Update":"Add"}}</button> 
                   <button type="button" class="btn btn-custom-delete  mt-3" (click)="clearForm()">Clear</button>
                 
             </form>

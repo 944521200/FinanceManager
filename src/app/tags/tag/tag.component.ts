@@ -5,21 +5,21 @@ import { TagService } from 'src/app/services/tag.service';
 @Component({
   selector: 'app-tag',
   templateUrl: './tag.component.html',
-  styleUrls: ['./tag.component.css']
+  styleUrls: ['./tag.component.css'],
 })
 export class TagComponent implements OnInit {
+  constructor(private tagService: TagService) {}
 
-  constructor(private tagService:TagService) { }
+  @Input('inputTag')
+  tag!: Tag;
 
-  @Input("inputTag")
-  tag!:Tag;
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  deleteTag() {
+    this.tagService.removeTag(this.tag.ID);
   }
 
-  deleteTag(){
-    this.tagService.removeTag(this.tag.ID)
-
+  editTag() {
+    this.tagService.editingTag.next(this.tag.ID);
   }
-
 }
