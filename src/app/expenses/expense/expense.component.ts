@@ -25,4 +25,9 @@ export class ExpenseComponent implements OnInit {
     this.expenseService.removeExpense(this.expense.ID);
   }
 
+  editExpense()
+  {
+    this.expenseService.editingExpense.next(this.expense.ID);
+  }
+
 }
