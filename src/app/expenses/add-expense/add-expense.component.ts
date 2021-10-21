@@ -43,16 +43,16 @@ export class AddExpenseComponent implements OnInit {
       if (editingExpenseIndex != -1) {
         //edit expense
         this.editingIndex = editingExpenseIndex;
-        const editingExpense = this.expenseService.getExpense(this.editingIndex);
-        console.log
-        this.expenseForm.reset(
-          {
-            name:editingExpense.name,
-            description:editingExpense.description,
-            amount: editingExpense.amount,
-            price:editingExpense.pricePerUnit
-          });
+        const editingExpense = this.expenseService.getExpense(
+          this.editingIndex
+        );
 
+        this.expenseForm.reset({
+          name: editingExpense.name,
+          description: editingExpense.description,
+          amount: editingExpense.amount,
+          price: editingExpense.pricePerUnit,
+        });
       } else {
         //clear editing mode
         this.editingIndex = -1;
@@ -74,13 +74,14 @@ export class AddExpenseComponent implements OnInit {
   addExpense() {
     console.log(this.expenseForm);
     if (this.editingIndex != -1) {
-      this.expenseService.udpateExpense(this.editingIndex, this.expenseForm.value['name'],
-      this.expenseForm.value['description'],
-      +this.expenseForm.value['amount'],
-      this.expenseForm.value['price'],
-      []);
-      this.editingIndex = -1;
-      this.clearForm();
+      this.expenseService.udpateExpense(
+        this.editingIndex,
+        this.expenseForm.value['name'],
+        this.expenseForm.value['description'],
+        +this.expenseForm.value['amount'],
+        this.expenseForm.value['price'],
+        []
+      );
     } else {
       this.expenseService.addExpense(
         this.expenseForm.value['name'],
