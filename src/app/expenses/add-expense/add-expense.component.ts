@@ -61,7 +61,7 @@ export class AddExpenseComponent implements OnInit {
           amount: editingExpense.amount,
           price: editingExpense.pricePerUnit,
         });
-        this.addedTags = editingExpense.tags;
+        this.addedTags = [...editingExpense.tags];
         this.toBeAddedTags = this.allTags.filter((tobeTag) => {
           if (!this.addedTags.includes(tobeTag)) {
             return true;
