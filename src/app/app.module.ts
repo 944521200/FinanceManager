@@ -16,6 +16,7 @@ import { TagComponent } from './tags/tag/tag.component';
 import { TagsComponent } from './tags/tags.component';
 import { SearchTagsComponent } from './tags/search-tags/search-tags.component';
 import { FilterTagsPipe } from './tags/filter-tags.pipe';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { FilterTagsPipe } from './tags/filter-tags.pipe';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

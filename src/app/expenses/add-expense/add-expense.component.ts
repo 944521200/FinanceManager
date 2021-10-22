@@ -9,6 +9,8 @@ import {
 } from '@angular/forms';
 import { ExpenseService } from 'src/app/services/expense.service';
 import { TagService } from 'src/app/services/tag.service';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-add-expense',
@@ -28,7 +30,11 @@ export class AddExpenseComponent implements OnInit {
   addedTags!: number[];
   toBeAddedTags!: number[];
 
+  dateValue!: NgbDateStruct;
+
   ngOnInit(): void {
+    let today= new Date();
+
     this.expenseForm = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
@@ -36,6 +42,7 @@ export class AddExpenseComponent implements OnInit {
         Validators.maxLength(30),
       ]),
       description: new FormControl(null, [Validators.maxLength(250)]),
+      date: new FormControl({year:today.getFullYear(), month:today.getMonth()+1, day:today.getDate()}),
       amount: new FormControl(1, [
         Validators.required,
         this.positiveNumber.bind(this),
@@ -59,6 +66,7 @@ export class AddExpenseComponent implements OnInit {
           name: editingExpense.name,
           description: editingExpense.description,
           amount: editingExpense.amount,
+          date: {year:editingExpense.time.getFullYear(), month:editingExpense.time.getMonth()+1, day:editingExpense.time.getDate()},
           price: editingExpense.pricePerUnit,
         });
         this.addedTags = [...editingExpense.tags];
@@ -123,7 +131,8 @@ export class AddExpenseComponent implements OnInit {
   }
 
   addExpense() {
-    console.log(this.expenseForm);
+    console.log(this.expenseForm.value);
+    console.log(new Date(this.expenseForm.value['date']['year'], +this.expenseForm.value['date']['month']-1, this.expenseForm.value['date']['day'] ))
     if (this.editingIndex != -1) {
       this.expenseService.udpateExpense(
         this.editingIndex,
@@ -131,7 +140,8 @@ export class AddExpenseComponent implements OnInit {
         this.expenseForm.value['description'],
         +this.expenseForm.value['amount'],
         this.expenseForm.value['price'],
-        this.addedTags
+        this.addedTags,
+        new Date(this.expenseForm.value['date']['year'], +this.expenseForm.value['date']['month']-1, this.expenseForm.value['date']['day'] )
       );
     } else {
       this.expenseService.addExpense(
@@ -139,14 +149,16 @@ export class AddExpenseComponent implements OnInit {
         this.expenseForm.value['description'],
         +this.expenseForm.value['amount'],
         this.expenseForm.value['price'],
-        this.addedTags
+        this.addedTags,
+        new Date(this.expenseForm.value['date']['year'], +this.expenseForm.value['date']['month']-1, this.expenseForm.value['date']['day'] )
       );
     }
     this.clearForm();
   }
 
   clearForm() {
-    this.expenseForm.reset({ amount: 1 });
+    let today = new Date()
+    this.expenseForm.reset({date:{year:today.getFullYear(), month:today.getMonth()+1, day:today.getDate()}, amount: 1 });
     this.editingIndex = -1;
     this.toBeAddedTags = [...this.allTags];
     this.addedTags = [];

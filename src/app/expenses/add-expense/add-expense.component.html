@@ -15,6 +15,17 @@
                 </div>
 
                 <div class="form-group">
+                  <div class="input-group">
+                    <input [ngClass]="{'is-valid':expenseForm.controls['date'].valid && expenseForm.controls['date'].touched, 'is-invalid':expenseForm.controls['date'].invalid && expenseForm.controls['date'].touched} "
+                        class="form-control" placeholder="yyyy-mm-dd"
+                           name="dp" ngbDatepicker #d="ngbDatepicker"  formControlName="date">
+                      <div class="input-group-append">
+                      <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">Pick Date</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
                   <label for="inputAmountExpense">Amount</label>
                   <input  [ngClass]="{'is-valid':expenseForm.controls['amount'].valid && expenseForm.controls['amount'].touched, 'is-invalid':expenseForm.controls['amount'].invalid && expenseForm.controls['amount'].touched} " 
                   type="number" class="form-control" id="inputAmountExpense" placeholder="" aria-describedby="amntHelp"  name="inputAmountExpense"  formControlName="amount">
@@ -49,4 +60,5 @@
                   <button type="submit" [class]="'btn btn-'+(editingIndex != -1?'warning':'custom-view')+' me-3 mt-3'" [disabled]="!expenseForm.valid">{{editingIndex != -1?"Update":"Add"}}</button> 
                   <button type="button" class="btn btn-custom-delete  mt-3" (click)="clearForm()">Clear</button>
                 
-            </form>
+
+            Model: {{ dateValue | json }}

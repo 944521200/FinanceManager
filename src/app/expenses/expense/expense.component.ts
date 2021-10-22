@@ -16,8 +16,10 @@ export class ExpenseComponent implements OnInit {
   expense!: Expense;
   dateString:string='';
   ngOnInit(): void {
+    console.log(this.expense)
     const date:Date =new Date(this.expense.time);
-   this.dateString=date.toLocaleDateString()+ "-"+date.toLocaleTimeString();
+   this.dateString=date.toLocaleDateString();
+
   }
   
 
