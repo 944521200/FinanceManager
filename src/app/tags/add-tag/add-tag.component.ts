@@ -66,7 +66,6 @@ export class AddTagComponent implements OnInit {
 
   addTag() {
     const form = this.tagForm.value;
-    console.log(this.tagForm.value);
 
     if (this.editingIndex != -1) {
       this.tagService.udpateTag(

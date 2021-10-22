@@ -32,7 +32,7 @@ export class TagService implements OnDestroy {
     }
     else
     {
-      console.log("database not found")
+      console.log("database tags not found")
     }
 
     this.subscription = this.tagsChanged.subscribe((tags)=>

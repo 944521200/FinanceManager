@@ -131,8 +131,6 @@ export class AddExpenseComponent implements OnInit {
   }
 
   addExpense() {
-    console.log(this.expenseForm.value);
-    console.log(new Date(this.expenseForm.value['date']['year'], +this.expenseForm.value['date']['month']-1, this.expenseForm.value['date']['day'] ))
     if (this.editingIndex != -1) {
       this.expenseService.udpateExpense(
         this.editingIndex,

@@ -28,8 +28,6 @@ export class ExpenseService implements OnDestroy {
     }
 
     this.subscription = this.expensesChanged.subscribe((expenses) => {
-      console.log("saving")
-      console.log(expenses)
       this.localStorage.setItem(this.LocalStorageID, JSON.stringify(expenses));
     });
   }

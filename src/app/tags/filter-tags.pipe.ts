@@ -9,7 +9,6 @@ export class FilterTagsPipe implements PipeTransform {
   transform(value: Tag[], nameFilter:string, descFilter:string, dateSinceFilter?:Date, dateUntilFilter?:Date):  Tag[] {
     var result:Tag[] = value;
 
-    console.log(nameFilter+"-"+descFilter+"-"+dateSinceFilter+"-"+dateUntilFilter)
     result = result.filter((item:Tag)=>
     {
       if(!item.name || item.name.toLowerCase().includes(nameFilter.toLowerCase()))return true;

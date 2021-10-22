@@ -10,7 +10,6 @@ export class FilterExpensesPipe implements PipeTransform {
      
     var result:Expense[] = value;
 
-    console.log(nameFilter+"-"+descFilter+"-"+amountFilter+"-"+priceFilter+"-"+dateSinceFilter+"-"+dateUntilFilter)
     result = result.filter((item:Expense)=>
     {
       if(item.name.toLowerCase().includes(nameFilter.toLowerCase()))return true;
