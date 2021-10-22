@@ -28,7 +28,24 @@
                     <small id="amntHelp" class="form-text text-muted">The price of each item, separetely</small>
                   </div>
                   
-                  
+                  <div class="form-group" *ngIf="addedTags.length>0">
+                    <label for="">Expense tags:</label>
+                    <br>
+                    <button type="button" class="btn btn-danger ms-3 me-3 mt-3 mb-3"*ngFor="let tagID of addedTags" (click)="removeTag(tagID)">
+                      -
+                      <span  class="badge me-1" [style]="'background-color:'+getTagWithID(tagID).bgColor+'; color:'+ getTagWithID(tagID).txtColor+';'">{{getTagWithID(tagID).name}}</span> 
+                    </button>
+                  </div>
+
+                  <div class="form-group"  *ngIf="toBeAddedTags.length>0">
+                    <label for="">Add tags:</label>
+                    <br>
+                    <button type="button" class="btn btn-primary ms-3 me-3 mt-3 mb-3"*ngFor="let tagID of toBeAddedTags" (click)="addTag(tagID)">
+                      +
+                      <span  class="badge me-1" [style]="'background-color:'+getTagWithID(tagID).bgColor+'; color:'+ getTagWithID(tagID).txtColor+';'">{{getTagWithID(tagID).name}}</span> 
+                    </button>
+                  </div>
+
                   <button type="submit" [class]="'btn btn-'+(editingIndex != -1?'warning':'custom-view')+' me-3 mt-3'" [disabled]="!expenseForm.valid">{{editingIndex != -1?"Update":"Add"}}</button> 
                   <button type="button" class="btn btn-custom-delete  mt-3" (click)="clearForm()">Clear</button>
                 

@@ -51,7 +51,7 @@ export class ExpenseService implements OnDestroy {
     description: string,
     amount: number,
     pricePerUnit: number,
-    tags: Tag[],
+    tags: number[],
     time: Date = new Date()
   ) {
     const expense: Expense = new Expense(
@@ -80,11 +80,11 @@ export class ExpenseService implements OnDestroy {
     description: string,
     amount: number,
     pricePerUnit: number,
-    tags: Tag[],
+    tags: number[],
     time: Date = new Date()
   ) {
     const newExpense: Expense = new Expense(
-      this.IDCount++,
+      ID,
       name,
       description,
       amount,

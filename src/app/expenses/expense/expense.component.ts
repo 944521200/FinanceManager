@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Expense } from 'src/app/model/expense.model';
 import { ExpenseService } from 'src/app/services/expense.service';
+import { TagService } from 'src/app/services/tag.service';
 
 @Component({
   selector: 'app-expense',
@@ -9,7 +10,7 @@ import { ExpenseService } from 'src/app/services/expense.service';
 })
 export class ExpenseComponent implements OnInit {
 
-  constructor(private expenseService:ExpenseService) { }
+  constructor(private expenseService:ExpenseService, private tagService:TagService) { }
 
   @Input()
   expense!: Expense;
@@ -28,6 +29,11 @@ export class ExpenseComponent implements OnInit {
   editExpense()
   {
     this.expenseService.editingExpense.next(this.expense.ID);
+  }
+
+  getTagWithID(ID:number)
+  {
+    return this.tagService.getTag(ID);
   }
 
 }

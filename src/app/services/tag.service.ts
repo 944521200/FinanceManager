@@ -83,7 +83,7 @@ export class TagService implements OnDestroy {
     time: Date = new Date()
   ) {
     const newTag: Tag = new Tag(
-      this.IDCount++,
+      ID,
       name,
       description,
       bgColor,

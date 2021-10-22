@@ -22,12 +22,7 @@
       
     </div>
     <div class="col-lg-6">
-      <span class="badge  badge-pill me-1" style="background-color: #000000; color: aqua;">Games</span> 
-      <span class="badge  badge-pill me-1" style="background-color: blue;">Hentai</span> 
-      <span class="badge  badge-pill me-1" style="background-color: green;">Wholesome Hentai</span> 
-      <span class="badge  text-dark badge-pill me-1" style="background-color: aqua;">Food</span> 
-      <span class="badge  text-dark badge-pill me-1" style="background-color: brown;">poggers</span> 
-
+      <span  *ngFor="let tagID of expense.tags" class="badge badge-pill me-1" [style]="'background-color:'+getTagWithID(tagID).bgColor+'; color:'+ getTagWithID(tagID).txtColor+';'">{{getTagWithID(tagID).name}}</span> 
     </div>
   </div>
   </div>

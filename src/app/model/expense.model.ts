@@ -8,9 +8,9 @@ export class Expense
     public amount:number;
     public pricePerUnit:number;
     public time:Date;
-    public tags:Tag[]
+    public tags:number[]
 
-    constructor(ID:number, name:string, description:string, amount:number,pricePerUnit:number,  tags:Tag[],time:Date =new Date())
+    constructor(ID:number, name:string, description:string, amount:number,pricePerUnit:number,  tags:number[],time:Date =new Date())
     {
         this.ID =ID;
         this.name= name;
