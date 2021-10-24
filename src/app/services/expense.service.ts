@@ -21,6 +21,7 @@ export class ExpenseService implements OnDestroy {
       this.expenses = JSON.parse(expensesSTR);
       this.expenses.forEach((item: Expense) => {
         if (item.ID > this.IDCount) this.IDCount = item.ID;
+        item.time =  new Date(item.time);
       });
       this.IDCount++;
     } else {

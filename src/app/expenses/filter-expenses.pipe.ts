@@ -10,12 +10,14 @@ export class FilterExpensesPipe implements PipeTransform {
      
     var result:Expense[] = value;
 
+    if(nameFilter)
     result = result.filter((item:Expense)=>
     {
       if(item.name.toLowerCase().includes(nameFilter.toLowerCase()))return true;
       else return false;
     });
 
+    if(descFilter)
     result = result.filter((item:Expense)=>
     {
       if(item.description.toLowerCase().includes(descFilter.toLowerCase()))return true;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, ChartItem, registerables } from 'chart.js';
+import { ReportService } from '../services/report.service';
 Chart.register(...registerables)
 
 @Component({
@@ -8,7 +9,7 @@ Chart.register(...registerables)
   styleUrls: ['./report.component.css'],
 })
 export class ReportComponent implements OnInit {
-  constructor() {}
+  constructor(private reportService:ReportService) {}
 /**
  * 
  *  un gráfico que muestre el menor y mayor gasto mensual de cada tag o de cada expense
@@ -19,13 +20,13 @@ export class ReportComponent implements OnInit {
     var expensesChart = new Chart(document.getElementById('expenesByMonth') as ChartItem,{
       type: 'line',
       data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
         datasets: [
           {
             label: 'Expenses by month',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
+            data: this.reportService.getMonthlyExpenses(2021),
           },
         ],
       },
