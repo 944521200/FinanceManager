@@ -17,6 +17,7 @@ import { TagsComponent } from './tags/tags.component';
 import { SearchTagsComponent } from './tags/search-tags/search-tags.component';
 import { FilterTagsPipe } from './tags/filter-tags.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GraphComponent } from './graph/graph.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TagComponent,
     TagsComponent,
     SearchTagsComponent,
-    FilterTagsPipe
+    FilterTagsPipe,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
