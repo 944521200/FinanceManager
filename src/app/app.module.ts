@@ -18,6 +18,7 @@ import { SearchTagsComponent } from './tags/search-tags/search-tags.component';
 import { FilterTagsPipe } from './tags/filter-tags.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GraphComponent } from './graph/graph.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { GraphComponent } from './graph/graph.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    AgGridModule.withComponents([]),
     NgbModule
   ],
   providers: [],
