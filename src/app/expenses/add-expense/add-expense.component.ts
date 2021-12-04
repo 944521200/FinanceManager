@@ -1,164 +1,116 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import { ExpenseService } from 'src/app/services/expense.service';
-import { TagService } from 'src/app/services/tag.service';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import * as ExpensesSelector from '../store/expenses.selectors';
+import * as ExpensesActions from '../store/expenses.actions';
+import * as TagsSelectors from '../../tags/store/tags.selectors';
+import { map, switchMap } from 'rxjs/operators';
+import { Tag, tagIncluded } from 'src/app/model/tag.model';
+import { Observable } from 'rxjs';
+import { Expense } from 'src/app/model/expense.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-add-expense',
-  templateUrl: './add-expense.component.html',
-  styleUrls: ['./add-expense.component.css'],
+    selector: 'app-add-expense',
+    templateUrl: './add-expense.component.html',
+    styleUrls: ['./add-expense.component.css'],
 })
 export class AddExpenseComponent implements OnInit {
-  constructor(
-    private expenseService: ExpenseService,
-    private tagService: TagService
-  ) {}
+    expenseForm: FormGroup;
+    isEditing: Observable<boolean>;
 
-  expenseForm!: FormGroup;
-  editingIndex: number = -1;
+    editingExpense: Observable<Expense>;
+    allTags: Observable<Tag[]>;
+    toBeAddedTags: Observable<Tag[]>;
 
-  allTags!: number[];
-  addedTags!: number[];
-  toBeAddedTags!: number[];
+    constructor(private store: Store, private datePipe: DatePipe) {
+        this.expenseForm = new FormGroup({
+            name: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
+            description: new FormControl(null, [Validators.maxLength(250)]),
+            date: new FormControl(new Date(), [Validators.required]),
+            amount: new FormControl(1, [Validators.required, this.positiveNumber.bind(this)]),
+            price: new FormControl(null, [Validators.required, this.positiveNumber.bind(this)]),
+        });
 
-  dateValue!: NgbDateStruct;
+        this.isEditing = this.store.select(ExpensesSelector.selectEditing);
 
-  ngOnInit(): void {
-    let today= new Date();
+        this.editingExpense = this.store.select(ExpensesSelector.selectEditingExpense);
 
-    this.expenseForm = new FormGroup({
-      name: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(30),
-      ]),
-      description: new FormControl(null, [Validators.maxLength(250)]),
-      date: new FormControl({year:today.getFullYear(), month:today.getMonth()+1, day:today.getDate()}),
-      amount: new FormControl(1, [
-        Validators.required,
-        this.positiveNumber.bind(this),
-      ]),
-      price: new FormControl(null, [
-        Validators.required,
-        this.positiveNumber.bind(this),
-      ]),
-    });
+        this.editingExpense.subscribe((editingExpense) => {
+            this.clearForm();
+            console.log('EDITING EXPENSE', editingExpense);
+            this.expenseForm.reset({
+                name: editingExpense.name,
+                description: editingExpense.description,
+                amount: editingExpense.amount,
+                date: this.datePipe.transform(editingExpense.time, 'yyyy-MM-ddThh:mm:ss'),
+                price: editingExpense.pricePerUnit,
+            });
+        });
 
-    this.expenseService.editingExpense.subscribe((editingExpenseIndex) => {
-      if (editingExpenseIndex != -1) {
-        this.clearForm();
-        //edit expense
-        this.editingIndex = editingExpenseIndex;
-        const editingExpense = this.expenseService.getExpense(
-          this.editingIndex
+        this.allTags = this.store.select(TagsSelectors.selectAllTags);
+        this.toBeAddedTags = this.allTags.pipe(
+            switchMap((tags) => {
+                return this.editingExpense.pipe(
+                    map((expense) => {
+                        return tags.filter((tobeTag) => !tagIncluded(expense.tags, tobeTag));
+                    }),
+                );
+            }),
         );
 
-        this.expenseForm.reset({
-          name: editingExpense.name,
-          description: editingExpense.description,
-          amount: editingExpense.amount,
-          date: {year:editingExpense.time.getFullYear(), month:editingExpense.time.getMonth()+1, day:editingExpense.time.getDate()},
-          price: editingExpense.pricePerUnit,
-        });
-        this.addedTags = [...editingExpense.tags];
-        this.toBeAddedTags = this.allTags.filter((tobeTag) => {
-          if (!this.addedTags.includes(tobeTag)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-      } else {
-        //clear editing mode
-        this.editingIndex = -1;
+        this.store.dispatch(ExpensesActions.editExpense({ editId: -1 }));
+    }
+
+    ngOnInit(): void {}
+
+    addTag(tag: Tag) {
+        this.updateExpense();
+        this.store.dispatch(ExpensesActions.addTagsEditingExpense({ tags: [tag] }));
+    }
+
+    removeTag(tag: Tag) {
+        this.updateExpense();
+        this.store.dispatch(ExpensesActions.removeTagsEditingExpense({ tags: [tag] }));
+    }
+
+    positiveNumber(control: AbstractControl): ValidationErrors | null {
+        if (isNaN(+control.value) || +control.value < 1) {
+            //control.setValue(1);
+            // this.expenseForm.patchValue({control.:1});
+            // return null;
+            return { notValidNumber: 'not a valid number' };
+        }
+        return null;
+    }
+
+    addExpense() {
+        this.updateExpense();
+        this.store.dispatch(ExpensesActions.confirmEditingExpense());
         this.clearForm();
-      }
-    });
-
-    this.tagService.tagsChanged.subscribe((tags) => {
-      this.allTags = tags.map(tag=>{return tag.ID});
-    });
-    this.allTags = this.tagService.getTags().map(tag=>{return tag.ID});
-    this.toBeAddedTags = [...this.allTags];
-    this.addedTags = [];
-  }
-
-  addTag(ID: number) {
-    let tag;
-    if (
-      (tag = this.toBeAddedTags.find((item) => {
-        return item == ID;
-      }))
-    ) {
-      this.toBeAddedTags.splice(this.toBeAddedTags.indexOf(tag), 1);
-      this.addedTags.push(tag);
     }
-  }
 
-  removeTag(ID: number) {
-    let tag;
-    if (
-      (tag = this.addedTags.find((item) => {
-        return item == ID;
-      }))
-    ) {
-      this.addedTags.splice(this.addedTags.indexOf(tag), 1);
-      this.toBeAddedTags.push(tag);
+    updateExpense() {
+        this.store.dispatch(
+            ExpensesActions.updateEditingExpense({
+                name: this.expenseForm.value['name'],
+                description: this.expenseForm.value['description'],
+                amount: +this.expenseForm.value['amount'],
+                pricePerUnit: this.expenseForm.value['price'],
+                time: new Date(this.expenseForm.value['date']),
+            }),
+        );
     }
-  }
-  getTagWithID(ID:number)
-  {
-    return this.tagService.getTag(ID);
-  }
 
-  positiveNumber(control: AbstractControl): ValidationErrors | null {
-    if (isNaN(+control.value) || +control.value < 1) {
-      //control.setValue(1);
-      // this.expenseForm.patchValue({control.:1});
-      // return null;
-      return { notValidNumber: 'not a valid number' };
+    clearForm() {
+        let today = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
+        this.expenseForm.reset({
+            date: today,
+            amount: 1,
+        });
     }
-    return null;
-  }
-
-  addExpense() {
-    if (this.editingIndex != -1) {
-      this.expenseService.udpateExpense(
-        this.editingIndex,
-        this.expenseForm.value['name'],
-        this.expenseForm.value['description'],
-        +this.expenseForm.value['amount'],
-        this.expenseForm.value['price'],
-        this.addedTags,
-        new Date(this.expenseForm.value['date']['year'], +this.expenseForm.value['date']['month']-1, this.expenseForm.value['date']['day'] )
-      );
-    } else {
-      this.expenseService.addExpense(
-        this.expenseForm.value['name'],
-        this.expenseForm.value['description'],
-        +this.expenseForm.value['amount'],
-        this.expenseForm.value['price'],
-        this.addedTags,
-        new Date(this.expenseForm.value['date']['year'], +this.expenseForm.value['date']['month']-1, this.expenseForm.value['date']['day'] )
-      );
+    clearExpense() {
+        this.clearForm();
+        this.store.dispatch(ExpensesActions.discardEditingExpense());
     }
-    this.clearForm();
-  }
-
-  clearForm() {
-    let today = new Date()
-    this.expenseForm.reset({date:{year:today.getFullYear(), month:today.getMonth()+1, day:today.getDate()}, amount: 1 });
-    this.editingIndex = -1;
-    this.toBeAddedTags = [...this.allTags];
-    this.addedTags = [];
-  }
 }

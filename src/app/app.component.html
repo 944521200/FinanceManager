@@ -1,32 +1,46 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand ml-lg-300" routerLink="">FinanceManager</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
-      (click)="collapsed=!collapsed">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse"[ngClass]="{'collapse': collapsed}" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active"  routerLink= "" [routerLinkActiveOptions]="{exact:true}">Home</a>
-        </li>
-        <li class="nav-item" >
-            <a class="nav-link"  routerLinkActive="active" routerLink="expenses">Expenses</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"  routerLinkActive="active" routerLink="tags">Tags</a>
-          </li>
-        <li class="nav-item">
-          <a class="nav-link"  routerLinkActive="active" routerLink="report">Report</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"  routerLinkActive="active" routerLink="graph">Graphs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active"  routerLink="settings">Settings</a>
-        </li>
-      </ul>
+        <a class="navbar-brand ml-lg-300" routerLink="">FinanceManager</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            (click)="collapsed = !collapsed"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse" [ngClass]="{ collapse: collapsed }" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        routerLinkActive="active"
+                        routerLink=""
+                        [routerLinkActiveOptions]="{ exact: true }"
+                        >Home</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="expenses">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="tags">Tags</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="report">Report</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="graph">Graphs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" routerLink="settings">Settings</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    </div>
-  </nav>
+</nav>
 <router-outlet></router-outlet>

@@ -1,51 +1,93 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-12 text-center"> <h6><p>SEARCH EXPENSES</p></h6></div>
+        <div class="col-lg-12 text-center">
+            <h6><p>SEARCH EXPENSES</p></h6>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-2">
-             <p class=" text-start">Name:</p>
+            <p class="text-start">Name:</p>
         </div>
         <div class="col-lg-4">
-            <input type="text" class="form-control" id="inputNameSearch" placeholder=""  name="inputNameSearch" [(ngModel)]="nameSearch" >
+            <input
+                type="text"
+                class="form-control"
+                id="inputNameSearch"
+                placeholder=""
+                name="inputNameSearch"
+                [(ngModel)]="nameSearch"
+            />
         </div>
         <div class="col-lg-2">
-            <p class=" text-start">Description:</p>
-       </div>
-       <div class="col-lg-4">
-           <input type="text" class="form-control" id="inputDesSearch" placeholder=""  name="inputDesSearch"  [(ngModel)]="desSearch">
-       </div>
-
+            <p class="text-start">Description:</p>
+        </div>
+        <div class="col-lg-4">
+            <input
+                type="text"
+                class="form-control"
+                id="inputDesSearch"
+                placeholder=""
+                name="inputDesSearch"
+                [(ngModel)]="desSearch"
+            />
+        </div>
     </div>
 
     <div class="row">
         <div class="col-lg-2">
-             <p class=" text-start">Amount:</p>
+            <p class="text-start">Amount:</p>
         </div>
         <div class="col-lg-4">
-            <input type="number" class="form-control" id="inputAmountSearch" placeholder=""  name="inputAmountSearch"  [(ngModel)]="amountSearch"> 
+            <input
+                type="number"
+                class="form-control"
+                id="inputAmountSearch"
+                placeholder=""
+                name="inputAmountSearch"
+                [(ngModel)]="amountSearch"
+            />
         </div>
         <div class="col-lg-2">
-            <p class=" text-start">Price:</p>
-       </div>
-       <div class="col-lg-4">
-           <input type="number" class="form-control" id="inputAmountSearch" placeholder=""  name="inputAmountSearch" [(ngModel)]="priceSearch">
-       </div>
-
+            <p class="text-start">Price:</p>
+        </div>
+        <div class="col-lg-4">
+            <input
+                type="number"
+                class="form-control"
+                id="inputAmountSearch"
+                placeholder=""
+                name="inputAmountSearch"
+                [(ngModel)]="priceSearch"
+            />
+        </div>
     </div>
 
     <div class="row">
         <div class="col-lg-2">
-            <p class=" text-start">Since Date:</p>
+            <p class="text-start">Since Date:</p>
         </div>
         <div class="col-lg-4">
-            <input type="datetime-local" class="form-control" id="inputDateSinceSearch" placeholder=""  name="inputDateSinceSearch" [(ngModel)]="dateSinceSearch" >
+            <input
+                type="datetime-local"
+                class="form-control"
+                id="inputDateSinceSearch"
+                placeholder=""
+                name="inputDateSinceSearch"
+                [(ngModel)]="dateSinceSearch"
+            />
         </div>
         <div class="col-lg-2">
-            <p class=" text-start">Until Date:</p>
+            <p class="text-start">Until Date:</p>
         </div>
         <div class="col-lg-4">
-            <input type="datetime-local" class="form-control" id="inputDateUntilSearch" placeholder=""  name="inputDateUntilSearch" [(ngModel)]="dateUntilSearch" >
+            <input
+                type="datetime-local"
+                class="form-control"
+                id="inputDateUntilSearch"
+                placeholder=""
+                name="inputDateUntilSearch"
+                [(ngModel)]="dateUntilSearch"
+            />
         </div>
     </div>
     <div class="row">
@@ -53,14 +95,25 @@
             <button type="button" class="btn btn-custom-edit mt-3" (click)="clearSearch()">Clear</button>
         </div>
     </div>
-    <hr>
+    <hr />
     <div class="row">
         <div class="col-lg-12">
-            <ul class="list-group"> 
-                <app-expense  *ngFor="let expense of expenses | filterExpenses:nameSearch:desSearch:amountSearch:priceSearch:dateSinceSearch:dateUntilSearch" [expense]="expense" ></app-expense>
+            <ul class="list-group">
+                <app-expense
+                    *ngFor="
+                        let expense of expenses
+                            | async
+                            | filterExpenses
+                                : nameSearch
+                                : desSearch
+                                : amountSearch
+                                : priceSearch
+                                : dateSinceSearch
+                                : dateUntilSearch
+                    "
+                    [expense]="expense"
+                ></app-expense>
             </ul>
         </div>
     </div>
-    
 </div>
-

@@ -7,16 +7,16 @@ import { ReportComponent } from './report/report.component';
 import { TagsComponent } from './tags/tags.component';
 
 const routes: Routes = [
-  { path: 'expenses', component: ExpensesComponent },
-  { path: 'report', component: ReportComponent },
-  { path: 'graph', component: GraphComponent },
-  { path: 'tags', component: TagsComponent },
-  { path: '', component: HomeComponent },
-  { path: '**', redirectTo: '/', pathMatch: 'full' },
+    { path: 'expenses', component: ExpensesComponent },
+    { path: 'report', component: ReportComponent },
+    { path: 'graph', component: GraphComponent },
+    { path: 'tags', component: TagsComponent },
+    { path: '', component: HomeComponent },
+    { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}

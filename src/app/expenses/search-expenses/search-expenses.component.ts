@@ -1,50 +1,36 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, of, Subscription } from 'rxjs';
 import { Expense } from 'src/app/model/expense.model';
-import { ExpenseService } from 'src/app/services/expense.service';
+import * as ExpensesSelector from '../store/expenses.selectors';
 
 @Component({
-  selector: 'app-search-expenses',
-  templateUrl: './search-expenses.component.html',
-  styleUrls: ['./search-expenses.component.css']
+    selector: 'app-search-expenses',
+    templateUrl: './search-expenses.component.html',
+    styleUrls: ['./search-expenses.component.css'],
 })
-export class SearchExpensesComponent implements OnInit, OnDestroy {
+export class SearchExpensesComponent implements OnInit {
+    constructor(private store: Store) {}
 
-  constructor(private expenseService:ExpenseService) { }
+    expenses: Observable<Expense[]> = of([]);
 
+    ngOnInit(): void {
+        this.expenses = this.store.select(ExpensesSelector.selectAllExpenses);
+    }
 
-  expenses:Expense[]=[];
+    nameSearch: string = '';
+    desSearch: string = '';
+    amountSearch: string = '';
+    priceSearch: string = '';
+    dateSinceSearch: Date | undefined;
+    dateUntilSearch: Date | undefined;
 
-  private subscription!: Subscription;
-  
-  ngOnInit(): void {
-    this.expenses = this.expenseService.getExpenses();
-    this.subscription = this.expenseService.expensesChanged.subscribe((expenses)=>
-    {
-      this.expenses=expenses;
-    });
-  }
-
-  nameSearch:string="";
-  desSearch:string="";
-  amountSearch:string="";
-  priceSearch:string="";
-  dateSinceSearch:Date | undefined;
-  dateUntilSearch:Date | undefined;
-
-
-  clearSearch()
-  {
-    this.nameSearch="";
-    this.desSearch="";
-    this.amountSearch="";
-    this.priceSearch="";
-    this.dateSinceSearch=undefined;
-    this.dateUntilSearch=undefined;
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe()
-   }
-
+    clearSearch() {
+        this.nameSearch = '';
+        this.desSearch = '';
+        this.amountSearch = '';
+        this.priceSearch = '';
+        this.dateSinceSearch = undefined;
+        this.dateUntilSearch = undefined;
+    }
 }

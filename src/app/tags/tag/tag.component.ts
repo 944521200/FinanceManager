@@ -1,25 +1,26 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Tag } from 'src/app/model/tag.model';
-import { TagService } from 'src/app/services/tag.service';
+import * as TagsActions from '../store/tags.actions';
 
 @Component({
-  selector: 'app-tag',
-  templateUrl: './tag.component.html',
-  styleUrls: ['./tag.component.css'],
+    selector: 'app-tag',
+    templateUrl: './tag.component.html',
+    styleUrls: ['./tag.component.css'],
 })
 export class TagComponent implements OnInit {
-  constructor(private tagService: TagService) {}
+    constructor(private store: Store) {}
 
-  @Input('inputTag')
-  tag!: Tag;
+    @Input('inputTag')
+    tag!: Tag;
 
-  ngOnInit(): void {}
+    ngOnInit(): void {}
 
-  deleteTag() {
-    this.tagService.removeTag(this.tag.ID);
-  }
+    deleteTag() {
+        this.store.dispatch(TagsActions.deleteTag({ deleteId: this.tag.ID }));
+    }
 
-  editTag() {
-    this.tagService.editingTag.next(this.tag.ID);
-  }
+    editTag() {
+        this.store.dispatch(TagsActions.editTag({ editId: this.tag.ID }));
+    }
 }

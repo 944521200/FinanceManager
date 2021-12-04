@@ -1,35 +1,84 @@
-<h6>  <p class=" text-center">ADD NEW TAG</p></h6>
-            <form [formGroup]="tagForm" (ngSubmit)="addTag()">
-                <div class="form-group">
-                  <label for="inputNameTag">Name of the tag</label>
-                  <input [ngClass]="{'is-valid':tagForm.controls['name'].valid && tagForm.controls['name'].touched, 'is-invalid':tagForm.controls['name'].invalid && tagForm.controls['name'].touched} " 
-                  type="text" class="form-control" id="inputNameTag" aria-describedby="nameHelp" placeholder="Enter a name" name="inputNameTag" formControlName="name">
-                  <small id="nameHelp" class="form-text text-muted">Short name</small>
-                </div>
+<h6><p class="text-center">ADD NEW TAG</p></h6>
+<form [formGroup]="tagForm" (ngSubmit)="addTag()">
+    <div class="form-group">
+        <label for="inputNameTag">Name of the tag</label>
+        <input
+            [ngClass]="{
+                'is-valid': tagForm.controls['name'].valid && tagForm.controls['name'].touched,
+                'is-invalid': tagForm.controls['name'].invalid && tagForm.controls['name'].touched
+            }"
+            type="text"
+            class="form-control"
+            id="inputNameTag"
+            aria-describedby="nameHelp"
+            placeholder="Enter a name"
+            name="inputNameTag"
+            formControlName="name"
+        />
+        <small id="nameHelp" class="form-text text-muted">Short name</small>
+    </div>
 
-                <div class="form-group">
-                    <label for="inputDescriptionTag">Description of the expense</label>
-                    <textarea [ngClass]="{'is-valid':tagForm.controls['description'].valid && tagForm.controls['description'].touched, 'is-invalid':tagForm.controls['description'].invalid && tagForm.controls['description'].touched} " 
-                    type="text" class="form-control" name="inputDescriptionTag" id="inputDescriptionTag"  rows="5" placeholder="Optional description"  aria-describedby="desHelp"  formControlName="description"></textarea> 
-                    <small id="desHelp" class="form-text text-muted">Full Description</small>
-                </div>
+    <div class="form-group">
+        <label for="inputDescriptionTag">Description of the expense</label>
+        <textarea
+            [ngClass]="{
+                'is-valid': tagForm.controls['description'].valid && tagForm.controls['description'].touched,
+                'is-invalid': tagForm.controls['description'].invalid && tagForm.controls['description'].touched
+            }"
+            type="text"
+            class="form-control"
+            name="inputDescriptionTag"
+            id="inputDescriptionTag"
+            rows="5"
+            placeholder="Optional description"
+            aria-describedby="desHelp"
+            formControlName="description"
+        ></textarea>
+        <small id="desHelp" class="form-text text-muted">Full Description</small>
+    </div>
 
-                <div class="form-group">
-                  <label for="inputAmountTag">Background Color</label>
-                  <input  [ngClass]="{'is-valid':tagForm.controls['bgColor'].valid , 'is-invalid':tagForm.controls['bgColor'].invalid} " 
-                  type="color" class="form-control" id="inputAmountTag" placeholder="#000000" aria-describedby="bgColorHelp"  name="inputAmountTag"  formControlName="bgColor">
-                  <small id="bgColorHelp" class="form-text text-muted">The background color for your tag</small>
-                </div>
+    <div class="form-group">
+        <label for="inputAmountTag">Background Color</label>
+        <input
+            [ngClass]="{
+                'is-valid': tagForm.controls['bgColor'].valid,
+                'is-invalid': tagForm.controls['bgColor'].invalid
+            }"
+            type="color"
+            class="form-control"
+            id="inputAmountTag"
+            placeholder="#000000"
+            aria-describedby="bgColorHelp"
+            name="inputAmountTag"
+            formControlName="bgColor"
+        />
+        <small id="bgColorHelp" class="form-text text-muted">The background color for your tag</small>
+    </div>
 
-                <div class="form-group">
-                    <label for="txtColor">Text Color</label>
-                    <input  [ngClass]="{'is-valid':tagForm.controls['txtColor'].valid, 'is-invalid':tagForm.controls['txtColor'].invalid } " 
-                     type="color" class="form-control" id="txtColor" placeholder="#ffffff"  aria-describedby="txtColorHelp"  name="txtColor"  formControlName="txtColor">
-                    <small id="txtColorHelp" class="form-text text-muted">The text color for your tag</small>
-                  </div>
-                  
-                  
-                  <button type="submit" [class]="'btn btn-'+(editingIndex != -1?'warning':'custom-view')+' me-3 mt-3'" [disabled]="!tagForm.valid">{{editingIndex != -1?"Update":"Add"}}</button> 
-                  <button type="button" class="btn btn-custom-delete  mt-3" (click)="clearForm()">Clear</button>
-                
-            </form>
+    <div class="form-group">
+        <label for="txtColor">Text Color</label>
+        <input
+            [ngClass]="{
+                'is-valid': tagForm.controls['txtColor'].valid,
+                'is-invalid': tagForm.controls['txtColor'].invalid
+            }"
+            type="color"
+            class="form-control"
+            id="txtColor"
+            placeholder="#ffffff"
+            aria-describedby="txtColorHelp"
+            name="txtColor"
+            formControlName="txtColor"
+        />
+        <small id="txtColorHelp" class="form-text text-muted">The text color for your tag</small>
+    </div>
+
+    <button
+        type="submit"
+        [class]="'btn btn-' + ((isEditing |async)? 'warning' : 'custom-view') + ' me-3 mt-3'"
+        [disabled]="!tagForm.valid"
+    >
+        {{ (isEditing |async) ? 'Update' : 'Add' }}
+    </button>
+    <button type="button" class="btn btn-custom-delete mt-3" (click)="discardTag()">Clear</button>
+</form>
