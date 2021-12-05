@@ -5,10 +5,10 @@ Chart.register(...registerables);
 
 @Component({
     selector: 'app-reports',
-    templateUrl: './report.component.html',
-    styleUrls: ['./report.component.css'],
+    templateUrl: './reports.component.html',
+    styleUrls: ['./reports.component.css'],
 })
-export class ReportComponent {
+export class ReportsComponent {
     columnDefs: ColDef[] = [
         { field: 'make', autoHeight: true, sortable: true, flex: 3 },
         { field: 'model', autoHeight: true, sortable: true, flex: 2 },

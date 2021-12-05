@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GraphComponent } from './graph.component';
+import { GraphsComponent } from './graphs.component';
 
-const routes: Routes = [{ path: '', component: GraphComponent }];
+const routes: Routes = [{ path: '', component: GraphsComponent }];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],

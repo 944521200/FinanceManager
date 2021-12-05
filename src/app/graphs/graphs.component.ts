@@ -3,10 +3,10 @@ import { Chart, ChartItem } from 'chart.js';
 
 @Component({
     selector: 'app-graphs',
-    templateUrl: './graph.component.html',
-    styleUrls: ['./graph.component.css'],
+    templateUrl: './graphs.component.html',
+    styleUrls: ['./graphs.component.css'],
 })
-export class GraphComponent {
+export class GraphsComponent {
     /**
      *
      *  un gráfico que muestre el menor y mayor gasto mensual de cada tag o de cada expense

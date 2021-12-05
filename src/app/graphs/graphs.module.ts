@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { GraphComponent } from './graph.component';
+import { GraphsComponent } from './graphs.component';
 import { GraphsRoutingModule } from './graphs-routing.module';
 
 @NgModule({
-    declarations: [GraphComponent],
+    declarations: [GraphsComponent],
     imports: [CommonModule, GraphsRoutingModule],
-    exports: [GraphComponent],
+    exports: [GraphsComponent],
 })
 export class GraphsModule {}
