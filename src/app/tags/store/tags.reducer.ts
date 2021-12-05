@@ -2,8 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 import { DEFAULT_TAG, Tag } from 'src/app/model/tag.model';
 import * as TagsActions from './tags.actions';
 
-const LOCAL_STORAGE_KEY = 'Tags';
-const initialState: State = { tags: [], tagCounter: -1, editingTag: DEFAULT_TAG, editing: false };
+const STORAGE_KEY = 'Tags';
+const initialState: State = calculateInitialState();
 
 export interface State {
     tags: Tag[];
@@ -14,7 +14,7 @@ export interface State {
 
 export const tagsReducer = createReducer(
     initialState,
-    on(TagsActions.initializeState, (state) => {
+    on(TagsActions.resetState, (state) => {
         return { ...state, ...calculateInitialState() };
     }),
 
@@ -68,7 +68,7 @@ export const tagsReducer = createReducer(
         };
     }),
     on(TagsActions.tagsChanged, (state) => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         return { ...state };
     }),
 );
@@ -84,7 +84,7 @@ function calculateTagCounter(tags: Tag[]) {
 
 function getStateFromLocalStorage() {
     const localStorage: Storage = window.localStorage;
-    const tagsSTR = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const tagsSTR = localStorage.getItem(STORAGE_KEY);
     if (tagsSTR != null && tagsSTR != '') {
         console.log('Tags database found');
         return JSON.parse(tagsSTR);
@@ -95,7 +95,7 @@ function getStateFromLocalStorage() {
 }
 
 function calculateInitialState() {
-    let state: State = initialState;
+    let state: State = { tags: [], tagCounter: -1, editingTag: DEFAULT_TAG, editing: false };
     state = { ...state, ...getStateFromLocalStorage() };
     state.tagCounter = calculateTagCounter(state.tags);
     return state;

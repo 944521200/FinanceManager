@@ -37,4 +37,4 @@ export const discardEditingExpense = createAction('[Expenses] discard editing ex
 
 export const expensesChanged = createAction('[Expenses] expenses changed');
 
-export const initializeState = createAction('[Expenses] initialize state');
+export const resetState = createAction('[Expenses] initialize state');

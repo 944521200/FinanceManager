@@ -1,0 +1,8 @@
+- Cada mes del año con un donut con tags
+- Cada mes el gasto por día grafico de barras y Cada mes el gasto total acumulado grafico de linea
+
+- Cada año, donut cont tags
+- Cada mes del año con el total gastado por mes en un gráfico de barras y Cada mes del año el gasto total acumulado gráfico de línea
+
+
+** Customiuzar los colores de los gráficos que no dependen de los colores de los tags

@@ -20,4 +20,4 @@ export const discardEditingTag = createAction('[Tags] discard editing Tag');
 
 export const tagsChanged = createAction('[Tags] tags changed');
 
-export const initializeState = createAction('[Tags] initialize state');
+export const resetState = createAction('[Tags] initialize state');

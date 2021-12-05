@@ -1,108 +1,154 @@
-import { Component } from '@angular/core';
-import { Chart, ChartItem } from 'chart.js';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as AnalyticsSelectors from '../analytics/analytics.selectors';
 
 @Component({
     selector: 'app-graphs',
     templateUrl: './graphs.component.html',
     styleUrls: ['./graphs.component.css'],
 })
-export class GraphsComponent {
-    /**
-     *
-     *  un gráfico que muestre el menor y mayor gasto mensual de cada tag o de cada expense
-     *
-     */
+export class GraphsComponent implements OnInit, OnDestroy {
+    constructor(private store: Store) {
+        this.selectedYearTagsBgColors = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
+            map((selected) => {
+                const result: { [year: string]: string[] } = {};
+                Object.keys(selected).map((year) => {
+                    result[year] = Object.values(selected[+year]).map((selectedTag) => selectedTag.tag.bgColor);
+                });
+                return result;
+            }),
+        );
+        this.selectedYearTagsLabels = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
+            map((selected) => {
+                const result: { [year: string]: string[] } = {};
+                Object.keys(selected).map((year) => {
+                    result[year] = Object.values(selected[+year]).map((selectedTag) => selectedTag.tag.name);
+                });
+                return result;
+            }),
+        );
+        this.selectedYearTagsData = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
+            map((selected) => {
+                console.log('selected2', selected);
+                const result: { [year: string]: number[] } = {};
+                Object.keys(selected).forEach((year) => {
+                    result[year] = Object.values(selected[+year]).map((selectedTag) => selectedTag.count);
+                });
+                return result;
+            }),
+        );
+        this.selectedYears = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
+            map((selected) =>
+                Object.keys(selected)
+                    .filter((key) => Object.keys(selected[+key]).length > 0)
+                    .map((key) => +key),
+            ),
+        );
+
+        this.selectedYearlyMonthlyExpenses = this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).pipe(
+            map((selected) => {
+                const result: { [year: string]: number[] } = {};
+                Object.keys(selected).forEach((year) => {
+                    result[year] = Object.values(selected[+year]);
+                });
+                return result;
+            }),
+        );
+    }
+
+    subscriptions: Subscription[] = [];
+
+    selectedYearTagsBgColors: Observable<{ [year: string]: string[] }>;
+    selectedYearTagsData: Observable<{ [year: string]: number[] }>;
+    selectedYearTagsLabels: Observable<{ [year: string]: string[] }>;
+    selectedYears: Observable<number[]>;
+
+    selectedYearlyMonthlyExpenses: Observable<{ [year: string]: number[] }>;
+
     ngOnInit(): void {
-        const expensesChart = new Chart(document.getElementById('expenesByMonth') as ChartItem, {
-            type: 'line',
-            data: {
-                labels: [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
-                    'July',
-                    'August',
-                    'September',
-                    'October',
-                    'November',
-                    'December',
-                ],
-                datasets: [
-                    {
-                        label: 'Expenses by month',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: /* this.reportService.getMonthlyExpenses(2021) */ undefined,
-                    },
-                ],
-            },
-            options: {},
-        });
-        console.log('expensesChart', expensesChart);
-        const expensesByTag = new Chart(document.getElementById('expensesByTag') as ChartItem, {
-            type: 'doughnut',
-            data: {
-                labels: ['anime', 'food', 'games'],
-                datasets: [
-                    {
-                        label: 'My First Dataset',
-                        data: [300, 50, 100],
-                        backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-                        hoverOffset: 4,
-                    },
-                ],
-            },
-        });
-        console.log('expensesByTag', expensesByTag);
-        const topExpenses = new Chart(document.getElementById('topExpenses') as ChartItem, {
-            type: 'bar',
-            data: {
-                labels: [
-                    'Audi a4',
-                    'Gaming gamer chair',
-                    'dick enhancement',
-                    'konosuba bluray',
-                    'HDD',
-                    'webcam',
-                    'boli bic',
-                ],
-                datasets: [
-                    {
-                        label: 'My First Dataset',
-                        data: [20000, 800, 400, 180, 56, 55, 2],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(255, 205, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(201, 203, 207, 0.2)',
-                        ],
-                        borderColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(255, 159, 64)',
-                            'rgb(255, 205, 86)',
-                            'rgb(75, 192, 192)',
-                            'rgb(54, 162, 235)',
-                            'rgb(153, 102, 255)',
-                            'rgb(201, 203, 207)',
-                        ],
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-        console.log('topExpenses', topExpenses);
+        this.subscriptions.push(
+            this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).subscribe((selected) => {
+                console.log('selected', selected);
+                // this.charts.push(
+                //     new Chart(document.getElementById('expensesByTag') as ChartItem, {
+                //         type: 'doughnut',
+                //         data: {
+                //             labels: Object.values(selected[2021]).map((selectedTag) => selectedTag.tag.name),
+                //             datasets: [
+                //                 {
+                //                     label: 'My First Dataset',
+                //                     data: Object.values(selected[2021]).map((selectedTag) => selectedTag.count),
+                //                     backgroundColor: Object.values(selected[2021]).map(
+                //                         (selectedTag) => selectedTag.tag.bgColor,
+                //                     ),
+                //                     hoverOffset: 4,
+                //                 },
+                //             ],
+                //         },
+                //     }),
+                // );
+            }),
+        );
+
+        this.subscriptions.push(
+            this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).subscribe((selected) => {
+                console.log('selected', selected);
+                // this.charts.push(
+                //     new Chart(document.getElementById('expenesByMonth') as ChartItem, {
+                //         type: 'bar',
+                //         data: {
+                //             datasets: [
+                //                 {
+                //                     label: 'Monthly Expenses',
+                //                     data: Object.values(selected[2021]),
+                //                     backgroundColor: [
+                //                         '#DD6E6E',
+                //                         '#6EA4DD',
+                //                         '#5AD39F',
+                //                         '#E7E887',
+                //                         '#DD6E6E',
+                //                         '#6EA4DD',
+                //                         '#5AD39F',
+                //                         '#E7E887',
+                //                         '#DD6E6E',
+                //                         '#6EA4DD',
+                //                         '#5AD39F',
+                //                         '#E7E887',
+                //                     ],
+                //                 },
+                //             ],
+                //             labels: [
+                //                 'January',
+                //                 'February',
+                //                 'March',
+                //                 'April',
+                //                 'May',
+                //                 'June',
+                //                 'July',
+                //                 'August',
+                //                 'September',
+                //                 'October',
+                //                 'November',
+                //                 'December',
+                //             ],
+                //         },
+                //         options: {
+                //             scales: {
+                //                 y: {
+                //                     beginAtZero: true,
+                //                 },
+                //             },
+                //         },
+                //     }),
+                // );
+            }),
+        );
+    }
+
+    ngOnDestroy(): void {
+        // this.charts.forEach((chart) => chart.destroy());
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 }

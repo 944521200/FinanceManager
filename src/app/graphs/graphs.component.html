@@ -1,38 +1,47 @@
 <div class="container-fluid ms-2 mt-1">
     <div class="row">
-        <div class="col-lg-2">
-            <label> Yearly expenses</label>
+        <div class="col-lg-1">
+            <label> From date: </label>
         </div>
         <div class="col-lg-2">
-            <select name="select year" id="">
-                Select Year
-            </select>
+            <input
+                type="date"
+                class="form-control"
+                id="inputDateSinceSearch"
+                placeholder=""
+                name="dp"
+                formControlName="date"
+            />
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
-            <div>
-                <canvas id="expenesByMonth"></canvas>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div>
-                <canvas id="expensesByTag"></canvas>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div>
-                <canvas id="topExpenses"></canvas>
-            </div>
+        <div class="col-lg-1">To Date:</div>
+        <div class="col-lg-2">
+            <input
+                type="date"
+                class="form-control"
+                id="inputDateSinceSearch"
+                placeholder=""
+                name="dp"
+                formControlName="date"
+            />
         </div>
     </div>
-    <br />
-    <div class="row">
-        <div class="col-lg-2">Montly expenses</div>
-        <div class="col-lg-2">
-            <select name="select month" id="">
-                Select Month
-            </select>
+    <div *ngFor="let year of selectedYears | async">
+        <div class="row">
+            <strong>YEAR: {{ year }}</strong>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <app-donut-graph
+                    [labels]="$any(selectedYearTagsLabels | async)[year]"
+                    [data]="$any(selectedYearTagsData | async)[year]"
+                    [bgColor]="$any(selectedYearTagsBgColors | async)[year]"
+                ></app-donut-graph>
+            </div>
+            <div class="col-lg-8">
+                <app-bar-chart [data]="$any(selectedYearlyMonthlyExpenses | async)[year]"></app-bar-chart>
+            </div>
         </div>
     </div>
 </div>

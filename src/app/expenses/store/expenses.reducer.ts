@@ -2,8 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 import { DEFAULT_EXPENSE, Expense } from 'src/app/model/expense.model';
 import * as ExpensesActions from './expenses.actions';
 
-const LOCAL_STORAGE_KEY = 'Expenses';
-const initialState: State = { expenses: [], expenseCounter: -1, editingExpense: DEFAULT_EXPENSE, editing: false };
+export const STORAGE_KEY = 'Expenses';
+const initialState: State = calculateInitialState();
 
 export interface State {
     expenses: Expense[];
@@ -14,7 +14,7 @@ export interface State {
 
 export const expensesReducer = createReducer(
     initialState,
-    on(ExpensesActions.initializeState, (state) => {
+    on(ExpensesActions.resetState, (state) => {
         return { ...state, ...calculateInitialState() };
     }),
     on(ExpensesActions.deleteExpense, (state, { deleteId }) => {
@@ -85,7 +85,7 @@ export const expensesReducer = createReducer(
         };
     }),
     on(ExpensesActions.expensesChanged, (state) => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         return { ...state };
     }),
 );
@@ -101,7 +101,7 @@ function calculateExpenseCounter(expenses: Expense[]) {
 
 function getStateFromLocalStorage() {
     const localStorage: Storage = window.localStorage;
-    const expensesSTR = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const expensesSTR = localStorage.getItem(STORAGE_KEY);
     if (expensesSTR != null && expensesSTR != '') {
         console.log('Expenses database found');
         return JSON.parse(expensesSTR);
@@ -112,8 +112,12 @@ function getStateFromLocalStorage() {
 }
 
 function calculateInitialState() {
-    let state: State = initialState;
+    let state: State = { expenses: [], expenseCounter: -1, editingExpense: DEFAULT_EXPENSE, editing: false };
     state = { ...state, ...getStateFromLocalStorage() };
     state.expenseCounter = calculateExpenseCounter(state.expenses);
+    state.expenses = state.expenses.map((expense) => {
+        expense.time = new Date(expense.time);
+        return expense;
+    });
     return state;
 }

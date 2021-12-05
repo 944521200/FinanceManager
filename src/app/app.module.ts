@@ -12,14 +12,16 @@ import { tagsReducer } from './tags/store/tags.reducer';
 import { TagsEffects } from './tags/store/tags.effects';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { analyticsReducer } from './analytics/analytics.reducer';
+import { AnalyticsEffects } from './analytics/analytics.effects';
 
 @NgModule({
     declarations: [AppComponent, HomeComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        StoreModule.forRoot({ expenses: expensesReducer, tags: tagsReducer }),
-        EffectsModule.forRoot([ExpensesEffects, TagsEffects]),
+        StoreModule.forRoot({ expenses: expensesReducer, tags: tagsReducer, analytics: analyticsReducer }),
+        EffectsModule.forRoot([ExpensesEffects, TagsEffects, AnalyticsEffects]),
         StoreDevtoolsModule.instrument({
             maxAge: 25,
             logOnly: true,
