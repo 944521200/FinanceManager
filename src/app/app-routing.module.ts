@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ExpensesComponent } from './expenses/expenses.component';
-import { GraphComponent } from './graph/graph.component';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ReportComponent } from './report/report.component';
-import { TagsComponent } from './tags/tags.component';
 
 const routes: Routes = [
-    { path: 'expenses', component: ExpensesComponent },
-    { path: 'report', component: ReportComponent },
-    { path: 'graph', component: GraphComponent },
-    { path: 'tags', component: TagsComponent },
+    { path: 'expenses', loadChildren: () => import('./expenses/expenses.module').then((m) => m.ExpensesModule) },
+    { path: 'tags', loadChildren: () => import('./tags/tags.module').then((m) => m.TagsModule) },
+    { path: 'graphs', loadChildren: () => import('./graphs/graphs.module').then((m) => m.GraphsModule) },
+    { path: 'reports', loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule) },
     { path: '', component: HomeComponent },
     { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [
+        RouterModule.forRoot(routes, {
+            preloadingStrategy: PreloadAllModules,
+        }),
+    ],
     exports: [RouterModule],
 })
 export class AppRoutingModule {}

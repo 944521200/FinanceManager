@@ -4,7 +4,7 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 @Component({
-    selector: 'app-report',
+    selector: 'app-reports',
     templateUrl: './report.component.html',
     styleUrls: ['./report.component.css'],
 })

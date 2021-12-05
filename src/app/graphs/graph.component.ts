@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chart, ChartItem } from 'chart.js';
 
 @Component({
-    selector: 'app-graph',
+    selector: 'app-graphs',
     templateUrl: './graph.component.html',
     styleUrls: ['./graph.component.css'],
 })
