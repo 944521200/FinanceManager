@@ -16,17 +16,17 @@ export class FilterExpensesPipe implements PipeTransform {
     ): Expense[] {
         if (!value) return [];
 
-        var result: Expense[] = value;
+        let result: Expense[] = value;
 
-        if (nameFilter)
+        if (nameFilter !== '')
             result = result.filter((item: Expense) => {
-                if (item.name!.toLowerCase().includes(nameFilter.toLowerCase())) return true;
+                if (item.name.toLowerCase().includes(nameFilter.toLowerCase())) return true;
                 else return false;
             });
 
-        if (descFilter)
+        if (descFilter !== '')
             result = result.filter((item: Expense) => {
-                if (item.description!.toLowerCase().includes(descFilter.toLowerCase())) return true;
+                if (item.description.toLowerCase().includes(descFilter.toLowerCase())) return true;
                 else return false;
             });
 
@@ -44,13 +44,13 @@ export class FilterExpensesPipe implements PipeTransform {
 
         if (dateSinceFilter)
             result = result.filter((item: Expense) => {
-                if (item.time!.valueOf() >= dateSinceFilter.valueOf()) return true;
+                if (item.time.valueOf() >= dateSinceFilter.valueOf()) return true;
                 else return false;
             });
 
         if (dateUntilFilter)
             result = result.filter((item: Expense) => {
-                if (item.time!.valueOf() <= dateUntilFilter.valueOf()) return true;
+                if (item.time.valueOf() <= dateUntilFilter.valueOf()) return true;
                 else return false;
             });
 

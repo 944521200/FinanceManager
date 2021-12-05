@@ -39,13 +39,7 @@
             <span
                 *ngFor="let tag of expense.tags"
                 class="badge badge-pill me-1"
-                [style]="
-                    'background-color:' +
-                    tag.bgColor +
-                    '; color:' +
-                    tag.txtColor +
-                    ';'
-                "
+                [style]="'background-color:' + tag.bgColor + '; color:' + tag.txtColor + ';'"
                 >{{ tag.name }}</span
             >
         </div>

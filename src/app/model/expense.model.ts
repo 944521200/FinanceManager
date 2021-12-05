@@ -26,7 +26,6 @@ export class Expense {
         this.time = time;
         this.tags = tags;
     }
-
 }
 
 export const DEFAULT_EXPENSE: Expense = {
@@ -40,5 +39,5 @@ export const DEFAULT_EXPENSE: Expense = {
 };
 
 export function equalExpense(expenseA: Expense, expenseB: Expense): boolean {
-  return expenseA.ID === expenseB.ID;
+    return expenseA.ID === expenseB.ID;
 }

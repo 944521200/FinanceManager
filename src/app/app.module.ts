@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { StoreModule } from '@ngrx/store';
 import { expensesReducer } from './expenses/store/expenses.reducer';
 import { EffectsModule } from '@ngrx/effects';

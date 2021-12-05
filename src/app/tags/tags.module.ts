@@ -9,14 +9,8 @@ import { TagsRoutingModule } from './tags-routing.module';
 import { TagsComponent } from './tags.component';
 
 @NgModule({
-    declarations: [
-      AddTagComponent,
-      TagComponent,
-      TagsComponent,
-      SearchTagsComponent,
-      FilterTagsPipe,
-    ],
-    imports: [CommonModule,TagsRoutingModule, FormsModule, ReactiveFormsModule],
+    declarations: [AddTagComponent, TagComponent, TagsComponent, SearchTagsComponent, FilterTagsPipe],
+    imports: [CommonModule, TagsRoutingModule, FormsModule, ReactiveFormsModule],
     exports: [TagsComponent],
 })
 export class TagsModule {}

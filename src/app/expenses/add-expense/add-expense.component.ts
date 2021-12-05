@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as ExpensesSelector from '../store/expenses.selectors';
 import * as ExpensesActions from '../store/expenses.actions';
@@ -15,7 +15,7 @@ import { DatePipe } from '@angular/common';
     templateUrl: './add-expense.component.html',
     styleUrls: ['./add-expense.component.css'],
 })
-export class AddExpenseComponent implements OnInit {
+export class AddExpenseComponent {
     expenseForm: FormGroup;
     isEditing: Observable<boolean>;
 
@@ -38,7 +38,6 @@ export class AddExpenseComponent implements OnInit {
 
         this.editingExpense.subscribe((editingExpense) => {
             this.clearForm();
-            console.log('EDITING EXPENSE', editingExpense);
             this.expenseForm.reset({
                 name: editingExpense.name,
                 description: editingExpense.description,
@@ -62,8 +61,6 @@ export class AddExpenseComponent implements OnInit {
         this.store.dispatch(ExpensesActions.editExpense({ editId: -1 }));
     }
 
-    ngOnInit(): void {}
-
     addTag(tag: Tag) {
         this.updateExpense();
         this.store.dispatch(ExpensesActions.addTagsEditingExpense({ tags: [tag] }));
@@ -75,7 +72,7 @@ export class AddExpenseComponent implements OnInit {
     }
 
     positiveNumber(control: AbstractControl): ValidationErrors | null {
-        if (isNaN(+control.value) || +control.value < 1) {
+        if (isNaN(+control.value) ?? +control.value < 1) {
             //control.setValue(1);
             // this.expenseForm.patchValue({control.:1});
             // return null;
@@ -103,7 +100,7 @@ export class AddExpenseComponent implements OnInit {
     }
 
     clearForm() {
-        let today = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
+        const today = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
         this.expenseForm.reset({
             date: today,
             amount: 1,

@@ -26,8 +26,7 @@ export const tagsReducer = createReducer(
     }),
 
     on(TagsActions.editTag, (state, { editId }) => {
-        const editingTag: Tag = state.tags.find((tag) => tag.ID === editId) || DEFAULT_TAG;
-        console.log('ediring tag', editingTag);
+        const editingTag: Tag = state.tags.find((tag) => tag.ID === editId) ?? DEFAULT_TAG;
         return {
             ...state,
             editing: editId !== -1,
@@ -39,18 +38,17 @@ export const tagsReducer = createReducer(
         return {
             ...state,
             editingTag: {
-                ...state.editingTag!,
-                name: name || currentTag.name,
-                description: description || currentTag.description,
-                txtColor: txtColor || currentTag.txtColor,
-                bgColor: bgColor || currentTag.bgColor,
+                ...state.editingTag,
+                name: name ?? currentTag.name,
+                description: description ?? currentTag.description,
+                txtColor: txtColor ?? currentTag.txtColor,
+                bgColor: bgColor ?? currentTag.bgColor,
             },
         };
     }),
 
     on(TagsActions.confirmEditingTag, (state) => {
-        console.log('Confirming tag: ', state.editingTag, 'ediring,', state.editing);
-        let confirmingTag = { ...state.editingTag };
+        const confirmingTag = { ...state.editingTag };
         const nextCounter = state.editing ? state.tagCounter : state.tagCounter + 1;
         confirmingTag.ID = !state.editing ? state.tagCounter + 1 : confirmingTag.ID;
 
@@ -85,7 +83,7 @@ function calculateTagCounter(tags: Tag[]) {
 }
 
 function getStateFromLocalStorage() {
-    let localStorage: Storage = window.localStorage;
+    const localStorage: Storage = window.localStorage;
     const tagsSTR = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (tagsSTR != null && tagsSTR != '') {
         console.log('Tags database found');
@@ -100,6 +98,5 @@ function calculateInitialState() {
     let state: State = initialState;
     state = { ...state, ...getStateFromLocalStorage() };
     state.tagCounter = calculateTagCounter(state.tags);
-    console.log('initial state', state);
     return state;
 }

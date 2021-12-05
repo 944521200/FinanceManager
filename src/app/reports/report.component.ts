@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -9,8 +9,6 @@ Chart.register(...registerables);
     styleUrls: ['./report.component.css'],
 })
 export class ReportComponent {
-    constructor() {}
-
     columnDefs: ColDef[] = [
         { field: 'make', autoHeight: true, sortable: true, flex: 3 },
         { field: 'model', autoHeight: true, sortable: true, flex: 2 },

@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Expense } from 'src/app/model/expense.model';
 import * as ExpensesSelector from '../store/expenses.selectors';
 
@@ -18,10 +18,10 @@ export class SearchExpensesComponent implements OnInit {
         this.expenses = this.store.select(ExpensesSelector.selectAllExpenses);
     }
 
-    nameSearch: string = '';
-    desSearch: string = '';
-    amountSearch: string = '';
-    priceSearch: string = '';
+    nameSearch = '';
+    desSearch = '';
+    amountSearch = '';
+    priceSearch = '';
     dateSinceSearch: Date | undefined;
     dateUntilSearch: Date | undefined;
 

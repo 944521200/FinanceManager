@@ -16,7 +16,7 @@ import { SearchExpensesComponent } from './search-expenses/search-expenses.compo
         SearchExpensesComponent,
         FilterExpensesPipe,
     ],
-    imports: [CommonModule,ExpensesRoutingModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, ExpensesRoutingModule, FormsModule, ReactiveFormsModule],
     providers: [DatePipe],
     exports: [ExpensesComponent],
 })

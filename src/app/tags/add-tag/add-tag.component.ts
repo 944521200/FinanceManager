@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as TagsSelectors from '../store/tags.selectors';
 import * as TagsActions from '../store/tags.actions';
@@ -11,7 +11,7 @@ import { Tag } from 'src/app/model/tag.model';
     templateUrl: './add-tag.component.html',
     styleUrls: ['./add-tag.component.css'],
 })
-export class AddTagComponent implements OnInit {
+export class AddTagComponent {
     constructor(private store: Store) {
         this.isEditing = this.store.select(TagsSelectors.selectEditing);
         this.editingTag = this.store.select(TagsSelectors.selectEditingTag);
@@ -43,8 +43,6 @@ export class AddTagComponent implements OnInit {
     isEditing: Observable<boolean>;
     editingTag: Observable<Tag>;
 
-    ngOnInit(): void {}
-
     addTag() {
         const form = this.tagForm.value;
 
@@ -66,9 +64,8 @@ export class AddTagComponent implements OnInit {
         this.tagForm.reset({ txtColor: '#e6e6e6', bgColor: '#545454' });
     }
 
-    discardTag(){
-      this.clearForm();
-      this.store.dispatch(TagsActions.discardEditingTag());
-
+    discardTag() {
+        this.clearForm();
+        this.store.dispatch(TagsActions.discardEditingTag());
     }
 }

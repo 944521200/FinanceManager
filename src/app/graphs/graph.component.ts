@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Chart, ChartItem } from 'chart.js';
 
 @Component({
@@ -6,16 +6,14 @@ import { Chart, ChartItem } from 'chart.js';
     templateUrl: './graph.component.html',
     styleUrls: ['./graph.component.css'],
 })
-export class GraphComponent implements OnInit {
-    constructor() {}
-
+export class GraphComponent {
     /**
      *
      *  un gráfico que muestre el menor y mayor gasto mensual de cada tag o de cada expense
      *
      */
     ngOnInit(): void {
-        var expensesChart = new Chart(document.getElementById('expenesByMonth') as ChartItem, {
+        const expensesChart = new Chart(document.getElementById('expenesByMonth') as ChartItem, {
             type: 'line',
             data: {
                 labels: [
@@ -43,8 +41,8 @@ export class GraphComponent implements OnInit {
             },
             options: {},
         });
-
-        var expensesByTag = new Chart(document.getElementById('expensesByTag') as ChartItem, {
+        console.log('expensesChart', expensesChart);
+        const expensesByTag = new Chart(document.getElementById('expensesByTag') as ChartItem, {
             type: 'doughnut',
             data: {
                 labels: ['anime', 'food', 'games'],
@@ -58,8 +56,8 @@ export class GraphComponent implements OnInit {
                 ],
             },
         });
-
-        var topExpenses = new Chart(document.getElementById('topExpenses') as ChartItem, {
+        console.log('expensesByTag', expensesByTag);
+        const topExpenses = new Chart(document.getElementById('topExpenses') as ChartItem, {
             type: 'bar',
             data: {
                 labels: [
@@ -105,5 +103,6 @@ export class GraphComponent implements OnInit {
                 },
             },
         });
+        console.log('topExpenses', topExpenses);
     }
 }

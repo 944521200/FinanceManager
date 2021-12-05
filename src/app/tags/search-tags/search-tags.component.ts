@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Tag } from 'src/app/model/tag.model';
-import * as TagsSelectors from '../store/tags.selectors'
+import * as TagsSelectors from '../store/tags.selectors';
 
 @Component({
     selector: 'app-search-tags',
@@ -10,10 +10,10 @@ import * as TagsSelectors from '../store/tags.selectors'
     styleUrls: ['./search-tags.component.css'],
 })
 export class SearchTagsComponent implements OnInit {
-    constructor(private store:Store) {}
+    constructor(private store: Store) {}
 
-    nameSearch: string = '';
-    desSearch: string = '';
+    nameSearch = '';
+    desSearch = '';
     dateSinceSearch: Date | undefined;
     dateUntilSearch: Date | undefined;
 

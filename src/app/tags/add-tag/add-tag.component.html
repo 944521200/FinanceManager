@@ -75,10 +75,10 @@
 
     <button
         type="submit"
-        [class]="'btn btn-' + ((isEditing |async)? 'warning' : 'custom-view') + ' me-3 mt-3'"
+        [class]="'btn btn-' + ((isEditing | async) ? 'warning' : 'custom-view') + ' me-3 mt-3'"
         [disabled]="!tagForm.valid"
     >
-        {{ (isEditing |async) ? 'Update' : 'Add' }}
+        {{ (isEditing | async) ? 'Update' : 'Add' }}
     </button>
     <button type="button" class="btn btn-custom-delete mt-3" (click)="discardTag()">Clear</button>
 </form>

@@ -5,23 +5,21 @@ import { Tag } from '../model/tag.model';
     name: 'filterTags',
 })
 export class FilterTagsPipe implements PipeTransform {
-    transform(
-        value: Tag[] | null,
-        nameFilter: string,
-        descFilter: string,
-    ): Tag[] {
+    transform(value: Tag[] | null, nameFilter: string, descFilter: string): Tag[] {
         if (!value) return [];
 
-        var result: Tag[] = value;
+        let result: Tag[] = value;
 
-        result = result.filter((item: Tag) => {
-            if (!item.name || item.name.toLowerCase().includes(nameFilter.toLowerCase())) return true;
-            else return false;
-        });
+        if (nameFilter != '') {
+            result = result.filter((item: Tag) => {
+                if (item.name.toLowerCase().includes(nameFilter.toLowerCase())) return true;
+                else return false;
+            });
+        }
 
         if (descFilter != '') {
             result = result.filter((item: Tag) => {
-                if (item.description && item.description.toLowerCase().includes(descFilter.toLowerCase())) return true;
+                if (item.description.toLowerCase().includes(descFilter.toLowerCase())) return true;
                 else return false;
             });
         }

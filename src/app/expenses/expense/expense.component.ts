@@ -2,8 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Expense } from 'src/app/model/expense.model';
 import * as ExpensesActions from '../store/expenses.actions';
-import * as TagsSelectors from '../../tags/store/tags.selectors';
-import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-expense',
@@ -15,15 +13,15 @@ export class ExpenseComponent implements OnInit {
 
     @Input()
     expense!: Expense;
-    dateString: string = '';
+    dateString = '';
 
     ngOnInit(): void {
-        const date: Date = new Date(this.expense.time!);
+        const date: Date = new Date(this.expense.time);
         this.dateString = date.toLocaleDateString();
     }
 
     deleteExpense() {
-        this.store.dispatch(ExpensesActions.deleteExpense({ deleteId: this.expense.ID! }));
+        this.store.dispatch(ExpensesActions.deleteExpense({ deleteId: this.expense.ID }));
     }
 
     editExpense() {

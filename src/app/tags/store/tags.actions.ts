@@ -5,14 +5,13 @@ export const deleteTag = createAction('[Tags] delete tag', props<{ deleteId: num
 export const editTag = createAction('[Tags] edit tag', props<{ editId: number }>());
 
 export const updateEditingTag = createAction(
-  '[Tags] update edit tag',
-  props<{
-      name?: string;
-      description?: string;
-      bgColor?: string;
-      txtColor?: string;
-
-  }>(),
+    '[Tags] update edit tag',
+    props<{
+        name?: string;
+        description?: string;
+        bgColor?: string;
+        txtColor?: string;
+    }>(),
 );
 
 export const confirmEditingTag = createAction('[Tags] confirm edit Tag');

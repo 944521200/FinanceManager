@@ -25,7 +25,7 @@ export const expensesReducer = createReducer(
     }),
 
     on(ExpensesActions.editExpense, (state, { editId }) => {
-        const editingExpense: Expense = state.expenses.find((expense) => expense.ID === editId) || DEFAULT_EXPENSE;
+        const editingExpense: Expense = state.expenses.find((expense) => expense.ID === editId) ?? DEFAULT_EXPENSE;
         return {
             ...state,
             editing: editId !== -1,
@@ -37,19 +37,18 @@ export const expensesReducer = createReducer(
         return {
             ...state,
             editingExpense: {
-                ...state.editingExpense!,
-                name: name || currentExpense.name,
-                description: description || currentExpense.description,
-                amount: amount || currentExpense.amount,
-                pricePerUnit: pricePerUnit || currentExpense.pricePerUnit,
-                tags: tags || currentExpense.tags,
-                time: time || currentExpense.time,
+                ...state.editingExpense,
+                name: name ?? currentExpense.name,
+                description: description ?? currentExpense.description,
+                amount: amount ?? currentExpense.amount,
+                pricePerUnit: pricePerUnit ?? currentExpense.pricePerUnit,
+                tags: tags ?? currentExpense.tags,
+                time: time ?? currentExpense.time,
             },
         };
     }),
     on(ExpensesActions.addTagsEditingExpense, (state, { tags }) => {
-        const newTags =  [...state.editingExpense.tags, ...tags ];
-        console.log("new>Tags",newTags);
+        const newTags = [...state.editingExpense.tags, ...tags];
         return { ...state, editingExpense: { ...state.editingExpense, tags: newTags } };
     }),
     on(ExpensesActions.removeTagsEditingExpense, (state, { tags }) => {
@@ -62,8 +61,7 @@ export const expensesReducer = createReducer(
         };
     }),
     on(ExpensesActions.confirmEditingExpense, (state) => {
-        console.log('Confirming: ', state.editingExpense, 'ediring,', state.editing);
-        let confirmingExpense = { ...state.editingExpense };
+        const confirmingExpense = { ...state.editingExpense };
 
         const nextCounter = state.editing ? state.expenseCounter : state.expenseCounter + 1;
         confirmingExpense.ID = !state.editing ? state.expenseCounter + 1 : confirmingExpense.ID;
@@ -95,14 +93,14 @@ export const expensesReducer = createReducer(
 function calculateExpenseCounter(expenses: Expense[]) {
     let expenseCounter = -1;
     expenses.forEach((expense) => {
-        if (expenseCounter < expense.ID!) expenseCounter = expense.ID!;
+        if (expenseCounter < expense.ID) expenseCounter = expense.ID;
     });
 
     return expenseCounter;
 }
 
 function getStateFromLocalStorage() {
-    let localStorage: Storage = window.localStorage;
+    const localStorage: Storage = window.localStorage;
     const expensesSTR = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (expensesSTR != null && expensesSTR != '') {
         console.log('Expenses database found');
@@ -117,10 +115,5 @@ function calculateInitialState() {
     let state: State = initialState;
     state = { ...state, ...getStateFromLocalStorage() };
     state.expenseCounter = calculateExpenseCounter(state.expenses);
-    // state.expenses = state.expenses.map((expense) => {
-    //     expense.time = new Date(expense.time);
-    //     return expense;
-    // });
-    console.log('initial state', state);
     return state;
 }
