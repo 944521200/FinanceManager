@@ -21,9 +21,11 @@
         </div>
     </form>
 
-    <div *ngFor="let year of selectedYears | async">
+    <div *ngFor="let year of $any(selectedYears | async)">
         <div class="row">
-            <strong>YEAR: {{ year }}</strong>
+            <h1>
+                <strong> {{ year }}</strong>
+            </h1>
         </div>
         <div class="row">
             <div class="col-lg-4">
@@ -34,7 +36,32 @@
                 ></app-donut-graph>
             </div>
             <div class="col-lg-8">
-                <app-bar-chart [data]="$any(selectedYearlyMonthlyExpenses | async)[year]"></app-bar-chart>
+                <app-bar-chart
+                    [data]="$any(selectedYearlyMonthlyExpenses | async)[year]"
+                    [labels]="YEARLY_LABELS"
+                ></app-bar-chart>
+            </div>
+            <div *ngFor="let month of $any(selectedYearsWithMonths | async)[year]">
+                <div class="row">
+                    <div class="col-2">
+                        <h3>
+                            <strong>{{ month }}/{{ year }}</strong>
+                        </h3>
+                    </div>
+                    <div class="col-lg-3">
+                        <app-donut-graph
+                            [labels]="$any(selectedYearMonthTagsLabels | async)[year][month]"
+                            [data]="$any(selectedYearMonthTagsData | async)[year][month]"
+                            [bgColor]="$any(selectedYearMonthTagsBgColors | async)[year][month]"
+                        ></app-donut-graph>
+                    </div>
+                    <div class="col-lg-7">
+                        <app-bar-chart
+                            [data]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month]"
+                            [labels]="$any(selectedYearlyMonthlyDailyLabels | async)[year][month]"
+                        ></app-bar-chart>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

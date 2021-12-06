@@ -15,32 +15,6 @@ export const selectSelectedExpenses = createSelector(selectAnalyticsState, selec
     });
 });
 
-// export const selectMonthlyGroupedExpenses = createSelector(
-//     selectAnalyticsState,
-//     selectSelectedExpenses,
-//     (state, selectedExpenses) => {
-//         console.log('From: ', state.fromDate.toLocaleDateString(), 'To: ', state.toDate.toLocaleDateString());
-//         const result = monthsInsideInterval(state.fromDate, state.toDate);
-//         selectedExpenses.forEach((expense) => {
-//             result[expense.time.getMonth() + 1].push(expense);
-//         });
-//         return result;
-//     },
-// );
-
-// export const selectYearlyGroupedExpenses = createSelector(
-//     selectAnalyticsState,
-//     selectSelectedExpenses,
-//     (state, selectedExpenses) => {
-//         console.log('From: ', state.fromDate.toLocaleDateString(), 'To: ', state.toDate.toLocaleDateString());
-//         const result = yearsInsideIntervalTags(state.fromDate, state.toDate);
-//         selectedExpenses.forEach((expense) => {
-//             result[expense.time.getFullYear()].push(expense);
-//         });
-//         return result;
-//     },
-// );
-
 //Donut anual
 export const selectYearlyGroupedTags = createSelector(
     selectAnalyticsState,
@@ -89,3 +63,59 @@ export const selectYearlyMonthlyExpenses = createSelector(
         return result;
     },
 );
+
+//Donut mensual
+export const selectYearlyMonthlyGroupedTags = createSelector(
+    selectAnalyticsState,
+    selectSelectedExpenses,
+    (state, selectedExpenses) => {
+        const result: { [year: number]: { [month: string]: { [tagID: number]: { tag: Tag; count: number } } } } = {};
+        selectedExpenses.forEach((expense) => {
+            expense.tags.forEach((tag) => {
+                // eslint-disable-next-line no-extra-boolean-cast
+                if (!Boolean(result[expense.time.getFullYear()])) result[expense.time.getFullYear()] = {};
+                // eslint-disable-next-line no-extra-boolean-cast
+                if (!Boolean(result[expense.time.getFullYear()][expense.time.getMonth() + 1]))
+                    result[expense.time.getFullYear()][expense.time.getMonth() + 1] = {};
+                // eslint-disable-next-line no-extra-boolean-cast
+                if (!Boolean(result[expense.time.getFullYear()][expense.time.getMonth() + 1][tag.ID]))
+                    result[expense.time.getFullYear()][expense.time.getMonth() + 1][tag.ID] = { tag, count: 0 };
+                result[expense.time.getFullYear()][expense.time.getMonth() + 1][tag.ID].count +=
+                    expense.amount * expense.pricePerUnit;
+            });
+        });
+        return result;
+    },
+);
+
+//bar chart montly expenses
+export const selectYearlyMonthlyDailyExpenses = createSelector(
+    selectAnalyticsState,
+    selectSelectedExpenses,
+    (state, selectedExpenses) => {
+        const result: { [year: number]: { [month: number]: { [day: number]: number } } } = {}; // yearsInsideIntervalMonthlyExpense(state.fromDate, state.toDate);
+        selectedExpenses.forEach((expense) => {
+            // eslint-disable-next-line no-extra-boolean-cast
+            if (!Boolean(result[expense.time.getFullYear()])) result[expense.time.getFullYear()] = {};
+            // eslint-disable-next-line no-extra-boolean-cast
+            if (!Boolean(result[expense.time.getFullYear()][expense.time.getMonth() + 1]))
+                result[expense.time.getFullYear()][expense.time.getMonth() + 1] = getDaysOfMonth(
+                    expense.time.getFullYear(),
+                    expense.time.getMonth() + 1,
+                );
+            result[expense.time.getFullYear()][expense.time.getMonth() + 1][expense.time.getDate()] +=
+                expense.amount * expense.pricePerUnit;
+        });
+        return result;
+    },
+);
+
+function getDaysOfMonth(year: number, month: number): { [day: string]: number } {
+    const result: { [day: number]: number } = {};
+    const date = new Date(year + '/' + month + '/01');
+    while (date.getMonth() + 1 === month) {
+        result[date.getDate()] = 0;
+        date.setDate(date.getDate() + 1);
+    }
+    return result;
+}

@@ -7,6 +7,15 @@ import { Chart, ChartItem, registerables } from 'chart.js';
     styleUrls: ['./bar-chart.component.css'],
 })
 export class BarChartComponent {
+    @Input('labels') set labels(value: string[]) {
+        this._labels = value;
+        if (this.chart !== undefined) {
+            this.chart.data.labels = value;
+            this.chart.update();
+        }
+    }
+    _labels!: string[];
+
     @Input('data') set data(value: number[]) {
         this._data = value;
         if (this.chart !== undefined) {
@@ -44,20 +53,7 @@ export class BarChartComponent {
                         ],
                     },
                 ],
-                labels: [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
-                    'July',
-                    'August',
-                    'September',
-                    'October',
-                    'November',
-                    'December',
-                ],
+                labels: this._labels,
             },
             options: {
                 scales: {
