@@ -7,20 +7,27 @@ import { Chart, ChartItem, registerables } from 'chart.js';
     styleUrls: ['./bar-chart.component.css'],
 })
 export class BarChartComponent {
-    @Input()
-    data!: number[];
+    @Input('data') set data(value: number[]) {
+        this._data = value;
+        if (this.chart !== undefined) {
+            this.chart.data.datasets[0].data = value;
+            this.chart.update();
+        }
+    }
+    _data!: number[];
 
     @ViewChild('pr_chart') chartElementRef!: ElementRef;
+    chart!: Chart;
 
     ngAfterViewInit(): void {
         Chart.register(...registerables);
-        new Chart(this.chartElementRef.nativeElement as ChartItem, {
+        this.chart = new Chart(this.chartElementRef.nativeElement as ChartItem, {
             type: 'bar',
             data: {
                 datasets: [
                     {
                         label: 'Monthly Expenses',
-                        data: this.data,
+                        data: this._data,
                         backgroundColor: [
                             '#DD6E6E',
                             '#6EA4DD',

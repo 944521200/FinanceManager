@@ -1,16 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import * as AnalyticsSelectors from '../analytics/analytics.selectors';
+import * as AnalyticsActions from '../analytics/analytics.actions';
 
 @Component({
     selector: 'app-graphs',
     templateUrl: './graphs.component.html',
     styleUrls: ['./graphs.component.css'],
 })
-export class GraphsComponent implements OnInit, OnDestroy {
-    constructor(private store: Store) {
+export class GraphsComponent {
+    constructor(private store: Store, private datePipe: DatePipe) {
         this.selectedYearTagsBgColors = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
             map((selected) => {
                 const result: { [year: string]: string[] } = {};
@@ -31,7 +34,6 @@ export class GraphsComponent implements OnInit, OnDestroy {
         );
         this.selectedYearTagsData = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
             map((selected) => {
-                console.log('selected2', selected);
                 const result: { [year: string]: number[] } = {};
                 Object.keys(selected).forEach((year) => {
                     result[year] = Object.values(selected[+year]).map((selectedTag) => selectedTag.count);
@@ -39,10 +41,16 @@ export class GraphsComponent implements OnInit, OnDestroy {
                 return result;
             }),
         );
-        this.selectedYears = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
+        this.selectedYears = this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).pipe(
             map((selected) =>
                 Object.keys(selected)
-                    .filter((key) => Object.keys(selected[+key]).length > 0)
+                    .filter((key) => {
+                        let sum = 0;
+                        Object.keys(selected[+key]).forEach((month) => {
+                            sum += selected[+key][+month];
+                        });
+                        return sum != 0;
+                    })
                     .map((key) => +key),
             ),
         );
@@ -53,12 +61,36 @@ export class GraphsComponent implements OnInit, OnDestroy {
                 Object.keys(selected).forEach((year) => {
                     result[year] = Object.values(selected[+year]);
                 });
+                // console.log('selected33', result);
                 return result;
             }),
         );
-    }
 
-    subscriptions: Subscription[] = [];
+        this.analyticsForm = new FormGroup({
+            dateFrom: new FormControl(
+                this.datePipe.transform(new Date(new Date().getFullYear() + '/01/01'), 'yyyy-MM-dd'),
+                [Validators.required],
+            ),
+            dateTo: new FormControl(
+                this.datePipe.transform(new Date(new Date().getFullYear() + '/12/31'), 'yyyy-MM-dd'),
+                [Validators.required],
+            ),
+        });
+        this.analyticsForm.valueChanges.subscribe((test) => {
+            this.store.dispatch(
+                AnalyticsActions.setFromAndToDate({ fromDate: new Date(test.dateFrom), toDate: new Date(test.dateTo) }),
+            );
+        });
+        this.store
+            .select(AnalyticsSelectors.selectFromAndToDate)
+            .pipe(take(1))
+            .subscribe((FromToDate) => {
+                this.analyticsForm.reset({
+                    dateFrom: this.datePipe.transform(FromToDate.fromDate, 'yyyy-MM-dd'),
+                    dateTo: this.datePipe.transform(FromToDate.toDate, 'yyyy-MM-dd'),
+                });
+            });
+    }
 
     selectedYearTagsBgColors: Observable<{ [year: string]: string[] }>;
     selectedYearTagsData: Observable<{ [year: string]: number[] }>;
@@ -67,88 +99,12 @@ export class GraphsComponent implements OnInit, OnDestroy {
 
     selectedYearlyMonthlyExpenses: Observable<{ [year: string]: number[] }>;
 
-    ngOnInit(): void {
-        this.subscriptions.push(
-            this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).subscribe((selected) => {
-                console.log('selected', selected);
-                // this.charts.push(
-                //     new Chart(document.getElementById('expensesByTag') as ChartItem, {
-                //         type: 'doughnut',
-                //         data: {
-                //             labels: Object.values(selected[2021]).map((selectedTag) => selectedTag.tag.name),
-                //             datasets: [
-                //                 {
-                //                     label: 'My First Dataset',
-                //                     data: Object.values(selected[2021]).map((selectedTag) => selectedTag.count),
-                //                     backgroundColor: Object.values(selected[2021]).map(
-                //                         (selectedTag) => selectedTag.tag.bgColor,
-                //                     ),
-                //                     hoverOffset: 4,
-                //                 },
-                //             ],
-                //         },
-                //     }),
-                // );
-            }),
-        );
+    analyticsForm: FormGroup;
 
-        this.subscriptions.push(
-            this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).subscribe((selected) => {
-                console.log('selected', selected);
-                // this.charts.push(
-                //     new Chart(document.getElementById('expenesByMonth') as ChartItem, {
-                //         type: 'bar',
-                //         data: {
-                //             datasets: [
-                //                 {
-                //                     label: 'Monthly Expenses',
-                //                     data: Object.values(selected[2021]),
-                //                     backgroundColor: [
-                //                         '#DD6E6E',
-                //                         '#6EA4DD',
-                //                         '#5AD39F',
-                //                         '#E7E887',
-                //                         '#DD6E6E',
-                //                         '#6EA4DD',
-                //                         '#5AD39F',
-                //                         '#E7E887',
-                //                         '#DD6E6E',
-                //                         '#6EA4DD',
-                //                         '#5AD39F',
-                //                         '#E7E887',
-                //                     ],
-                //                 },
-                //             ],
-                //             labels: [
-                //                 'January',
-                //                 'February',
-                //                 'March',
-                //                 'April',
-                //                 'May',
-                //                 'June',
-                //                 'July',
-                //                 'August',
-                //                 'September',
-                //                 'October',
-                //                 'November',
-                //                 'December',
-                //             ],
-                //         },
-                //         options: {
-                //             scales: {
-                //                 y: {
-                //                     beginAtZero: true,
-                //                 },
-                //             },
-                //         },
-                //     }),
-                // );
-            }),
-        );
-    }
-
-    ngOnDestroy(): void {
-        // this.charts.forEach((chart) => chart.destroy());
-        this.subscriptions.forEach((sub) => sub.unsubscribe());
+    resetInterval() {
+        this.analyticsForm.reset({
+            dateFrom: this.datePipe.transform(new Date(new Date().getFullYear() + '/01/01'), 'yyyy-MM-dd'),
+            dateTo: this.datePipe.transform(new Date(new Date().getFullYear() + '/12/31'), 'yyyy-MM-dd'),
+        });
     }
 }
