@@ -69,7 +69,7 @@ export const tagsReducer = createReducer(
     }),
     on(TagsActions.tagsChanged, (state) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        return { ...state };
+        return state;
     }),
 );
 

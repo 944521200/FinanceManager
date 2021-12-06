@@ -14,18 +14,12 @@ export const analyticsReducer = createReducer(
     on(AnalyticsActions.resetState, (state) => {
         return { ...state, ...calculateInitialState() };
     }),
-    on(AnalyticsActions.setFromDate, (state, { fromDate }) => {
-        return { ...state, fromDate: fromDate };
-    }),
-    on(AnalyticsActions.setToDate, (state, { toDate }) => {
-        return { ...state, toDate: toDate };
-    }),
     on(AnalyticsActions.setFromAndToDate, (state, { fromDate, toDate }) => {
         return { ...state, toDate: toDate, fromDate: fromDate };
     }),
     on(AnalyticsActions.analyticsChanged, (state) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        return { ...state };
+        return state;
     }),
 );
 

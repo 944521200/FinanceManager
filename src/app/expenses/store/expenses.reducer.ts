@@ -86,7 +86,7 @@ export const expensesReducer = createReducer(
     }),
     on(ExpensesActions.expensesChanged, (state) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        return { ...state };
+        return state;
     }),
 );
 

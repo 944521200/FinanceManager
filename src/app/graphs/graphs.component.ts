@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import * as AnalyticsSelectors from '../analytics/analytics.selectors';
 import * as AnalyticsActions from '../analytics/analytics.actions';
 
@@ -33,6 +33,7 @@ export class GraphsComponent {
             }),
         );
         this.selectedYearTagsData = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
+            tap((selected) => console.log('selected33', selected)),
             map((selected) => {
                 const result: { [year: string]: number[] } = {};
                 Object.keys(selected).forEach((year) => {
@@ -56,6 +57,7 @@ export class GraphsComponent {
         );
 
         this.selectedYearlyMonthlyExpenses = this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).pipe(
+            tap((selected) => console.log('selected44', selected)),
             map((selected) => {
                 const result: { [year: string]: number[] } = {};
                 Object.keys(selected).forEach((year) => {
@@ -92,10 +94,11 @@ export class GraphsComponent {
             });
     }
 
+    selectedYears: Observable<number[]>;
+
     selectedYearTagsBgColors: Observable<{ [year: string]: string[] }>;
     selectedYearTagsData: Observable<{ [year: string]: number[] }>;
     selectedYearTagsLabels: Observable<{ [year: string]: string[] }>;
-    selectedYears: Observable<number[]>;
 
     selectedYearlyMonthlyExpenses: Observable<{ [year: string]: number[] }>;
 
