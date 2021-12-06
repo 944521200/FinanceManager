@@ -35,7 +35,7 @@ export class BarChartComponent {
             data: {
                 datasets: [
                     {
-                        label: 'Monthly Expenses',
+                        label: 'Expenses',
                         data: this._data,
                         backgroundColor: [
                             '#DD6E6E',
