@@ -30,158 +30,20 @@ export class GraphsComponent {
 
     constructor(private store: Store, private datePipe: DatePipe) {
         // GENERAL DATA
-        this.selectedYears = this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).pipe(
-            map((selected) =>
-                Object.keys(selected)
-                    .filter((key) => {
-                        let sum = 0;
-                        Object.keys(selected[+key]).forEach((month) => {
-                            sum += selected[+key][+month];
-                        });
-                        return sum != 0;
-                    })
-                    .map((key) => +key),
-            ),
-        );
-
-        this.selectedYearsWithMonths = this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).pipe(
-            map((selected) => {
-                const result: { [year: string]: number[] } = {};
-                Object.keys(selected)
-                    .filter((key) => {
-                        let sum = 0;
-                        Object.keys(selected[+key]).forEach((month) => {
-                            sum += selected[+key][+month];
-                        });
-                        return sum != 0;
-                    })
-                    .forEach((year) => {
-                        result[+year] = Object.keys(selected[+year])
-                            .filter((month) => selected[+year][+month] > 0)
-                            .map((month) => +month);
-                    });
-
-                return result;
-            }),
-        );
+        this.selectedYears = this.store.select(AnalyticsSelectors.selectSelectedYears);
+        this.selectedYearsWithMonths = this.store.select(AnalyticsSelectors.selectSelectedYearsWithMonths);
 
         // YEAR DONUT DATA
-        this.selectedYearTagsBgColors = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
-            map((selected) => {
-                const result: { [year: string]: string[] } = {};
-                Object.keys(selected).map((year) => {
-                    result[year] = Object.values(selected[+year]).map((selectedTag) => selectedTag.tag.bgColor);
-                });
-                return result;
-            }),
-        );
-
-        this.selectedYearTagsLabels = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
-            map((selected) => {
-                const result: { [year: string]: string[] } = {};
-                Object.keys(selected).map((year) => {
-                    result[year] = Object.values(selected[+year]).map((selectedTag) => selectedTag.tag.name);
-                });
-                return result;
-            }),
-        );
-
-        this.selectedYearTagsData = this.store.select(AnalyticsSelectors.selectYearlyGroupedTags).pipe(
-            map((selected) => {
-                const result: { [year: string]: number[] } = {};
-                Object.keys(selected).forEach((year) => {
-                    result[year] = Object.values(selected[+year]).map((selectedTag) => selectedTag.count);
-                });
-                return result;
-            }),
-        );
+        this.selectedYearTags = this.store.select(AnalyticsSelectors.selectYearlyTags);
 
         // YEAR TABLE DATA
-        this.selectedYearlyMonthlyExpenses = this.store.select(AnalyticsSelectors.selectYearlyMonthlyExpenses).pipe(
-            map((selected) => {
-                const result: { [year: string]: number[] } = {};
-                Object.keys(selected).forEach((year) => {
-                    result[year] = Object.values(selected[+year]);
-                });
-                return result;
-            }),
-        );
+        this.selectedYearlyMonthlyExpenses = this.store.select(AnalyticsSelectors.selectMonthlyExpensesPerYear);
 
         // MONTLY DONUT DATA
-        this.selectedYearMonthTagsData = this.store.select(AnalyticsSelectors.selectYearlyMonthlyGroupedTags).pipe(
-            map((selected) => {
-                const result: { [year: string]: { [month: string]: number[] } } = {};
-                Object.keys(selected).forEach((year) => {
-                    Object.keys(selected[+year]).forEach((month) => {
-                        if (result[year] === undefined) result[year] = {};
-                        result[year][month] = Object.values(selected[+year][+month]).map(
-                            (selectedTag) => selectedTag.count,
-                        );
-                    });
-                });
-                return result;
-            }),
-        );
-
-        this.selectedYearMonthTagsBgColors = this.store.select(AnalyticsSelectors.selectYearlyMonthlyGroupedTags).pipe(
-            map((selected) => {
-                const result: { [year: string]: { [month: string]: string[] } } = {};
-                Object.keys(selected).forEach((year) => {
-                    Object.keys(selected[+year]).forEach((month) => {
-                        if (result[year] === undefined) result[year] = {};
-                        result[year][month] = Object.values(selected[+year][+month]).map(
-                            (selectedTag) => selectedTag.tag.bgColor,
-                        );
-                    });
-                });
-                return result;
-            }),
-        );
-
-        this.selectedYearMonthTagsLabels = this.store.select(AnalyticsSelectors.selectYearlyMonthlyGroupedTags).pipe(
-            map((selected) => {
-                const result: { [year: string]: { [month: string]: string[] } } = {};
-                Object.keys(selected).forEach((year) => {
-                    Object.keys(selected[+year]).forEach((month) => {
-                        if (result[year] === undefined) result[year] = {};
-                        result[year][month] = Object.values(selected[+year][+month]).map(
-                            (selectedTag) => selectedTag.tag.name,
-                        );
-                    });
-                });
-                return result;
-            }),
-        );
+        this.selectedYearMonthTags = this.store.select(AnalyticsSelectors.SelectMontlyTagsPerYear);
 
         //MONTHLY TABLE DATA
-        this.selectedYearlyMonthlyDailyExpenses = this.store
-            .select(AnalyticsSelectors.selectYearlyMonthlyDailyExpenses)
-            .pipe(
-                map((selected) => {
-                    const result: { [year: string]: { [month: string]: number[] } } = {};
-                    Object.keys(selected).forEach((year) => {
-                        Object.keys(selected[+year]).forEach((month) => {
-                            if (result[year] === undefined) result[year] = {};
-                            result[year][month] = Object.values(selected[+year][+month]);
-                        });
-                    });
-                    return result;
-                }),
-            );
-        this.selectedYearlyMonthlyDailyLabels = this.store
-            .select(AnalyticsSelectors.selectYearlyMonthlyDailyExpenses)
-            .pipe(
-                map((selected) => {
-                    const result: { [year: string]: { [month: string]: string[] } } = {};
-                    Object.keys(selected).forEach((year) => {
-                        Object.keys(selected[+year]).forEach((month) => {
-                            if (result[year] === undefined) result[year] = {};
-                            result[year][month] = Object.keys(selected[+year][+month]);
-                        });
-                    });
-                    return result;
-                }),
-            );
+        this.selectedYearlyMonthlyDailyExpenses = this.store.select(AnalyticsSelectors.selectDailyExpensesPerMonthYear);
 
         // FORM CONFIGURATION AND OTHERS
         this.analyticsForm = new FormGroup({
@@ -215,21 +77,20 @@ export class GraphsComponent {
     selectedYearsWithMonths: Observable<{ [year: string]: number[] }>;
 
     // DONUT YEAR DATA
-    selectedYearTagsBgColors: Observable<{ [year: string]: string[] }>;
-    selectedYearTagsData: Observable<{ [year: string]: number[] }>;
-    selectedYearTagsLabels: Observable<{ [year: string]: string[] }>;
+    selectedYearTags: Observable<{ [year: number]: { labels: string[]; bgColor: string[]; count: number[] } }>;
 
     //DONUT MONTHLY DATA
-    selectedYearMonthTagsBgColors: Observable<{ [year: string]: { [month: string]: string[] } }>;
-    selectedYearMonthTagsData: Observable<{ [year: string]: { [month: string]: number[] } }>;
-    selectedYearMonthTagsLabels: Observable<{ [year: string]: { [month: string]: string[] } }>;
+    selectedYearMonthTags: Observable<{
+        [year: string]: { [month: string]: { labels: string[]; count: number[]; bgColor: string[] } };
+    }>;
 
     //TABLE YEAR DATA
     selectedYearlyMonthlyExpenses: Observable<{ [year: string]: number[] }>;
 
     //TABLE MONTHLY DATA
-    selectedYearlyMonthlyDailyExpenses: Observable<{ [year: number]: { [month: number]: number[] } }>;
-    selectedYearlyMonthlyDailyLabels: Observable<{ [year: number]: { [month: number]: string[] } }>;
+    selectedYearlyMonthlyDailyExpenses: Observable<{
+        [year: string]: { [month: string]: { count: number[]; labels: string[] } };
+    }>;
 
     //FORM
     analyticsForm: FormGroup;

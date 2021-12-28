@@ -30,9 +30,9 @@
         <div class="row">
             <div class="col-lg-4">
                 <app-donut-graph
-                    [labels]="$any(selectedYearTagsLabels | async)[year]"
-                    [data]="$any(selectedYearTagsData | async)[year]"
-                    [bgColor]="$any(selectedYearTagsBgColors | async)[year]"
+                    [labels]="$any(selectedYearTags | async)[year].labels"
+                    [data]="$any(selectedYearTags | async)[year].count"
+                    [bgColor]="$any(selectedYearTags | async)[year].bgColor"
                 ></app-donut-graph>
             </div>
             <div class="col-lg-8">
@@ -50,15 +50,15 @@
                     </div>
                     <div class="col-lg-3">
                         <app-donut-graph
-                            [labels]="$any(selectedYearMonthTagsLabels | async)[year][month]"
-                            [data]="$any(selectedYearMonthTagsData | async)[year][month]"
-                            [bgColor]="$any(selectedYearMonthTagsBgColors | async)[year][month]"
+                            [labels]="$any(selectedYearMonthTags | async)[year][month].labels"
+                            [data]="$any(selectedYearMonthTags | async)[year][month].count"
+                            [bgColor]="$any(selectedYearMonthTags | async)[year][month].bgColor"
                         ></app-donut-graph>
                     </div>
                     <div class="col-lg-7">
                         <app-bar-chart
-                            [data]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month]"
-                            [labels]="$any(selectedYearlyMonthlyDailyLabels | async)[year][month]"
+                            [data]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month].count"
+                            [labels]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month].labels"
                         ></app-bar-chart>
                     </div>
                 </div>
