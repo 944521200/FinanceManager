@@ -1,13 +1,90 @@
-<div class="container-fluid">
-    <div class="row text-center">
-        <div class="col-lg-3 mx-auto font-weight-bold">
-            <p>This is really a placeholder text but I will add some explanations about the app's functionality</p>
-        </div>
-        <div class="col-lg-9 mx-auto font-weight-light">
+<div
+    fxflexFill
+    fxLayout="column"
+    fxLayoutAlign="center stretch"
+    fxLayoutGap="20px"
+    fxFlexOffset="20px"
+    style="width: 100%"
+>
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar>
+                <img src="./../assets/FM-logo.png " style="max-height: 50px" />
+            </div>
+            <mat-card-title>Finance Manager</mat-card-title>
+            <mat-card-subtitle>Manage expenses your way</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
             <p>
                 FinanceManager is a personal proyect aimed to improve my skills as a web developer as well as improve my
-                financial management
+                financial management.
             </p>
-        </div>
-    </div>
+        </mat-card-content>
+    </mat-card>
+    <h2>Features:</h2>
+
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>euro</mat-icon>
+            </div>
+            <mat-card-title>Expenses</mat-card-title>
+            <mat-card-subtitle>Create/Edit Expenses</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Log your daily expenses and save them.</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>label</mat-icon>
+            </div>
+            <mat-card-title>Tags</mat-card-title>
+            <mat-card-subtitle>Create/Edit Tags</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Track your expenses with tags so you can know where you are expending the most.</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>table_view</mat-icon>
+            </div>
+            <mat-card-title>Tables</mat-card-title>
+            <mat-card-subtitle>View your data in tables</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Look at your expense data using a series of tables.</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>pie_chart</mat-icon>
+            </div>
+            <mat-card-title>Graphs</mat-card-title>
+            <mat-card-subtitle>View your data using graphs</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Look at your expense data using a series of graphs.</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>settings</mat-icon>
+            </div>
+            <mat-card-title>Settings</mat-card-title>
+            <mat-card-subtitle>Manage your user data</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Import/Exoport your data.</p>
+        </mat-card-content>
+    </mat-card>
 </div>

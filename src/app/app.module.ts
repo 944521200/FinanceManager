@@ -21,6 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatCardModule } from '@angular/material/card';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [AppComponent, HomeComponent],
@@ -41,6 +43,8 @@ import { LayoutModule } from '@angular/cdk/layout';
         MatToolbarModule,
         MatButtonModule,
         LayoutModule,
+        MatCardModule,
+        FlexLayoutModule,
     ],
     bootstrap: [AppComponent],
 })
