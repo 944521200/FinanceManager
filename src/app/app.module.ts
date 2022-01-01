@@ -14,6 +14,13 @@ import { TagsEffects } from './tags/store/tags.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { analyticsReducer } from './analytics/analytics.reducer';
 import { AnalyticsEffects } from './analytics/analytics.effects';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
     declarations: [AppComponent, HomeComponent],
@@ -27,6 +34,13 @@ import { AnalyticsEffects } from './analytics/analytics.effects';
             logOnly: true,
             autoPause: true,
         }),
+        BrowserAnimationsModule,
+        MatSidenavModule,
+        MatListModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatButtonModule,
+        LayoutModule,
     ],
     bootstrap: [AppComponent],
 })

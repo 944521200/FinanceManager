@@ -1,20 +1,24 @@
-import { Component /**, OnInit */ } from '@angular/core';
-// import { Store } from '@ngrx/store';
-// import * as ExpensesActions from './expenses/store/expenses.actions';
-// import * as TagsActions from './tags/store/tags.actions';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Component } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
 })
-export class AppComponent /** implements OnInit */ {
-    // constructor(private store: Store) {}
-    // ngOnInit(): void {
-    //     // this.store.dispatch(ExpensesActions.resetState());
-    //     // this.store.dispatch(TagsActions.resetState());
-    // }
-
+export class AppComponent {
+    constructor(breakpointObserver: BreakpointObserver) {
+        breakpointObserver
+            .observe('(max-width: 750px)')
+            .pipe(untilDestroyed(this))
+            .subscribe((event) => {
+                this.isMobile = event.matches;
+            });
+    }
+    isMobile = false;
+    openned = true;
     title = 'financeManager';
     collapsed = true;
 }

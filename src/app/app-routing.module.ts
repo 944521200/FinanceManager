@@ -6,7 +6,7 @@ const routes: Routes = [
     { path: 'expenses', loadChildren: () => import('./expenses/expenses.module').then((m) => m.ExpensesModule) },
     { path: 'tags', loadChildren: () => import('./tags/tags.module').then((m) => m.TagsModule) },
     { path: 'graphs', loadChildren: () => import('./graphs/graphs.module').then((m) => m.GraphsModule) },
-    { path: 'reports', loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule) },
+    { path: 'tables', loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule) },
     { path: '', component: HomeComponent },
     { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
