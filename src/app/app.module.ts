@@ -22,14 +22,21 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
+import { settingsReducer } from './settings/store/settings.reducer';
+import { SettingsEffects } from './settings/store/settings.effects';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        StoreModule.forRoot({ expenses: expensesReducer, tags: tagsReducer, analytics: analyticsReducer }),
-        EffectsModule.forRoot([ExpensesEffects, TagsEffects, AnalyticsEffects]),
+        StoreModule.forRoot({
+            expenses: expensesReducer,
+            tags: tagsReducer,
+            analytics: analyticsReducer,
+            settings: settingsReducer,
+        }),
+        EffectsModule.forRoot([ExpensesEffects, TagsEffects, AnalyticsEffects, SettingsEffects]),
         // !environment.production
         //     ? StoreDevtoolsModule.instrument({
         //           maxAge: 25,

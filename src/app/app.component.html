@@ -24,7 +24,7 @@
 
             <span fxFlex></span>
             <div fxLayoutAlign="center end">
-                <mat-slide-toggle [checked]="darkTheme" color="primary" (change)="themeChanged($event)"
+                <mat-slide-toggle [checked]="darkTheme | async" color="primary" (change)="themeChanged($event)"
                     ><mat-icon>dark_mode</mat-icon></mat-slide-toggle
                 >
             </div>

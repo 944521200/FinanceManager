@@ -3,6 +3,10 @@ import { Component, HostBinding, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { setNightMode } from './settings/store/settings.actions';
+import { selectNightMode } from './settings/store/settings.selectors';
 
 @UntilDestroy()
 @Component({
@@ -11,30 +15,34 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
     styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-    constructor(breakpointObserver: BreakpointObserver) {
+    constructor(breakpointObserver: BreakpointObserver, private store: Store) {
         breakpointObserver
             .observe('(max-width: 1279px)')
             .pipe(untilDestroyed(this))
             .subscribe((event) => {
                 this.isMobile = event.matches;
             });
-        this.updateDarkTheme();
+
+        this.darkTheme = this.store.select(selectNightMode).pipe(untilDestroyed(this));
+        this.store
+            .select(selectNightMode)
+            .pipe(untilDestroyed(this))
+            .subscribe((darkmode) => this.updateDarkTheme(darkmode));
     }
 
     @HostBinding('class') className = '';
 
     @ViewChild('sidenav') sidenav!: MatSidenav;
 
-    darkTheme = true;
+    darkTheme!: Observable<boolean>;
 
     themeChanged(event: MatSlideToggleChange) {
-        this.darkTheme = event.checked;
-        this.updateDarkTheme();
+        this.store.dispatch(setNightMode({ darkMode: event.checked }));
     }
 
-    private updateDarkTheme() {
+    private updateDarkTheme(newDarkTheme: boolean) {
         const darkClassName = 'dark-theme';
-        this.className = this.darkTheme ? darkClassName : '';
+        this.className = newDarkTheme ? darkClassName : '';
     }
 
     closeSidenavIfMobile() {
