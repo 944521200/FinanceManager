@@ -9,7 +9,7 @@ export class AnalyticsEffects {
     saveEffect$ = createEffect(
         () =>
             this.actions$.pipe(
-                ofType(AnalyticsActions.setFromAndToDate), //TODO añadir más
+                ofType(AnalyticsActions.setFromAndToDate, AnalyticsActions.overrideAnalyticsSettings), //TODO añadir más
                 tap(() => {
                     this.store.dispatch(AnalyticsActions.analyticsChanged());
                 }),

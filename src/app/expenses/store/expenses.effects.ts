@@ -9,7 +9,11 @@ export class ExpensesEffects {
     saveEffect$ = createEffect(
         () =>
             this.actions$.pipe(
-                ofType(ExpenseActions.confirmEditingExpense, ExpenseActions.deleteExpense), //TODO añadir más
+                ofType(
+                    ExpenseActions.confirmEditingExpense,
+                    ExpenseActions.deleteExpense,
+                    ExpenseActions.overrideExpenses,
+                ), //TODO añadir más
                 tap(() => {
                     this.store.dispatch(ExpenseActions.expensesChanged());
                 }),
