@@ -91,7 +91,12 @@
     <br />
     <mat-divider></mat-divider>
     <br />
-    <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+    <div
+        fxLayout="column"
+        fxLayoutAlign="space-between stretch"
+        fxLayoutGap="25px"
+        *ngIf="((expenses | async) ?? false) && (expenses | async)!.length > 0"
+    >
         <app-expense
             *ngFor="
                 let expense of expenses
@@ -109,5 +114,8 @@
             "
             [expense]="expense"
         ></app-expense>
+    </div>
+    <div *ngIf="(!(expenses | async) ?? false) || (((expenses | async) ?? false) && (expenses | async)!.length <= 0)">
+        <h2>No data to show yet...</h2>
     </div>
 </div>

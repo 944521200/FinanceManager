@@ -24,7 +24,15 @@
     <mat-divider></mat-divider>
     <br />
 
-    <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+    <div
+        fxLayout="column"
+        fxLayoutAlign="space-between stretch"
+        fxLayoutGap="25px"
+        *ngIf="((tags | async) ?? false) && (tags | async)!.length > 0"
+    >
         <app-tag *ngFor="let tag of tags | async | filterTags: nameSearch:desSearch" [inputTag]="tag"></app-tag>
+    </div>
+    <div *ngIf="(!(tags | async) ?? false) || (((tags | async) ?? false) && (tags | async)!.length <= 0)">
+        <h2>No data to show yet...</h2>
     </div>
 </div>
