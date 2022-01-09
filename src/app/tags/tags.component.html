@@ -1,16 +1,14 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 text-center font-weight-bold">
-            <h5><p>THIS IS THE TAGS MANAGEMENT PAGE</p></h5>
-            <small>Here you can manage your tags</small>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 mt-2">
-            <app-add-tag></app-add-tag>
-        </div>
-        <div class="col-lg-6 mt-2 text-center">
-            <app-search-tags></app-search-tags>
-        </div>
+<div class="route-container">
+    <h1>Tags</h1>
+    <div
+        fxLayout="row"
+        fxLayoutAlign="start start"
+        fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="start strech"
+        fxLayoutGap="25px"
+    >
+        <app-add-tag fxFlex></app-add-tag>
+        <br /><br />
+        <app-search-tags fxFlex></app-search-tags>
     </div>
 </div>

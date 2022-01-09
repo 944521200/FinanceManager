@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+@import 'ag-grid-community/dist/styles/ag-grid.css';
+@import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+
+@include mat.core();
+$my-primary: mat.define-palette(mat.$blue-palette, 500);
+$my-accent: mat.define-palette(mat.$teal-palette, 500);
+$my-warn: mat.define-palette(mat.$red-palette, 500);
+
+$my-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $my-primary,
+            accent: $my-accent,
+            warn: $my-warn,
+        ),
+    )
+);
+
+$my-dark-theme: mat.define-dark-theme(
+    (
+        color: (
+            primary: $my-primary,
+            accent: $my-accent,
+            warn: $my-warn,
+        ),
+    )
+);
+.dark-theme {
+    @include mat.all-component-themes($my-dark-theme);
+}
+
+@include mat.all-component-themes($my-theme);
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.route-container {
+    margin: 15px;
+}

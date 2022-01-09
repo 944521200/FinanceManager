@@ -1,68 +1,82 @@
-<div class="container-fluid ms-2 mt-1">
-    <form [formGroup]="analyticsForm">
-        <div class="row">
-            <div class="col-lg-1">
-                <label> From date: </label>
-            </div>
-            <div class="col-lg-2">
-                <input type="date" class="form-control" id="inputDateFrom" name="df" formControlName="dateFrom" />
-            </div>
+<div class="route-container">
+    <h1>Graphs</h1>
+    <form [formGroup]="analyticsForm" fxLayout="column" fxLayoutAlign="start">
+        <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="20px">
+            <mat-form-field>
+                <mat-label>From date</mat-label>
+                <input matInput type="date" formControlName="dateFrom" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>To date</mat-label>
+                <input matInput type="date" formControlName="dateTo" />
+            </mat-form-field>
         </div>
-        <div class="row">
-            <div class="col-lg-1">To Date:</div>
-            <div class="col-lg-2">
-                <input type="date" class="form-control" id="inputDateToh" name="dt" formControlName="dateTo" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <button type="button" class="btn btn-custom-delete" (click)="resetInterval()">Reset</button>
-            </div>
+
+        <div fxLayout="row" fxLayoutGap="25px">
+            <button mat-raised-button (click)="resetInterval()" color="warn">Reset</button>
         </div>
     </form>
+    <br />
+    <mat-divider></mat-divider>
+    <br />
 
-    <div *ngFor="let year of $any(selectedYears | async)">
-        <div class="row">
-            <h1>
-                <strong> {{ year }}</strong>
-            </h1>
-        </div>
-        <div class="row">
-            <div class="col-lg-4">
+    <div
+        fxLayout="column"
+        fxLayoutAlign="start start"
+        fxLayoutGap="25px"
+        fxFill
+        *ngIf="$any(selectedYears | async).length > 0"
+    >
+        <div *ngFor="let year of $any(selectedYears | async)" fxFill>
+            <h1>{{ year }}</h1>
+
+            <div fxLayout="row" fxLayoutAlign="space-between  center" fxLayoutGap="25px">
                 <app-donut-graph
+                    fxFlex="35"
+                    *ngIf="$any(selectedYearTags | async)[year]"
                     [labels]="$any(selectedYearTags | async)[year].labels"
                     [data]="$any(selectedYearTags | async)[year].count"
                     [bgColor]="$any(selectedYearTags | async)[year].bgColor"
                 ></app-donut-graph>
-            </div>
-            <div class="col-lg-8">
+
                 <app-bar-chart
+                    fxFlex="75"
                     [data]="$any(selectedYearlyMonthlyExpenses | async)[year]"
                     [labels]="YEARLY_LABELS"
                 ></app-bar-chart>
             </div>
+            <br />
             <div *ngFor="let month of $any(selectedYearsWithMonths | async)[year]">
-                <div class="row">
-                    <div class="col-2">
-                        <h3>
-                            <strong>{{ month }}/{{ year }}</strong>
-                        </h3>
-                    </div>
-                    <div class="col-lg-3">
-                        <app-donut-graph
-                            [labels]="$any(selectedYearMonthTags | async)[year][month].labels"
-                            [data]="$any(selectedYearMonthTags | async)[year][month].count"
-                            [bgColor]="$any(selectedYearMonthTags | async)[year][month].bgColor"
-                        ></app-donut-graph>
-                    </div>
-                    <div class="col-lg-7">
-                        <app-bar-chart
-                            [data]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month].count"
-                            [labels]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month].labels"
-                        ></app-bar-chart>
-                    </div>
-                </div>
+                <mat-card>
+                    <mat-card-title>{{ month }}/{{ year }}</mat-card-title>
+                    <mat-card-content>
+                        <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="25px">
+                            <app-donut-graph
+                                fxFlex="35"
+                                *ngIf="
+                                    $any(selectedYearMonthTags | async)[year] &&
+                                    $any(selectedYearMonthTags | async)[year][month]
+                                "
+                                [labels]="$any(selectedYearMonthTags | async)[year][month].labels"
+                                [data]="$any(selectedYearMonthTags | async)[year][month].count"
+                                [bgColor]="$any(selectedYearMonthTags | async)[year][month].bgColor"
+                            ></app-donut-graph>
+
+                            <app-bar-chart
+                                fxFlex="75"
+                                [data]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month].count"
+                                [labels]="$any(selectedYearlyMonthlyDailyExpenses | async)[year][month].labels"
+                            ></app-bar-chart>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <br />
             </div>
+
+            <mat-divider></mat-divider>
+            <br />
         </div>
     </div>
+
+    <div *ngIf="$any(selectedYears | async).length <= 0"><h2>No data to show yet...</h2></div>
 </div>

@@ -71,6 +71,9 @@ export const tagsReducer = createReducer(
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         return state;
     }),
+    on(TagsActions.overrideTags, (state, { tags }) => {
+        return { ...state, tags, tagCounter: calculateTagCounter(tags), editing: false, editingTag: DEFAULT_TAG };
+    }),
 );
 
 function calculateTagCounter(tags: Tag[]) {

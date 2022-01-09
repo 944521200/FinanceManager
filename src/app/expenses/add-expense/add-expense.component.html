@@ -1,133 +1,81 @@
-<h6><p class="text-center">ADD NEW EXPENSE</p></h6>
-<form [formGroup]="expenseForm" (ngSubmit)="addExpense()">
-    <div class="form-group">
-        <label for="inputNameExpense">Name of the expense</label>
-        <input
-            [ngClass]="{
-                'is-valid': expenseForm.controls['name'].valid && expenseForm.controls['name'].touched,
-                'is-invalid': expenseForm.controls['name'].invalid && expenseForm.controls['name'].touched
-            }"
-            type="text"
-            class="form-control"
-            id="inputNameExpense"
-            aria-describedby="nameHelp"
-            placeholder="Enter a name"
-            name="inputNameExpense"
-            formControlName="name"
-        />
-        <small id="nameHelp" class="form-text text-muted">Short name</small>
-    </div>
+<h2>Add new expense</h2>
 
-    <div class="form-group">
-        <label for="inputDescriptionExpense">Description of the expense</label>
-        <textarea
-            [ngClass]="{
-                'is-valid': expenseForm.controls['description'].valid && expenseForm.controls['description'].touched,
-                'is-invalid': expenseForm.controls['description'].invalid && expenseForm.controls['description'].touched
-            }"
-            type="text"
-            class="form-control"
-            name="inputDescriptionExpense"
-            id="inputDescriptionExpense"
-            rows="5"
-            placeholder="Optional description"
-            aria-describedby="desHelp"
-            formControlName="description"
-        ></textarea>
-        <small id="desHelp" class="form-text text-muted">Full Description</small>
-    </div>
+<form
+    [formGroup]="expenseForm"
+    (ngSubmit)="addExpense()"
+    fxFlexFill
+    fxLayout="column"
+    fxLayoutAlign="space-evenly stretch"
+>
+    <mat-form-field>
+        <mat-label>Name of the expense</mat-label>
+        <input matInput type="text" formControlName="name" />
+        <mat-hint>Short name</mat-hint>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+        <mat-label>Description of the expense</mat-label>
+        <textarea matInput type="text" formControlName="description" rows="5"></textarea>
+        <mat-hint>Full Description</mat-hint>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+        <mat-label>Expense date and time</mat-label>
+        <input matInput type="datetime-local" formControlName="date" />
+        <mat-hint>When this expense occurred</mat-hint>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" formControlName="amount" />
+        <mat-hint>Amount of items acquired</mat-hint>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+        <mat-label>Price per unit</mat-label>
+        <input matInput type="number" formControlName="price" />
+        <mat-hint>The price of each item, separetely</mat-hint>
+    </mat-form-field>
+    <br />
 
-    <div class="form-group">
-        <div class="input-group">
-            <input
-                type="datetime-local"
-                [ngClass]="{
-                    'is-valid': expenseForm.controls['date'].valid && expenseForm.controls['date'].touched,
-                    'is-invalid': expenseForm.controls['date'].invalid && expenseForm.controls['date'].touched
-                }"
-                class="form-control"
-                id="inputDateSinceSearch"
-                placeholder=""
-                name="dp"
-                formControlName="date"
-            />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="inputAmountExpense">Amount</label>
-        <input
-            [ngClass]="{
-                'is-valid': expenseForm.controls['amount'].valid && expenseForm.controls['amount'].touched,
-                'is-invalid': expenseForm.controls['amount'].invalid && expenseForm.controls['amount'].touched
-            }"
-            type="number"
-            class="form-control"
-            id="inputAmountExpense"
-            placeholder=""
-            aria-describedby="amntHelp"
-            name="inputAmountExpense"
-            formControlName="amount"
-        />
-        <small id="amntHelp" class="form-text text-muted">Amount of items acquired</small>
-    </div>
-
-    <div class="form-group">
-        <label for="price">Price per unit</label>
-        <input
-            [ngClass]="{
-                'is-valid': expenseForm.controls['price'].valid && expenseForm.controls['price'].touched,
-                'is-invalid': expenseForm.controls['price'].invalid && expenseForm.controls['price'].touched
-            }"
-            type="number"
-            class="form-control"
-            id="price"
-            placeholder=""
-            aria-describedby="amntHelp"
-            name="price"
-            formControlName="price"
-        />
-        <small id="amntHelp" class="form-text text-muted">The price of each item, separetely</small>
-    </div>
-
-    <div class="form-group" *ngIf="(editingExpense | async)!.tags.length > 0">
-        <label for="">Expense tags: </label>
-        <br />
-        <button
-            type="button"
-            class="btn btn-danger ms-3 me-3 mt-3 mb-3"
+    <mat-form-field>
+        <mat-label>Add Tags:</mat-label>
+        <mat-select (selectionChange)="selectedTagsChanged($event)" [disabled]="(toBeAddedTags | async)!.length === 0">
+            <mat-select-trigger> </mat-select-trigger>
+            <mat-option *ngFor="let tag of toBeAddedTags | async" [value]="tag">
+                <mat-chip
+                    [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+                    disabled="true"
+                >
+                    {{ tag.name }}
+                </mat-chip></mat-option
+            >
+        </mat-select>
+        <mat-hint>Tag your expense</mat-hint>
+    </mat-form-field>
+    <br />
+    <mat-chip-list>
+        <mat-chip
             *ngFor="let tag of (editingExpense | async)!.tags"
-            (click)="removeTag(tag)"
+            [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+            (removed)="removeTag(tag)"
+            [removable]="true"
         >
-            -
-            <span class="badge me-1" [style]="'background-color:' + tag.bgColor + '; color:' + tag.txtColor + ';'">{{
-                tag.name
-            }}</span>
-        </button>
-    </div>
-
-    <div class="form-group" *ngIf="toBeAddedTags | async">
-        <label for="">Add tags: </label>
-        <br />
+            {{ tag.name }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+    <br />
+    <div fxLayout="row" fxLayoutGap="25px">
         <button
-            type="button"
-            class="btn btn-primary ms-3 me-3 mt-3 mb-3"
-            *ngFor="let tag of toBeAddedTags | async"
-            (click)="addTag(tag)"
+            mat-raised-button
+            type="submit"
+            [disabled]="!expenseForm.valid"
+            [color]="(isEditing | async) ? 'accent' : 'primary'"
         >
-            +
-            <span class="badge me-1" [style]="'background-color:' + tag.bgColor + '; color:' + tag.txtColor + ';'">{{
-                tag.name
-            }}</span>
+            {{ (isEditing | async) ? 'Update' : 'Add' }}
         </button>
+        <br />
+        <button mat-raised-button type="button" (click)="clearExpense()" color="warn">Clear</button>
     </div>
-
-    <button
-        type="submit"
-        [class]="'btn btn-' + ((isEditing | async) ? 'warning' : 'custom-view') + ' me-3 mt-3'"
-        [disabled]="!expenseForm.valid"
-    >
-        {{ (isEditing | async) ? 'Update' : 'Add' }}
-    </button>
-    <button type="button" class="btn btn-custom-delete mt-3" (click)="clearExpense()">Clear</button>
 </form>

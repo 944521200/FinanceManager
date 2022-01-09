@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import * as AnalyticsSelectors from '../analytics/analytics.selectors';
 import * as AnalyticsActions from '../analytics/analytics.actions';
 

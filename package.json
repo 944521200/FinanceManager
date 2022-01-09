@@ -9,7 +9,8 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "lint": "eslint --ext .ts ./src",
-        "prettier": "prettier --write ."
+        "prettier": "prettier --write .",
+        "source-map-explorer": "source-map-explorer dist/financeManager/**/*.js"
     },
     "private": true,
     "dependencies": {
@@ -28,9 +29,8 @@
         "@ngneat/until-destroy": "^9.0.0",
         "@ngrx/effects": "^13.0.1",
         "@ngrx/store": "^13.0.1",
-        "ag-grid-angular": "^26.1.0",
-        "ag-grid-community": "^26.1.0",
-        "bootstrap": "^5.1.3",
+        // "ag-grid-angular": "^26.1.0",
+        // "ag-grid-community": "^26.1.0",
         "chart.js": "^3.6.2",
         "rxjs": "~6.6.0",
         "tslib": "^2.3.0",
@@ -53,6 +53,7 @@
         "karma-jasmine": "~4.0.0",
         "karma-jasmine-html-reporter": "~1.7.0",
         "prettier": "^2.5.1",
+        "source-map-explorer": "^2.5.2",
         "typescript": "~4.3.5"
     },
     "eslintConfig": {

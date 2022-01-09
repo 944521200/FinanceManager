@@ -21,6 +21,9 @@ export const analyticsReducer = createReducer(
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         return state;
     }),
+    on(AnalyticsActions.overrideAnalyticsSettings, (state, { settings }) => {
+        return { ...state, fromDate: new Date(settings.fromDate), toDate: new Date(settings.toDate) };
+    }),
 );
 
 function getStateFromLocalStorage() {

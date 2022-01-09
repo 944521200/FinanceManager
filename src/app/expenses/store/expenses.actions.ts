@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { Expense } from 'src/app/model/expense.model';
 import { Tag } from 'src/app/model/tag.model';
 
 export const deleteExpense = createAction('[Expenses] delete expense', props<{ deleteId: number }>());
@@ -21,6 +22,13 @@ export const addTagsEditingExpense = createAction(
     '[Expenses] add tag edit expense',
     props<{
         tags: Tag[];
+    }>(),
+);
+
+export const overrideExpenses = createAction(
+    '[Expenses] override expenses (IMPORT)',
+    props<{
+        expenses: Expense[];
     }>(),
 );
 

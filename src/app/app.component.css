@@ -7,16 +7,3 @@
     justify-content: center;
     align-items: center;
 }
-
-.move-down-animation {
-    animation: move-down 0.5s;
-}
-
-@keyframes move-down {
-    0% {
-        transform: translateY(-3rem);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}

@@ -1,0 +1,13 @@
+<div class="route-container">
+    <h1>Settings</h1>
+    <h3>Data maganement</h3>
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="25px">
+        <button mat-raised-button color="primary" (click)="exportData()">Export data</button>
+        <button mat-raised-button color="primary" (click)="importData()">Import data</button>
+        <mat-hint>*There is currently no validation on imported data, you should know what you are doing</mat-hint>
+    </div>
+</div>
+
+<!-- Cast aways -->
+<a style="display: none" #downloadLink [href]="sanitizedBlobUrl" [download]="filename" type="button"></a>
+<input style="display: none" #importDialog type="file" (change)="fileImported()" />

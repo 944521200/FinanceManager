@@ -88,6 +88,26 @@ export const expensesReducer = createReducer(
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         return state;
     }),
+    on(ExpensesActions.overrideExpenses, (state, { expenses }) => {
+        return {
+            ...state,
+            expenses: expenses.map(
+                (expense) =>
+                    new Expense(
+                        expense.ID,
+                        expense.name,
+                        expense.description,
+                        expense.amount,
+                        expense.pricePerUnit,
+                        expense.time,
+                        expense.tags,
+                    ),
+            ),
+            expenseCounter: calculateExpenseCounter(expenses),
+            editing: false,
+            editingExpense: DEFAULT_EXPENSE,
+        };
+    }),
 );
 
 function calculateExpenseCounter(expenses: Expense[]) {

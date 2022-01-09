@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { Tag } from 'src/app/model/tag.model';
 
 export const deleteTag = createAction('[Tags] delete tag', props<{ deleteId: number }>());
 
@@ -11,6 +12,13 @@ export const updateEditingTag = createAction(
         description?: string;
         bgColor?: string;
         txtColor?: string;
+    }>(),
+);
+
+export const overrideTags = createAction(
+    '[Tags] override tags (IMPORT)',
+    props<{
+        tags: Tag[];
     }>(),
 );
 

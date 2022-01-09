@@ -1,49 +1,30 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <h6><p>SEARCH EXPENSES</p></h6>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-2">
-            <p class="text-start">Name:</p>
-        </div>
-        <div class="col-lg-4">
-            <input
-                type="text"
-                class="form-control"
-                id="inputNameSearch"
-                placeholder=""
-                name="inputNameSearch"
-                [(ngModel)]="nameSearch"
-            />
-        </div>
-        <div class="col-lg-2">
-            <p class="text-start">Description:</p>
-        </div>
-        <div class="col-lg-4">
-            <input
-                type="text"
-                class="form-control"
-                id="inputDesSearch"
-                placeholder=""
-                name="inputDesSearch"
-                [(ngModel)]="desSearch"
-            />
-        </div>
+<h2>Search tags</h2>
+
+<div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+        <mat-form-field fxFlex>
+            <mat-label>Name search</mat-label>
+            <input matInput type="text" [(ngModel)]="nameSearch" />
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+            <mat-label>Description search</mat-label>
+            <input matInput type="text" [(ngModel)]="desSearch" />
+        </mat-form-field>
     </div>
 
-    <div class="row">
-        <div class="col-lg-2">
-            <button type="button" class="btn btn-custom-edit mt-3" (click)="clearSearch()">Clear</button>
-        </div>
+    <div fxLayout="row">
+        <button mat-raised-button type="button" class="btn btn-custom-edit mt-3" (click)="clearSearch()" color="warn">
+            Clear
+        </button>
     </div>
-    <hr />
-    <div class="row">
-        <div class="col-lg-12">
-            <ul class="list-group">
-                <app-tag *ngFor="let tag of tags | async | filterTags: nameSearch:desSearch" [inputTag]="tag"></app-tag>
-            </ul>
-        </div>
+    <br />
+    <mat-hint>*Click on any tag to edit</mat-hint>
+    <br />
+    <mat-divider></mat-divider>
+    <br />
+
+    <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+        <app-tag *ngFor="let tag of tags | async | filterTags: nameSearch:desSearch" [inputTag]="tag"></app-tag>
     </div>
 </div>

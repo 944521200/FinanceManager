@@ -1,14 +1,15 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { Store } from '@ngrx/store';
-import * as ExpensesSelector from '../store/expenses.selectors';
-import * as ExpensesActions from '../store/expenses.actions';
-import * as TagsSelectors from '../../tags/store/tags.selectors';
-import { map, switchMap } from 'rxjs/operators';
-import { Tag, tagIncluded } from 'src/app/model/tag.model';
 import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Expense } from 'src/app/model/expense.model';
-import { DatePipe } from '@angular/common';
+import { Tag, tagIncluded } from 'src/app/model/tag.model';
+import * as TagsSelectors from '../../tags/store/tags.selectors';
+import * as ExpensesActions from '../store/expenses.actions';
+import * as ExpensesSelector from '../store/expenses.selectors';
 
 @Component({
     selector: 'app-add-expense',
@@ -37,7 +38,6 @@ export class AddExpenseComponent {
         this.editingExpense = this.store.select(ExpensesSelector.selectEditingExpense);
 
         this.editingExpense.subscribe((editingExpense) => {
-            this.clearForm();
             this.expenseForm.reset({
                 name: editingExpense.name,
                 description: editingExpense.description,
@@ -61,16 +61,6 @@ export class AddExpenseComponent {
         this.store.dispatch(ExpensesActions.editExpense({ editId: -1 }));
     }
 
-    addTag(tag: Tag) {
-        this.updateExpense();
-        this.store.dispatch(ExpensesActions.addTagsEditingExpense({ tags: [tag] }));
-    }
-
-    removeTag(tag: Tag) {
-        this.updateExpense();
-        this.store.dispatch(ExpensesActions.removeTagsEditingExpense({ tags: [tag] }));
-    }
-
     positiveNumber(control: AbstractControl): ValidationErrors | null {
         if (isNaN(+control.value) ?? +control.value < 1) {
             //control.setValue(1);
@@ -84,7 +74,6 @@ export class AddExpenseComponent {
     addExpense() {
         this.updateExpense();
         this.store.dispatch(ExpensesActions.confirmEditingExpense());
-        this.clearForm();
     }
 
     updateExpense() {
@@ -99,15 +88,17 @@ export class AddExpenseComponent {
         );
     }
 
-    clearForm() {
-        const today = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
-        this.expenseForm.reset({
-            date: today,
-            amount: 1,
-        });
-    }
     clearExpense() {
-        this.clearForm();
         this.store.dispatch(ExpensesActions.discardEditingExpense());
+    }
+
+    removeTag(tag: Tag) {
+        this.updateExpense();
+        this.store.dispatch(ExpensesActions.removeTagsEditingExpense({ tags: [tag] }));
+    }
+
+    selectedTagsChanged(change: MatSelectChange) {
+        this.updateExpense();
+        this.store.dispatch(ExpensesActions.addTagsEditingExpense({ tags: [change.value] }));
     }
 }

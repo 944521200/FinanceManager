@@ -1,16 +1,14 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 text-center font-weight-bold">
-            <h5><p>THIS IS THE MANAGEMENT PAGE</p></h5>
-            <small>Here you can manage your expenses</small>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 mt-2">
-            <app-add-expense></app-add-expense>
-        </div>
-        <div class="col-lg-6 mt-2">
-            <app-search-expenses></app-search-expenses>
-        </div>
+<div class="route-container">
+    <h1>Expenses</h1>
+    <div
+        fxLayout.="row"
+        fxLayoutAlign="start start"
+        fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="start strech"
+        fxLayoutGap="25px"
+    >
+        <app-add-expense fxFlex></app-add-expense>
+        <br /><br />
+        <app-search-expenses fxFlex></app-search-expenses>
     </div>
 </div>

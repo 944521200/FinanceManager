@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Expense } from '../model/expense.model';
+import { Tag } from '../model/tag.model';
 
 @Pipe({
     name: 'filterExpenses',
@@ -13,6 +14,9 @@ export class FilterExpensesPipe implements PipeTransform {
         priceFilter: string,
         dateSinceFilter?: Date,
         dateUntilFilter?: Date,
+        filterTags?: Tag[],
+        onlyShowUntagged?: boolean,
+        hideUntagged?: boolean,
     ): Expense[] {
         if (!value) return [];
 
@@ -42,17 +46,34 @@ export class FilterExpensesPipe implements PipeTransform {
                 else return false;
             });
 
-        if (dateSinceFilter)
+        if (dateSinceFilter) {
+            const dateSince = new Date(dateSinceFilter);
             result = result.filter((item: Expense) => {
-                if (item.time.valueOf() >= dateSinceFilter.valueOf()) return true;
+                if (item.time.valueOf() >= dateSince.valueOf()) return true;
                 else return false;
             });
+        }
 
-        if (dateUntilFilter)
+        if (dateUntilFilter) {
+            const dateUntil = new Date(dateUntilFilter);
             result = result.filter((item: Expense) => {
-                if (item.time.valueOf() <= dateUntilFilter.valueOf()) return true;
+                if (item.time.valueOf() <= dateUntil.valueOf()) return true;
                 else return false;
             });
+        }
+        if (onlyShowUntagged ?? false) {
+            result = result.filter((item: Expense) => {
+                return item.tags.length === 0;
+            });
+        } else if (filterTags && filterTags.length !== 0) {
+            const filterTagsIDs = filterTags.map((tag) => tag.ID);
+            result = result.filter((item: Expense) => {
+                return (
+                    item.tags.every((tag) => filterTagsIDs.includes(tag.ID)) &&
+                    (!(hideUntagged ?? false) || item.tags.length !== 0)
+                );
+            });
+        }
 
         return result;
     }

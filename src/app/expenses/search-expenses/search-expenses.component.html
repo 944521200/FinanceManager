@@ -1,119 +1,113 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <h6><p>SEARCH EXPENSES</p></h6>
-        </div>
+<h2>Search expenses</h2>
+
+<div fxLayout="column" fxLayoutAlign="space-evenly stretch">
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+        <mat-form-field fxFlex>
+            <mat-label>Name search</mat-label>
+            <input matInput type="text" [(ngModel)]="nameSearch" />
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+            <mat-label>Description search</mat-label>
+            <input matInput type="text" [(ngModel)]="desSearch" />
+        </mat-form-field>
     </div>
-    <div class="row">
-        <div class="col-lg-2">
-            <p class="text-start">Name:</p>
+
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+        <mat-form-field fxFlex>
+            <mat-label>Amount search</mat-label>
+            <input matInput type="number" [(ngModel)]="amountSearch" />
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+            <mat-label>Price search</mat-label>
+            <input matInput type="number" [(ngModel)]="priceSearch" />
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+        <mat-form-field fxFlex>
+            <mat-label>Since Date</mat-label>
+            <input matInput type="datetime-local" [(ngModel)]="dateSinceSearch" />
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+            <mat-label>Until Date</mat-label>
+            <input matInput type="datetime-local" [(ngModel)]="dateUntilSearch" />
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="25px">
+            <mat-form-field fxFlex>
+                <mat-label>Search by tag</mat-label>
+                <mat-select
+                    (selectionChange)="selectedTagsChanged($event)"
+                    [disabled]="toBeFilteredtags!.length === 0 || onlyUntagged"
+                    [(ngModel)]="selectedTag"
+                >
+                    <mat-select-trigger> </mat-select-trigger>
+                    <mat-option *ngFor="let tag of toBeFilteredtags" [value]="tag">
+                        <mat-chip
+                            [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+                            disabled="true"
+                        >
+                            {{ tag.name }}
+                        </mat-chip>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-slide-toggle [disabled]="hideUntagged" [(ngModel)]="onlyUntagged" color="primary"
+                ><h3>Only untagged</h3></mat-slide-toggle
+            >
+            <mat-slide-toggle [disabled]="onlyUntagged" [(ngModel)]="hideUntagged" color="primary"
+                ><h3>Hide untagged</h3></mat-slide-toggle
+            >
         </div>
-        <div class="col-lg-4">
-            <input
-                type="text"
-                class="form-control"
-                id="inputNameSearch"
-                placeholder=""
-                name="inputNameSearch"
-                [(ngModel)]="nameSearch"
-            />
-        </div>
-        <div class="col-lg-2">
-            <p class="text-start">Description:</p>
-        </div>
-        <div class="col-lg-4">
-            <input
-                type="text"
-                class="form-control"
-                id="inputDesSearch"
-                placeholder=""
-                name="inputDesSearch"
-                [(ngModel)]="desSearch"
-            />
+        <div *ngIf="filterTags.length !== 0 && !onlyUntagged">
+            <mat-chip-list>
+                <mat-chip
+                    *ngFor="let tag of filterTags"
+                    [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+                    (removed)="removeTag(tag)"
+                    [removable]="true"
+                >
+                    {{ tag.name }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+            <br />
+            <br />
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-2">
-            <p class="text-start">Amount:</p>
-        </div>
-        <div class="col-lg-4">
-            <input
-                type="number"
-                class="form-control"
-                id="inputAmountSearch"
-                placeholder=""
-                name="inputAmountSearch"
-                [(ngModel)]="amountSearch"
-            />
-        </div>
-        <div class="col-lg-2">
-            <p class="text-start">Price:</p>
-        </div>
-        <div class="col-lg-4">
-            <input
-                type="number"
-                class="form-control"
-                id="inputAmountSearch"
-                placeholder=""
-                name="inputAmountSearch"
-                [(ngModel)]="priceSearch"
-            />
-        </div>
+    <div fxLayout="row">
+        <button mat-raised-button type="button" class="btn btn-custom-edit mt-3" (click)="clearSearch()" color="warn">
+            Clear
+        </button>
     </div>
-
-    <div class="row">
-        <div class="col-lg-2">
-            <p class="text-start">Since Date:</p>
-        </div>
-        <div class="col-lg-4">
-            <input
-                type="datetime-local"
-                class="form-control"
-                id="inputDateSinceSearch"
-                placeholder=""
-                name="inputDateSinceSearch"
-                [(ngModel)]="dateSinceSearch"
-            />
-        </div>
-        <div class="col-lg-2">
-            <p class="text-start">Until Date:</p>
-        </div>
-        <div class="col-lg-4">
-            <input
-                type="datetime-local"
-                class="form-control"
-                id="inputDateUntilSearch"
-                placeholder=""
-                name="inputDateUntilSearch"
-                [(ngModel)]="dateUntilSearch"
-            />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-2">
-            <button type="button" class="btn btn-custom-edit mt-3" (click)="clearSearch()">Clear</button>
-        </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-lg-12">
-            <ul class="list-group">
-                <app-expense
-                    *ngFor="
-                        let expense of expenses
-                            | async
-                            | filterExpenses
-                                : nameSearch
-                                : desSearch
-                                : amountSearch
-                                : priceSearch
-                                : dateSinceSearch
-                                : dateUntilSearch
-                    "
-                    [expense]="expense"
-                ></app-expense>
-            </ul>
-        </div>
+    <br />
+    <mat-hint>*Click on any expense to edit</mat-hint>
+    <br />
+    <mat-divider></mat-divider>
+    <br />
+    <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+        <app-expense
+            *ngFor="
+                let expense of expenses
+                    | async
+                    | filterExpenses
+                        : nameSearch
+                        : desSearch
+                        : amountSearch
+                        : priceSearch
+                        : dateSinceSearch
+                        : dateUntilSearch
+                        : filterTags
+                        : onlyUntagged
+                        : hideUntagged
+            "
+            [expense]="expense"
+        ></app-expense>
     </div>
 </div>

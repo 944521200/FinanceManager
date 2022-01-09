@@ -1,42 +1,16 @@
-<div
-    class="list-group-item list-group-item-action flex-column align-items-start"
-    style="cursor: pointer"
-    (click)="editTag()"
->
-    <div class="row mt-3">
-        <div class="col-lg-9">
-            <h5 class="text-truncate">{{ tag.name }}</h5>
-        </div>
-        <div class="col-lg-3">
-            <span class="badge me-1" [style]="'background-color:' + tag.bgColor + '; color:' + tag.txtColor + ';'">{{
-                tag.name
-            }}</span>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-lg-9">
-            <small class="text-truncate" style="display: block">{{ tag.description }} </small>
-        </div>
-        <div class="col-lg-3">
-            <button class="btn btn-custom-delete btn-sm me-3 mt-3" (click)="deleteTag()">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-trash"
-                    viewBox="0 0 16 16"
-                >
-                    <path
-                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                    />
-                    <path
-                        fill-rule="evenodd"
-                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                    />
-                </svg>
-            </button>
-        </div>
-    </div>
-</div>
+<mat-card (click)="editTag()" style="cursor: pointer">
+    <mat-card-title-group>
+        <mat-card-title>{{ tag.name }}</mat-card-title>
+        <button mat-raised-button color="warn" (click)="deleteTag()">
+            <mat-icon>delete</mat-icon>
+        </button>
+        <mat-card-subtitle>{{ tag.description }}</mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content>
+        <mat-chip-list>
+            <mat-chip [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'">
+                {{ tag.name }}
+            </mat-chip>
+        </mat-chip-list>
+    </mat-card-content>
+</mat-card>

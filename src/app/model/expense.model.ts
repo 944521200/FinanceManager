@@ -23,7 +23,7 @@ export class Expense {
         this.description = description;
         this.amount = amount;
         this.pricePerUnit = pricePerUnit;
-        this.time = time;
+        this.time = new Date(time);
         this.tags = tags;
     }
 }
