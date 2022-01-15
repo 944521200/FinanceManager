@@ -45,4 +45,4 @@ testem.log
 Thumbs.db
 
 # Capacitor
-./android/*
+android/*
