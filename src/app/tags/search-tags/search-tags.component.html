@@ -1,38 +1,51 @@
 <h2>Search tags</h2>
 
-<div fxLayout="column" fxLayoutAlign="space-evenly stretch">
-    <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
+<div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="25px">
+    <form
+        [formGroup]="searchTagsForm"
+        fxLayout="row"
+        fxLayout.lt-sm="column"
+        fxLayoutAlign="space-between stretch"
+        fxLayoutGap="25px"
+    >
         <mat-form-field fxFlex>
             <mat-label>Name search</mat-label>
-            <input matInput type="text" [(ngModel)]="nameSearch" />
+            <input matInput type="text" formControlName="name" />
         </mat-form-field>
 
         <mat-form-field fxFlex>
             <mat-label>Description search</mat-label>
-            <input matInput type="text" [(ngModel)]="desSearch" />
+            <input matInput type="text" formControlName="description" />
         </mat-form-field>
-    </div>
+    </form>
 
     <div fxLayout="row">
-        <button mat-raised-button type="button" class="btn btn-custom-edit mt-3" (click)="clearSearch()" color="warn">
-            Clear
-        </button>
+        <button mat-raised-button type="button" (click)="clearSearch()" color="warn">Clear</button>
     </div>
     <br />
     <mat-hint>*Click on any tag to edit</mat-hint>
-    <br />
-    <mat-divider></mat-divider>
-    <br />
+
+    <mat-paginator
+        (page)="handlePageEvent($event)"
+        [length]="(filteredTags | async)?.length ?? 0"
+        [pageSize]="pageSize | async"
+        [showFirstLastButtons]="true"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageIndex]="pageIndex | async"
+        aria-label="Select page"
+    >
+    </mat-paginator>
 
     <div
         fxLayout="column"
         fxLayoutAlign="space-between stretch"
         fxLayoutGap="25px"
-        *ngIf="((tags | async) ?? false) && (tags | async)!.length > 0"
+        *ngIf="(paginatedTags | async) && (paginatedTags | async)!.length > 0"
     >
-        <app-tag *ngFor="let tag of tags | async | filterTags: nameSearch:desSearch" [inputTag]="tag"></app-tag>
+        <app-tag *ngFor="let tag of paginatedTags | async" [inputTag]="tag"></app-tag>
     </div>
-    <div *ngIf="(!(tags | async) ?? false) || (((tags | async) ?? false) && (tags | async)!.length <= 0)">
+    <div *ngIf="!(paginatedTags | async) || ((paginatedTags | async) && (paginatedTags | async)!.length <= 0)">
         <h2>No data to show yet...</h2>
+        <mat-hint>Create some tags first</mat-hint>
     </div>
 </div>

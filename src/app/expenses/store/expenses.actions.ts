@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { Expense } from 'src/app/model/expense.model';
-import { Tag } from 'src/app/model/tag.model';
 
 export const deleteExpense = createAction('[Expenses] delete expense', props<{ deleteId: number }>());
 
@@ -13,7 +12,7 @@ export const updateEditingExpense = createAction(
         description?: string;
         amount?: number;
         pricePerUnit?: number;
-        tags?: Tag[];
+        tags?: number[];
         time?: Date;
     }>(),
 );
@@ -21,7 +20,7 @@ export const updateEditingExpense = createAction(
 export const addTagsEditingExpense = createAction(
     '[Expenses] add tag edit expense',
     props<{
-        tags: Tag[];
+        tags: number[];
     }>(),
 );
 
@@ -32,10 +31,10 @@ export const overrideExpenses = createAction(
     }>(),
 );
 
-export const removeTagsEditingExpense = createAction(
+export const removeTagEditingExpense = createAction(
     '[Expenses] remove tag edit expense',
     props<{
-        tags: Tag[];
+        tagId: number;
     }>(),
 );
 
@@ -46,3 +45,26 @@ export const discardEditingExpense = createAction('[Expenses] discard editing ex
 export const expensesChanged = createAction('[Expenses] expenses changed');
 
 export const resetState = createAction('[Expenses] initialize state');
+
+export const setPagination = createAction(
+    '[Expenses] pagination settgins changed/set',
+    props<{
+        pageSize: number;
+        pageIndex: number;
+    }>(),
+);
+
+export const setFilters = createAction(
+    '[Expenses] filterting settgins changed/set',
+    props<{
+        nameFilter: string;
+        descFilter: string;
+        amountFilter: string;
+        priceFilter: string;
+        dateSinceFilter?: Date;
+        dateUntilFilter?: Date;
+        filterTags: number[];
+        onlyShowUntagged: boolean;
+        hideUntagged: boolean;
+    }>(),
+);

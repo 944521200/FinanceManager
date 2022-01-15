@@ -1,13 +1,19 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { Expense } from 'src/app/model/expense.model';
 import { Tag } from 'src/app/model/tag.model';
-import * as ExpensesSelector from '../store/expenses.selectors';
 import * as TagsSelectors from '../../tags/store/tags.selectors';
-import { MatSelectChange } from '@angular/material/select';
-import { take } from 'rxjs/operators';
+import { setFilters, setPagination } from '../store/expenses.actions';
+import * as ExpensesSelector from '../store/expenses.selectors';
 
+@UntilDestroy()
 @Component({
     selector: 'app-search-expenses',
     templateUrl: './search-expenses.component.html',
@@ -16,19 +22,32 @@ import { take } from 'rxjs/operators';
 export class SearchExpensesComponent implements OnInit {
     constructor(private store: Store) {}
 
-    expenses: Observable<Expense[]> = of([]);
+    filteredExpenses!: Observable<Expense[]>;
+    paginatedExpenses!: Observable<Expense[]>;
 
     allTags: Tag[] = [];
     toBeFilteredtags: Tag[] = [];
     filterTags: Tag[] = [];
 
-    selectedTag: Tag | undefined;
+    pageSize!: Observable<number>;
+    pageIndex!: Observable<number>;
+    searchExpenseForm!: FormGroup;
 
-    onlyUntagged = false;
-    hideUntagged = false;
+    pageSizeOptions = [5, 10, 25, 50];
+
+    selectedTag!: Tag | undefined;
 
     ngOnInit(): void {
-        this.expenses = this.store.select(ExpensesSelector.selectAllExpenses);
+        this.searchExpenseForm = new FormGroup({
+            name: new FormControl(),
+            description: new FormControl(),
+            amount: new FormControl(),
+            price: new FormControl(),
+            dateFrom: new FormControl(),
+            dateTo: new FormControl(),
+            onlyUntagged: new FormControl(),
+            hideUntagged: new FormControl(),
+        });
         this.store
             .select(TagsSelectors.selectAllTags)
             .pipe(take(1))
@@ -37,34 +56,64 @@ export class SearchExpensesComponent implements OnInit {
                 this.toBeFilteredtags = tags;
                 this.filterTags = [];
             });
+
+        this.pageSize = this.store.select(ExpensesSelector.selectPaginationSettings).pipe(
+            untilDestroyed(this),
+            map((settings) => settings.pageSize),
+        );
+        this.pageIndex = this.store.select(ExpensesSelector.selectPaginationSettings).pipe(
+            untilDestroyed(this),
+            map((settings) => settings.pageIndex),
+        );
+        this.searchExpenseForm.valueChanges.pipe(untilDestroyed(this)).subscribe(() => this.updateFilters());
+
+        this.searchExpenseForm.controls['onlyUntagged'].valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
+            if (this.searchExpenseForm.controls['onlyUntagged'].value)
+                this.searchExpenseForm.controls['hideUntagged'].disable({ emitEvent: false });
+            else this.searchExpenseForm.controls['hideUntagged'].enable({ emitEvent: false });
+        });
+        this.searchExpenseForm.controls['hideUntagged'].valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
+            if (this.searchExpenseForm.controls['hideUntagged'].value)
+                this.searchExpenseForm.controls['onlyUntagged'].disable({ emitEvent: false });
+            else this.searchExpenseForm.controls['onlyUntagged'].enable({ emitEvent: false });
+        });
+
+        this.paginatedExpenses = this.store.select(ExpensesSelector.selectPaginatedExpenses).pipe(untilDestroyed(this));
+        this.filteredExpenses = this.store.select(ExpensesSelector.selectFilteredExpenses).pipe(untilDestroyed(this));
     }
 
-    nameSearch = '';
-    desSearch = '';
-    amountSearch = '';
-    priceSearch = '';
-    dateSinceSearch: Date | undefined;
-    dateUntilSearch: Date | undefined;
+    updateFilters() {
+        this.store.dispatch(
+            setFilters({
+                amountFilter: this.searchExpenseForm.value['amount'] ?? '',
+                descFilter: this.searchExpenseForm.value['description'] ?? '',
+                nameFilter: this.searchExpenseForm.value['name'] ?? '',
+                priceFilter: this.searchExpenseForm.value['price'] ?? '',
+                dateSinceFilter: this.searchExpenseForm.value['dateFrom'],
+                dateUntilFilter: this.searchExpenseForm.value['dateTo'],
+                filterTags: this.filterTags.map((tag) => tag.ID) ?? [],
+                hideUntagged: this.searchExpenseForm.value['hideUntagged'] ?? false,
+                onlyShowUntagged: this.searchExpenseForm.value['onlyUntagged'] ?? false,
+            }),
+        );
+    }
 
     selectedTagsChanged(change: MatSelectChange) {
-        this.filterTags.push(change.value);
-        this.filterTags = [...this.filterTags];
-        this.toBeFilteredtags = this.toBeFilteredtags.filter((tag) => tag.ID !== change.value.ID);
+        this.filterTags = [...this.filterTags, change.value];
+        this.toBeFilteredtags = [...this.toBeFilteredtags.filter((tag) => tag.ID !== change.value.ID)];
+        this.selectedTag = undefined;
+        this.updateFilters();
     }
 
     removeTag(tag: Tag) {
-        this.toBeFilteredtags.push(tag);
+        this.toBeFilteredtags = [...this.toBeFilteredtags, tag];
         this.filterTags = [...this.filterTags.filter((filterTag) => filterTag.ID !== tag.ID)];
         this.selectedTag = undefined;
+        this.updateFilters();
     }
 
     clearSearch() {
-        this.nameSearch = '';
-        this.desSearch = '';
-        this.amountSearch = '';
-        this.priceSearch = '';
-        this.dateSinceSearch = undefined;
-        this.dateUntilSearch = undefined;
+        this.searchExpenseForm.reset();
         this.store
             .select(TagsSelectors.selectAllTags)
             .pipe(take(1))
@@ -73,8 +122,9 @@ export class SearchExpensesComponent implements OnInit {
                 this.toBeFilteredtags = tags;
                 this.filterTags = [];
             });
-        this.selectedTag = undefined;
-        this.onlyUntagged = false;
-        this.hideUntagged = false;
+    }
+
+    handlePageEvent(event: PageEvent) {
+        this.store.dispatch(setPagination({ pageSize: event.pageSize, pageIndex: event.pageIndex }));
     }
 }

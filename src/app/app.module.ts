@@ -10,7 +10,7 @@ import { ExpensesEffects } from './expenses/store/expenses.effects';
 import { tagsReducer } from './tags/store/tags.reducer';
 import { TagsEffects } from './tags/store/tags.effects';
 
-// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+//import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { analyticsReducer } from './analytics/analytics.reducer';
 import { AnalyticsEffects } from './analytics/analytics.effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +24,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { settingsReducer } from './settings/store/settings.reducer';
 import { SettingsEffects } from './settings/store/settings.effects';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [AppComponent],
@@ -37,14 +38,14 @@ import { SettingsEffects } from './settings/store/settings.effects';
             settings: settingsReducer,
         }),
         EffectsModule.forRoot([ExpensesEffects, TagsEffects, AnalyticsEffects, SettingsEffects]),
-        // !environment.production
-        //     ? StoreDevtoolsModule.instrument({
-        //           maxAge: 25,
-        //           logOnly: true,
-        //           autoPause: true,
-        //       })
-        //     : [],
+        // StoreDevtoolsModule.instrument({
+        //     maxAge: 25,
+        //     logOnly: true,
+        //     autoPause: true,
+        // }),
         BrowserAnimationsModule,
+        /** Only necesary for the icon registry */
+        HttpClientModule,
         /** Material imports only used by the app component */
         MatIconModule,
         MatToolbarModule,

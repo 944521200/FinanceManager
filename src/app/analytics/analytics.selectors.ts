@@ -1,7 +1,8 @@
 /* eslint-disable no-extra-boolean-cast */
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { selectAllExpenses } from '../expenses/store/expenses.selectors';
-import { Tag } from '../model/tag.model';
+import { DEFAULT_TAG, Tag } from '../model/tag.model';
+import { selectAllTags } from '../tags/store/tags.selectors';
 import { State } from './analytics.reducer';
 
 export const selectAnalyticsState = createFeatureSelector<State>('analytics');
@@ -17,14 +18,17 @@ export const selectSelectedExpenses = createSelector(selectAnalyticsState, selec
 });
 
 //Donut anual
-export const selectYearlyTags = createSelector(selectSelectedExpenses, (selectedExpenses) => {
+export const selectYearlyTags = createSelector(selectSelectedExpenses, selectAllTags, (selectedExpenses, allTags) => {
     const data: { [year: number]: { [tagID: number]: { tag: Tag; count: number } } } = {};
     selectedExpenses.forEach((expense) => {
         expense.tags.forEach((tag) => {
             if (!Boolean(data[expense.time.getFullYear()])) data[expense.time.getFullYear()] = {};
-            if (!Boolean(data[expense.time.getFullYear()][tag.ID]))
-                data[expense.time.getFullYear()][tag.ID] = { tag, count: 0 };
-            data[expense.time.getFullYear()][tag.ID].count += expense.amount * expense.pricePerUnit;
+            if (!Boolean(data[expense.time.getFullYear()][tag]))
+                data[expense.time.getFullYear()][tag] = {
+                    tag: allTags.find((atag) => atag.ID === tag) ?? DEFAULT_TAG,
+                    count: 0,
+                };
+            data[expense.time.getFullYear()][tag].count += expense.amount * expense.pricePerUnit;
         });
     });
 
@@ -69,40 +73,50 @@ export const selectMonthlyExpensesPerYear = createSelector(selectSelectedExpense
 });
 
 //Donut mensual
-export const SelectMontlyTagsPerYear = createSelector(selectSelectedExpenses, (selectedExpenses) => {
-    const data: { [year: number]: { [month: string]: { [tagID: number]: { tag: Tag; count: number } } } } = {};
-    selectedExpenses.forEach((expense) => {
-        expense.tags.forEach((tag) => {
-            if (!Boolean(data[expense.time.getFullYear()])) data[expense.time.getFullYear()] = {};
+export const SelectMontlyTagsPerYear = createSelector(
+    selectSelectedExpenses,
+    selectAllTags,
+    (selectedExpenses, allTags) => {
+        const data: { [year: number]: { [month: string]: { [tagID: number]: { tag: Tag; count: number } } } } = {};
+        selectedExpenses.forEach((expense) => {
+            expense.tags.forEach((tag) => {
+                if (!Boolean(data[expense.time.getFullYear()])) data[expense.time.getFullYear()] = {};
 
-            if (!Boolean(data[expense.time.getFullYear()][expense.time.getMonth() + 1]))
-                data[expense.time.getFullYear()][expense.time.getMonth() + 1] = {};
+                if (!Boolean(data[expense.time.getFullYear()][expense.time.getMonth() + 1]))
+                    data[expense.time.getFullYear()][expense.time.getMonth() + 1] = {};
 
-            if (!Boolean(data[expense.time.getFullYear()][expense.time.getMonth() + 1][tag.ID]))
-                data[expense.time.getFullYear()][expense.time.getMonth() + 1][tag.ID] = { tag, count: 0 };
-            data[expense.time.getFullYear()][expense.time.getMonth() + 1][tag.ID].count +=
-                expense.amount * expense.pricePerUnit;
+                if (!Boolean(data[expense.time.getFullYear()][expense.time.getMonth() + 1][tag]))
+                    data[expense.time.getFullYear()][expense.time.getMonth() + 1][tag] = {
+                        tag: allTags.find((atag) => atag.ID === tag) ?? DEFAULT_TAG,
+                        count: 0,
+                    };
+                data[expense.time.getFullYear()][expense.time.getMonth() + 1][tag].count +=
+                    expense.amount * expense.pricePerUnit;
+            });
         });
-    });
 
-    const result: { [year: string]: { [month: string]: { labels: string[]; count: number[]; bgColor: string[] } } } =
-        {};
-    Object.keys(data).forEach((year) => {
-        result[+year] = {};
-        Object.keys(data[+year]).forEach((month) => {
-            if (!Boolean(result[+year][+month])) result[+year][+month] = { labels: [], count: [], bgColor: [] };
-            result[+year][+month].labels = Object.values(data[+year][+month]).map(
-                (selectedTag) => selectedTag.tag.name,
-            );
-            result[+year][+month].count = Object.values(data[+year][+month]).map((selectedTag) => selectedTag.count);
-            result[+year][+month].bgColor = Object.values(data[+year][+month]).map(
-                (selectedTag) => selectedTag.tag.bgColor,
-            );
+        const result: {
+            [year: string]: { [month: string]: { labels: string[]; count: number[]; bgColor: string[] } };
+        } = {};
+        Object.keys(data).forEach((year) => {
+            result[+year] = {};
+            Object.keys(data[+year]).forEach((month) => {
+                if (!Boolean(result[+year][+month])) result[+year][+month] = { labels: [], count: [], bgColor: [] };
+                result[+year][+month].labels = Object.values(data[+year][+month]).map(
+                    (selectedTag) => selectedTag.tag.name,
+                );
+                result[+year][+month].count = Object.values(data[+year][+month]).map(
+                    (selectedTag) => selectedTag.count,
+                );
+                result[+year][+month].bgColor = Object.values(data[+year][+month]).map(
+                    (selectedTag) => selectedTag.tag.bgColor,
+                );
+            });
         });
-    });
 
-    return result;
-});
+        return result;
+    },
+);
 
 //bar chart daily expenses
 export const selectDailyExpensesPerMonthYear = createSelector(selectSelectedExpenses, (selectedExpenses) => {

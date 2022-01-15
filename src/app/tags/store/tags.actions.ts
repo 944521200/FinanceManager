@@ -29,3 +29,19 @@ export const discardEditingTag = createAction('[Tags] discard editing Tag');
 export const tagsChanged = createAction('[Tags] tags changed');
 
 export const resetState = createAction('[Tags] initialize state');
+
+export const setPagination = createAction(
+    '[Tags] pagination settgins changed/set',
+    props<{
+        pageSize: number;
+        pageIndex: number;
+    }>(),
+);
+
+export const setFilters = createAction(
+    '[Tags] filterting settgins changed/set',
+    props<{
+        nameFilter: string;
+        descFilter: string;
+    }>(),
+);

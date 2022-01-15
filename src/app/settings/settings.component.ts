@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { forkJoin } from 'rxjs';
@@ -19,7 +20,12 @@ import { selectAllTags } from '../tags/store/tags.selectors';
     styleUrls: ['./settings.component.css'],
 })
 export class SettingsComponent {
-    constructor(private store: Store, private sanitizer: DomSanitizer, private datePipe: DatePipe) {}
+    constructor(
+        private store: Store,
+        private sanitizer: DomSanitizer,
+        private datePipe: DatePipe,
+        private snackBar: MatSnackBar,
+    ) {}
 
     sanitizedBlobUrl!: SafeUrl;
     filename!: string;
@@ -49,6 +55,10 @@ export class SettingsComponent {
             this.filename = `ExpenseData_${this.datePipe.transform(new Date(), 'yyyy/M/d-H:mm:ss-SSS')}.json`;
             setTimeout(() => {
                 this.downloadLink.nativeElement.click();
+                this.snackBar.open('Your Data was exported successfully', 'Nice', {
+                    duration: 5000,
+                    verticalPosition: 'top',
+                });
             });
         });
     }
@@ -64,12 +74,38 @@ export class SettingsComponent {
             const fileReader = new FileReader();
             fileReader.readAsBinaryString(file);
             fileReader.onloadend = () => {
-                if (fileReader.result !== undefined && fileReader.result !== null) {
+                let error = false;
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                if (fileReader.result) {
                     const data: { expenses: Expense[]; tags: Tag[]; analytics: { fromDate: Date; toDate: Date } } =
                         JSON.parse(fileReader.result.toString());
-                    this.store.dispatch(overrideExpenses({ expenses: data.expenses }));
-                    this.store.dispatch(overrideTags({ tags: data.tags }));
-                    this.store.dispatch(overrideAnalyticsSettings({ settings: data.analytics }));
+                    try {
+                        data.expenses = data.expenses.map((expense) => {
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            expense.tags = expense.tags.map((tag) => ((tag as any).ID as number) ?? tag);
+                            return expense;
+                        });
+                        this.store.dispatch(overrideExpenses({ expenses: data.expenses }));
+                    } catch (e) {
+                        console.log('Error importing expenses');
+                        error = true;
+                    }
+                    try {
+                        this.store.dispatch(overrideTags({ tags: data.tags }));
+                    } catch (e) {
+                        console.log('Error importing tags');
+                        error = true;
+                    }
+                    try {
+                        this.store.dispatch(overrideAnalyticsSettings({ settings: data.analytics }));
+                    } catch (e) {
+                        console.log('Error importing analytics');
+                        error = true;
+                    }
+                    const errorMessage = error
+                        ? 'There were errors importing your data'
+                        : 'Your Data was imported successfully';
+                    this.snackBar.open(errorMessage, 'Nice', { duration: 5000, verticalPosition: 'top' });
                 }
             };
         }

@@ -9,7 +9,7 @@ export class SettingsEffects {
     saveEffect$ = createEffect(
         () =>
             this.actions$.pipe(
-                ofType(SettingsActions.setNightMode),
+                ofType(SettingsActions.setNightMode, SettingsActions.setCollapsedSivdenav),
                 tap(() => {
                     this.store.dispatch(SettingsActions.settingsChanged());
                 }),

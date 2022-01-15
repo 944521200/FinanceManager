@@ -78,5 +78,8 @@
         </div>
     </div>
 
-    <div *ngIf="$any(selectedYears | async).length <= 0"><h2>No data to show yet...</h2></div>
+    <div *ngIf="$any(selectedYears | async).length <= 0">
+        <h2>No data to show yet...</h2>
+        <mat-hint>Create some expenses and tags first</mat-hint>
+    </div>
 </div>

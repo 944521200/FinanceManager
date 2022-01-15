@@ -65,7 +65,7 @@ export class AddTagComponent {
     }
 
     discardTag() {
-        this.clearForm();
         this.store.dispatch(TagsActions.discardEditingTag());
+        this.clearForm();
     }
 }

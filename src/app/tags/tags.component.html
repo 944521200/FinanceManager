@@ -1,14 +1,22 @@
 <div class="route-container">
     <h1>Tags</h1>
     <div
+        fxFlexFill
         fxLayout="row"
         fxLayoutAlign="start start"
         fxLayout.lt-lg="column"
         fxLayoutAlign.lt-lg="start strech"
         fxLayoutGap="25px"
     >
-        <app-add-tag fxFlex></app-add-tag>
-        <br /><br />
-        <app-search-tags fxFlex></app-search-tags>
+        <mat-tab-group fxFlex animationDuration="200ms" [(selectedIndex)]="currentTabIndex">
+            <mat-tab>
+                <ng-template mat-tab-label> <mat-icon>format_list_bulleted</mat-icon>&nbsp; List tags </ng-template>
+                <app-search-tags></app-search-tags>
+            </mat-tab>
+            <mat-tab
+                ><ng-template mat-tab-label> <mat-icon>add_circle</mat-icon>&nbsp; Add tag </ng-template>
+                <app-add-tag></app-add-tag>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 </div>

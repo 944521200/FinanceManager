@@ -1,14 +1,22 @@
 <div class="route-container">
     <h1>Expenses</h1>
     <div
-        fxLayout.="row"
+        fxFlexFill
+        fxLayout="row"
         fxLayoutAlign="start start"
         fxLayout.lt-lg="column"
         fxLayoutAlign.lt-lg="start strech"
         fxLayoutGap="25px"
     >
-        <app-add-expense fxFlex></app-add-expense>
-        <br /><br />
-        <app-search-expenses fxFlex></app-search-expenses>
+        <mat-tab-group fxFlex animationDuration="200ms" [(selectedIndex)]="currentTabIndex">
+            <mat-tab>
+                <ng-template mat-tab-label> <mat-icon>format_list_bulleted</mat-icon>&nbsp; List expenses </ng-template>
+                <app-search-expenses (toggleTab)="toggleTab()"></app-search-expenses>
+            </mat-tab>
+            <mat-tab
+                ><ng-template mat-tab-label> <mat-icon>add_circle</mat-icon>&nbsp; Add expense </ng-template>
+                <app-add-expense (toggleTab)="toggleTab()"></app-add-expense>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 </div>

@@ -1,43 +1,49 @@
-<h2>Add new tag</h2>
+<h2>{{ (isEditing | async) ? 'Editing tag' : 'Add a new tag' }}</h2>
 
-<form [formGroup]="tagForm" (ngSubmit)="addTag()" fxFlexFill fxLayout="column" fxLayoutAlign="space-evenly stretch">
-    <mat-form-field>
-        <mat-label>Name of the tag</mat-label>
-        <input matInput type="text" formControlName="name" />
-        <mat-hint>Short name</mat-hint>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Description of the tag</mat-label>
-        <textarea matInput type="text" formControlName="description" rows="5"></textarea>
-        <mat-hint>Full Description</mat-hint>
-    </mat-form-field>
-    <br />
+<div fxLayout style="overflow-x: hidden">
+    <form
+        [formGroup]="tagForm"
+        (ngSubmit)="addTag()"
+        fxFlexFill
+        fxLayout="column"
+        fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="25px"
+    >
+        <mat-form-field>
+            <mat-label>Name of the tag</mat-label>
+            <input matInput type="text" formControlName="name" />
+            <mat-hint>Short name</mat-hint>
+        </mat-form-field>
 
-    <mat-form-field>
-        <mat-label>Background Color</mat-label>
-        <input matInput type="color" formControlName="bgColor" />
-        <mat-hint>The background color for your tag</mat-hint>
-    </mat-form-field>
-    <br />
+        <mat-form-field>
+            <mat-label>Description of the tag</mat-label>
+            <textarea matInput type="text" formControlName="description" rows="5"></textarea>
+            <mat-hint>Full Description</mat-hint>
+        </mat-form-field>
 
-    <mat-form-field>
-        <mat-label>Text Color</mat-label>
-        <input matInput type="color" formControlName="txtColor" />
-        <mat-hint>The text color for your tag</mat-hint>
-    </mat-form-field>
-    <br />
+        <mat-form-field>
+            <mat-label>Background Color</mat-label>
+            <input matInput type="color" formControlName="bgColor" />
+            <mat-hint>The background color for your tag</mat-hint>
+        </mat-form-field>
 
-    <div fxLayout="row" fxLayoutGap="25px">
-        <button
-            mat-raised-button
-            type="submit"
-            [disabled]="!tagForm.valid"
-            [color]="(isEditing | async) ? 'accent' : 'primary'"
-        >
-            {{ (isEditing | async) ? 'Update' : 'Add' }}
-        </button>
-        <br />
-        <button mat-raised-button type="button" (click)="discardTag()" color="warn">Clear</button>
-    </div>
-</form>
+        <mat-form-field>
+            <mat-label>Text Color</mat-label>
+            <input matInput type="color" formControlName="txtColor" />
+            <mat-hint>The text color for your tag</mat-hint>
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutGap="25px">
+            <button
+                mat-raised-button
+                type="submit"
+                [disabled]="!tagForm.valid"
+                [color]="(isEditing | async) ? 'accent' : 'primary'"
+            >
+                {{ (isEditing | async) ? 'Update' : 'Add' }}
+            </button>
+
+            <button mat-raised-button type="button" (click)="discardTag()" color="warn">Clear</button>
+        </div>
+    </form>
+</div>

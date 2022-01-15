@@ -9,7 +9,12 @@ export class TagsEffects {
     saveEffect$ = createEffect(
         () =>
             this.actions$.pipe(
-                ofType(TagsActions.confirmEditingTag, TagsActions.deleteTag, TagsActions.overrideTags),
+                ofType(
+                    TagsActions.confirmEditingTag,
+                    TagsActions.deleteTag,
+                    TagsActions.overrideTags,
+                    TagsActions.setPagination,
+                ),
                 tap(() => {
                     this.store.dispatch(TagsActions.tagsChanged());
                 }),

@@ -25,13 +25,3 @@ export const DEFAULT_TAG: Tag = {
 export function equalTag(tagA: Tag, tagB: Tag): boolean {
     return tagA.ID === tagB.ID;
 }
-
-export function tagIncluded(tags: Tag[], tag: Tag): boolean {
-    let isIncluded = false;
-    tags.forEach((aTag) => {
-        if (aTag.ID === tag.ID) {
-            isIncluded = true;
-        }
-    });
-    return isIncluded;
-}

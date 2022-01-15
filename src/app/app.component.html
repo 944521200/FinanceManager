@@ -1,32 +1,63 @@
-<mat-sidenav-container class="container">
+<mat-sidenav-container class="container" autosize>
     <mat-sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" #sidenav>
         <mat-nav-list fxLayout="column" fxLayoutAlign="start" fxFlex style="overflow: visible">
-            <a mat-list-item routerLink="home" (click)="closeSidenavIfMobile()"> <h2>Finance Manager</h2></a>
+            <!-- <a mat-list-item routerLink="home" (click)="closeSidenavIfMobile()"> <h2>Finance Manager</h2></a> -->
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <a routerLink="" (click)="closeSidenavIfMobile()">
+                    <mat-icon
+                        [svgIcon]="'FM_Logo'"
+                        [style]="
+                            'transform: scale(' +
+                            ((collapsedSivenav | async) ? 1.5 : 3) +
+                            '); margin: ' +
+                            ((collapsedSivenav | async) ? 20 : 40) +
+                            'px'
+                        "
+                    ></mat-icon>
+                </a>
+            </div>
 
-            <a mat-list-item routerLink="home" (click)="closeSidenavIfMobile()">
-                <mat-icon>home</mat-icon> <span>Home</span></a
+            <a
+                mat-list-item
+                routerLink=""
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="closeSidenavIfMobile()"
             >
-            <a mat-list-item routerLink="expenses" (click)="closeSidenavIfMobile()">
-                <mat-icon>euro</mat-icon> <span>Expenses</span></a
+                <mat-icon>home</mat-icon>&nbsp; <span *ngIf="!(collapsedSivenav | async)">Home</span></a
             >
-            <a mat-list-item routerLink="tags" (click)="closeSidenavIfMobile()">
-                <mat-icon>label</mat-icon> <span>Tags</span></a
+            <a mat-list-item routerLink="expenses" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+                <mat-icon>euro</mat-icon>&nbsp; <span *ngIf="!(collapsedSivenav | async)">Expenses</span></a
+            >
+            <a mat-list-item routerLink="tags" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+                <mat-icon>label</mat-icon>&nbsp; <span *ngIf="!(collapsedSivenav | async)">Tags</span></a
             >
             <!-- <a mat-list-item routerLink="tables" (click)="closeSidenavIfMobile()">
-              <mat-icon>table_view</mat-icon> <span>Tables</span></a
+              <mat-icon>table_view</mat-icon> <span *ngIf=" !(collapsedSivenav | async)">Tables</span></a
           > -->
-            <a mat-list-item routerLink="graphs" (click)="closeSidenavIfMobile()">
-                <mat-icon>pie_chart</mat-icon> <span>Graph</span></a
+            <a mat-list-item routerLink="graphs" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+                <mat-icon>pie_chart</mat-icon>&nbsp; <span *ngIf="!(collapsedSivenav | async)">Graph</span></a
             >
-            <a mat-list-item routerLink="settings" (click)="closeSidenavIfMobile()">
-                <mat-icon>settings</mat-icon> <span>Settings</span></a
+            <a mat-list-item routerLink="settings" routerLinkActive="active" (click)="closeSidenavIfMobile()">
+                <mat-icon>settings</mat-icon>&nbsp; <span *ngIf="!(collapsedSivenav | async)">Settings</span></a
             >
 
             <span fxFlex></span>
             <div fxLayoutAlign="center end">
-                <mat-slide-toggle [checked]="darkTheme | async" color="primary" (change)="themeChanged($event)"
+                <mat-slide-toggle
+                    *ngIf="!(collapsedSivenav | async)"
+                    [checked]="darkTheme | async"
+                    color="primary"
+                    (change)="themeChanged($event)"
                     ><mat-icon>dark_mode</mat-icon></mat-slide-toggle
                 >
+                <mat-icon *ngIf="collapsedSivenav | async">dark_mode</mat-icon>
+            </div>
+            <br />
+            <div fxLayoutAlign="center end">
+                <button mat-icon-button color="primary" (click)="sidenavToggle()">
+                    <mat-icon>{{ (collapsedSivenav | async) ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+                </button>
             </div>
             <br />
         </mat-nav-list>
@@ -36,7 +67,7 @@
             <button mat-icon-button (click)="sidenav.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <h2>Finance Manager</h2>
+            <!-- <h2>Finance Manager</h2> -->
         </mat-toolbar>
         <router-outlet></router-outlet>
     </mat-sidenav-content>

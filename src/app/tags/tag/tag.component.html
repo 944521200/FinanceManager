@@ -1,15 +1,18 @@
 <mat-card (click)="editTag()" style="cursor: pointer">
     <mat-card-title-group>
-        <mat-card-title>{{ tag.name }}</mat-card-title>
-        <button mat-raised-button color="warn" (click)="deleteTag()">
+        <button mat-raised-button color="warn" (click)="deleteTag()" style="height: 40pt">
             <mat-icon>delete</mat-icon>
         </button>
-        <mat-card-subtitle>{{ tag.description }}</mat-card-subtitle>
+        <mat-card-title>{{ tag?.name }}</mat-card-title>
+        <mat-card-subtitle
+            style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-all; margin-right: 40px"
+            >{{ tag.description }}</mat-card-subtitle
+        >
     </mat-card-title-group>
     <mat-card-content>
         <mat-chip-list>
-            <mat-chip [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'">
-                {{ tag.name }}
+            <mat-chip [style]="'background-color:' + tag?.bgColor + ';' + 'color:' + tag?.txtColor + ';'">
+                {{ tag?.name }}
             </mat-chip>
         </mat-chip-list>
     </mat-card-content>

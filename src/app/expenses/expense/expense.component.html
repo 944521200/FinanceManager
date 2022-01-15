@@ -1,10 +1,13 @@
 <mat-card (click)="editExpense()" style="cursor: pointer">
     <mat-card-title-group>
-        <mat-card-title>{{ expense.name }}</mat-card-title>
-        <button mat-raised-button color="warn" (click)="deleteExpense()">
+        <button mat-raised-button color="warn" (click)="deleteExpense()" style="height: 40pt">
             <mat-icon>delete</mat-icon>
         </button>
-        <mat-card-subtitle>{{ expense.description }}</mat-card-subtitle>
+        <mat-card-title>{{ expense.name }}</mat-card-title>
+        <mat-card-subtitle
+            style="overflow-wrap: break-word; word-wrap: break-word; word-break: break-all; margin-right: 40px"
+            >{{ expense.description }}</mat-card-subtitle
+        >
     </mat-card-title-group>
     <mat-card-content>
         <p class="mb-1">{{ expense.amount }} unit/s {{ expense.pricePerUnit }}€/unit</p>
@@ -13,7 +16,7 @@
         <br />
         <mat-chip-list>
             <mat-chip
-                *ngFor="let tag of expense.tags"
+                *ngFor="let tag of tags | async"
                 [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
             >
                 {{ tag.name }}

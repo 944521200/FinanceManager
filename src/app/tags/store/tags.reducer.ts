@@ -8,8 +8,23 @@ const initialState: State = calculateInitialState();
 export interface State {
     tags: Tag[];
     tagCounter: number;
+
+    /** Editing */
     editingTag: Tag;
     editing: boolean;
+
+    /** Pagination */
+    pageSize: number;
+    pageIndex: number;
+
+    /** Filters  */
+    nameFilter: string;
+    descFilter: string;
+}
+
+export interface StateDto {
+    tags: Tag[];
+    pageSize: number;
 }
 
 export const tagsReducer = createReducer(
@@ -19,9 +34,11 @@ export const tagsReducer = createReducer(
     }),
 
     on(TagsActions.deleteTag, (state, { deleteId }) => {
+        let newtags = [...state.tags];
+        newtags = newtags.filter((tag) => tag.ID !== deleteId);
         return {
             ...state,
-            tags: state.tags.filter((tag) => tag.ID !== deleteId),
+            tags: newtags,
         };
     }),
 
@@ -29,7 +46,7 @@ export const tagsReducer = createReducer(
         const editingTag: Tag = state.tags.find((tag) => tag.ID === editId) ?? DEFAULT_TAG;
         return {
             ...state,
-            editing: editId !== -1,
+            editing: editingTag.ID !== -1,
             editingTag: editingTag,
         };
     }),
@@ -52,12 +69,14 @@ export const tagsReducer = createReducer(
         const nextCounter = state.editing ? state.tagCounter : state.tagCounter + 1;
         confirmingTag.ID = !state.editing ? state.tagCounter + 1 : confirmingTag.ID;
 
+        let newtags = [...state.tags];
+        newtags = newtags.filter((tag) => tag.ID !== state.editingTag.ID);
         return {
             ...state,
             tagCounter: nextCounter,
             editingTag: DEFAULT_TAG,
             editing: false,
-            tags: [...state.tags.filter((tag) => tag.ID !== state.editingTag.ID), { ...confirmingTag }],
+            tags: [{ ...confirmingTag }, ...newtags],
         };
     }),
     on(TagsActions.discardEditingTag, (state) => {
@@ -68,11 +87,25 @@ export const tagsReducer = createReducer(
         };
     }),
     on(TagsActions.tagsChanged, (state) => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        const toSave: StateDto = {
+            tags: state.tags,
+            pageSize: state.pageSize,
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
         return state;
     }),
     on(TagsActions.overrideTags, (state, { tags }) => {
         return { ...state, tags, tagCounter: calculateTagCounter(tags), editing: false, editingTag: DEFAULT_TAG };
+    }),
+    on(TagsActions.setPagination, (state, { pageSize, pageIndex }) => {
+        return { ...state, pageSize, pageIndex };
+    }),
+    on(TagsActions.setFilters, (state, { nameFilter, descFilter }) => {
+        return {
+            ...state,
+            nameFilter,
+            descFilter,
+        };
     }),
 );
 
@@ -98,7 +131,16 @@ function getStateFromLocalStorage() {
 }
 
 function calculateInitialState() {
-    let state: State = { tags: [], tagCounter: -1, editingTag: DEFAULT_TAG, editing: false };
+    let state: State = {
+        tags: [],
+        tagCounter: -1,
+        editingTag: DEFAULT_TAG,
+        editing: false,
+        pageSize: 10,
+        pageIndex: 0,
+        nameFilter: '',
+        descFilter: '',
+    };
     state = { ...state, ...getStateFromLocalStorage() };
     state.tagCounter = calculateTagCounter(state.tags);
     return state;

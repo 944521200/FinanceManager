@@ -13,7 +13,8 @@ export class ExpensesEffects {
                     ExpenseActions.confirmEditingExpense,
                     ExpenseActions.deleteExpense,
                     ExpenseActions.overrideExpenses,
-                ), //TODO añadir más
+                    ExpenseActions.setPagination,
+                ),
                 tap(() => {
                     this.store.dispatch(ExpenseActions.expensesChanged());
                 }),

@@ -15,22 +15,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatPaginatorModule, MAT_PAGINATOR_DEFAULT_OPTIONS } from '@angular/material/paginator';
 
 @NgModule({
-    imports: [
-        // MatInputModule,
-        // MatFormFieldModule,
-        // FlexLayoutModule,
-        // MatChipsModule,
-        // MatIconModule,
-        // MatAutocompleteModule,
-        // MatSelectModule,
-        // MatButtonModule,
-        // MatDividerModule,
-        // MatCardModule,
-        // MatDialogModule,
+    providers: [
+        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+        { provide: MAT_PAGINATOR_DEFAULT_OPTIONS, useValue: { formFieldAppearance: 'default' } },
     ],
-    providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }],
     exports: [
         MatInputModule,
         MatFormFieldModule,
@@ -48,6 +41,9 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSidenavModule,
         MatSlideToggleModule,
         MatDialogModule,
+        MatSnackBarModule,
+        MatTabsModule,
+        MatPaginatorModule,
     ],
 })
 export class MaterialModule {}

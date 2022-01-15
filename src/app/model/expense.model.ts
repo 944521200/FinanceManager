@@ -1,5 +1,3 @@
-import { Tag } from './tag.model';
-
 export class Expense {
     public ID: number;
     public name: string;
@@ -7,7 +5,7 @@ export class Expense {
     public amount: number;
     public pricePerUnit: number;
     public time: Date;
-    public tags: Tag[];
+    public tags: number[];
 
     constructor(
         ID: number,
@@ -16,7 +14,7 @@ export class Expense {
         amount: number,
         pricePerUnit: number,
         time: Date,
-        tags: Tag[],
+        tags: number[],
     ) {
         this.ID = ID;
         this.name = name;

@@ -1,81 +1,87 @@
-<h2>Add new expense</h2>
+<h2>{{ (isEditing | async) ? 'Editing expense' : 'Add a new expense' }}</h2>
 
-<form
-    [formGroup]="expenseForm"
-    (ngSubmit)="addExpense()"
-    fxFlexFill
-    fxLayout="column"
-    fxLayoutAlign="space-evenly stretch"
->
-    <mat-form-field>
-        <mat-label>Name of the expense</mat-label>
-        <input matInput type="text" formControlName="name" />
-        <mat-hint>Short name</mat-hint>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Description of the expense</mat-label>
-        <textarea matInput type="text" formControlName="description" rows="5"></textarea>
-        <mat-hint>Full Description</mat-hint>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Expense date and time</mat-label>
-        <input matInput type="datetime-local" formControlName="date" />
-        <mat-hint>When this expense occurred</mat-hint>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Amount</mat-label>
-        <input matInput type="number" formControlName="amount" />
-        <mat-hint>Amount of items acquired</mat-hint>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>Price per unit</mat-label>
-        <input matInput type="number" formControlName="price" />
-        <mat-hint>The price of each item, separetely</mat-hint>
-    </mat-form-field>
-    <br />
+<div fxLayout style="overflow-x: hidden">
+    <form
+        [formGroup]="expenseForm"
+        (ngSubmit)="addExpense()"
+        fxFlexFill
+        fxLayout="column"
+        fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="25px"
+    >
+        <mat-form-field>
+            <mat-label>Name of the expense</mat-label>
+            <input matInput type="text" formControlName="name" />
+            <mat-hint>Short name</mat-hint>
+        </mat-form-field>
 
-    <mat-form-field>
-        <mat-label>Add Tags:</mat-label>
-        <mat-select (selectionChange)="selectedTagsChanged($event)" [disabled]="(toBeAddedTags | async)!.length === 0">
-            <mat-select-trigger> </mat-select-trigger>
-            <mat-option *ngFor="let tag of toBeAddedTags | async" [value]="tag">
-                <mat-chip
-                    [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
-                    disabled="true"
-                >
-                    {{ tag.name }}
-                </mat-chip></mat-option
+        <mat-form-field>
+            <mat-label>Description of the expense</mat-label>
+            <textarea matInput type="text" formControlName="description" rows="5"></textarea>
+            <mat-hint>Full Description</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Expense date and time</mat-label>
+            <input matInput type="datetime-local" formControlName="date" />
+            <mat-hint>When this expense occurred</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" formControlName="amount" />
+            <mat-hint>Amount of items acquired</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Price per unit</mat-label>
+            <input matInput type="number" formControlName="price" />
+            <mat-hint>The price of each item, separetely</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Add Tags:</mat-label>
+            <mat-select
+                [(ngModel)]="selectedTag"
+                (selectionChange)="selectedTagsChanged($event)"
+                [disabled]="(toBeAddedTags | async)!.length === 0"
             >
-        </mat-select>
-        <mat-hint>Tag your expense</mat-hint>
-    </mat-form-field>
-    <br />
-    <mat-chip-list>
-        <mat-chip
-            *ngFor="let tag of (editingExpense | async)!.tags"
-            [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
-            (removed)="removeTag(tag)"
-            [removable]="true"
-        >
-            {{ tag.name }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-    </mat-chip-list>
-    <br />
-    <div fxLayout="row" fxLayoutGap="25px">
-        <button
-            mat-raised-button
-            type="submit"
-            [disabled]="!expenseForm.valid"
-            [color]="(isEditing | async) ? 'accent' : 'primary'"
-        >
-            {{ (isEditing | async) ? 'Update' : 'Add' }}
-        </button>
-        <br />
-        <button mat-raised-button type="button" (click)="clearExpense()" color="warn">Clear</button>
-    </div>
-</form>
+                <mat-select-trigger> </mat-select-trigger>
+                <mat-option *ngFor="let tag of toBeAddedTags | async" [value]="tag">
+                    <mat-chip
+                        [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+                        disabled="true"
+                    >
+                        {{ tag.name }}
+                    </mat-chip></mat-option
+                >
+            </mat-select>
+            <mat-hint>Tag your expense</mat-hint>
+        </mat-form-field>
+
+        <mat-chip-list>
+            <mat-chip
+                *ngFor="let tag of expenseTags | async"
+                [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+                (removed)="removeTag(tag.ID)"
+                [removable]="true"
+            >
+                {{ tag.name }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+        </mat-chip-list>
+
+        <div fxLayout="row" fxLayoutGap="25px">
+            <button
+                mat-raised-button
+                type="submit"
+                [disabled]="!expenseForm.valid"
+                [color]="(isEditing | async) ? 'accent' : 'primary'"
+            >
+                {{ (isEditing | async) ? 'Update' : 'Add' }}
+            </button>
+
+            <button mat-raised-button type="button" (click)="clearExpense()" color="warn">Clear</button>
+        </div>
+    </form>
+</div>

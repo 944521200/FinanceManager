@@ -1,30 +1,41 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Expense } from 'src/app/model/expense.model';
-import { Tag, tagIncluded } from 'src/app/model/tag.model';
+import { Tag } from 'src/app/model/tag.model';
+import { EventEmitter } from '@angular/core';
 import * as TagsSelectors from '../../tags/store/tags.selectors';
 import * as ExpensesActions from '../store/expenses.actions';
 import * as ExpensesSelector from '../store/expenses.selectors';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'app-add-expense',
     templateUrl: './add-expense.component.html',
     styleUrls: ['./add-expense.component.css'],
 })
-export class AddExpenseComponent {
-    expenseForm: FormGroup;
-    isEditing: Observable<boolean>;
+export class AddExpenseComponent implements OnInit {
+    expenseForm!: FormGroup;
+    isEditing!: Observable<boolean>;
 
-    editingExpense: Observable<Expense>;
-    allTags: Observable<Tag[]>;
-    toBeAddedTags: Observable<Tag[]>;
+    editingExpense!: Observable<Expense>;
+    allTags!: Observable<Tag[]>;
+    toBeAddedTags!: Observable<Tag[]>;
+    expenseTags!: Observable<Tag[]>;
 
-    constructor(private store: Store, private datePipe: DatePipe) {
+    selectedTag!: Tag | undefined;
+
+    @Output()
+    toggleTab: EventEmitter<never> = new EventEmitter<never>();
+
+    constructor(private store: Store, private datePipe: DatePipe) {}
+
+    ngOnInit() {
         this.expenseForm = new FormGroup({
             name: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
             description: new FormControl(null, [Validators.maxLength(250)]),
@@ -33,9 +44,9 @@ export class AddExpenseComponent {
             price: new FormControl(null, [Validators.required, this.positiveNumber.bind(this)]),
         });
 
-        this.isEditing = this.store.select(ExpensesSelector.selectEditing);
+        this.isEditing = this.store.select(ExpensesSelector.selectEditing).pipe(untilDestroyed(this));
 
-        this.editingExpense = this.store.select(ExpensesSelector.selectEditingExpense);
+        this.editingExpense = this.store.select(ExpensesSelector.selectEditingExpense).pipe(untilDestroyed(this));
 
         this.editingExpense.subscribe((editingExpense) => {
             this.expenseForm.reset({
@@ -47,17 +58,25 @@ export class AddExpenseComponent {
             });
         });
 
-        this.allTags = this.store.select(TagsSelectors.selectAllTags);
+        this.allTags = this.store.select(TagsSelectors.selectAllTags).pipe(untilDestroyed(this));
         this.toBeAddedTags = this.allTags.pipe(
             switchMap((tags) => {
                 return this.editingExpense.pipe(
                     map((expense) => {
-                        return tags.filter((tobeTag) => !tagIncluded(expense.tags, tobeTag));
+                        return [...tags.filter((tobeTag) => !expense.tags.includes(tobeTag.ID))];
                     }),
                 );
             }),
         );
-
+        this.expenseTags = this.allTags.pipe(
+            switchMap((tags) => {
+                return this.editingExpense.pipe(
+                    map((expense) => {
+                        return [...tags.filter((tobeTag) => expense.tags.includes(tobeTag.ID))];
+                    }),
+                );
+            }),
+        );
         this.store.dispatch(ExpensesActions.editExpense({ editId: -1 }));
     }
 
@@ -74,6 +93,8 @@ export class AddExpenseComponent {
     addExpense() {
         this.updateExpense();
         this.store.dispatch(ExpensesActions.confirmEditingExpense());
+        this.toggleTab.emit();
+        this.expenseForm.markAsPristine();
     }
 
     updateExpense() {
@@ -90,15 +111,19 @@ export class AddExpenseComponent {
 
     clearExpense() {
         this.store.dispatch(ExpensesActions.discardEditingExpense());
+        this.toggleTab.emit();
+        this.expenseForm.markAsPristine();
     }
 
-    removeTag(tag: Tag) {
+    removeTag(tag: number) {
         this.updateExpense();
-        this.store.dispatch(ExpensesActions.removeTagsEditingExpense({ tags: [tag] }));
+        this.store.dispatch(ExpensesActions.removeTagEditingExpense({ tagId: tag }));
+        this.selectedTag = undefined;
     }
 
     selectedTagsChanged(change: MatSelectChange) {
         this.updateExpense();
-        this.store.dispatch(ExpensesActions.addTagsEditingExpense({ tags: [change.value] }));
+        this.store.dispatch(ExpensesActions.addTagsEditingExpense({ tags: [change.value.ID] }));
+        this.selectedTag = undefined;
     }
 }

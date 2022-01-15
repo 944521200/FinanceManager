@@ -6,12 +6,16 @@ const initialState: State = calculateInitialState();
 
 export interface State {
     nightMode: boolean;
+    collapsedSivenav: boolean;
 }
 
 export const settingsReducer = createReducer(
     initialState,
     on(SettingsActions.setNightMode, (state, action) => {
         return { ...state, nightMode: action.darkMode };
+    }),
+    on(SettingsActions.setCollapsedSivdenav, (state, action) => {
+        return { ...state, collapsedSivenav: action.sidenavCollapse };
     }),
     on(SettingsActions.settingsChanged, (state) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -31,7 +35,7 @@ function getStateFromLocalStorage() {
 }
 
 function calculateInitialState() {
-    let state: State = { nightMode: false };
+    let state: State = { nightMode: true, collapsedSivenav: false };
     state = { ...state, ...getStateFromLocalStorage() };
     return state;
 }
