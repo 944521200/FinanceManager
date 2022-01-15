@@ -16,13 +16,6 @@ Finance manager allows you to log your expenses and track them with tags so you 
 
 Finance manager will show Charts with destiled information. (Chart.js)
 
-[TODO] Finance manager will show interactive charts with all your expense data. (Ag-grid)
-
-[TODO] Finance manager will allow you to export your data in JSON forma.
-
-[TODO] Finance manager will have a back-end service with login and storage features.
-
 ## Dependencies
 
 -   [ChartJS](https://www.chartjs.org/)
--   [Ag-grid](https://www.ag-grid.com/)
