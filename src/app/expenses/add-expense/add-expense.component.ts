@@ -81,10 +81,7 @@ export class AddExpenseComponent implements OnInit {
     }
 
     positiveNumber(control: AbstractControl): ValidationErrors | null {
-        if (isNaN(+control.value) ?? +control.value < 1) {
-            //control.setValue(1);
-            // this.expenseForm.patchValue({control.:1});
-            // return null;
+        if (isNaN(+control.value) || +control.value < 1) {
             return { notValidNumber: 'not a valid number' };
         }
         return null;

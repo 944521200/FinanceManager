@@ -1,7 +1,7 @@
 <div class="route-container">
     <h1>Graphs</h1>
     <form [formGroup]="analyticsForm" fxLayout="column" fxLayoutAlign="start">
-        <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px">
             <mat-form-field>
                 <mat-label>From date</mat-label>
                 <input matInput type="date" formControlName="dateFrom" />
