@@ -1,6 +1,7 @@
 # Finance manager
 
 Author: Alfonsohh
+
 Deployed: https://www.finance-manager.net/
 
 ## About
