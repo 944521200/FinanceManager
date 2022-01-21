@@ -1,6 +1,12 @@
 <mat-card (click)="editExpense()" style="cursor: pointer">
     <mat-card-title-group>
-        <button mat-raised-button color="warn" (click)="deleteExpense()" style="height: 40pt">
+        <button
+            mat-raised-button
+            color="warn"
+            (click)="deleteExpense()"
+            style="height: 40pt"
+            aria-label="delete-expense"
+        >
             <mat-icon>delete</mat-icon>
         </button>
         <mat-card-title>{{ expense.name }}</mat-card-title>
@@ -14,7 +20,7 @@
         <p class="mb-1">{{ dateString }}</p>
         <mat-divider></mat-divider>
         <br />
-        <mat-chip-list>
+        <mat-chip-list aria-label="expense-tag-list">
             <mat-chip
                 *ngFor="let tag of tags | async"
                 [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"

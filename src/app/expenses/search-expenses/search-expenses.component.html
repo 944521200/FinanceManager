@@ -43,6 +43,7 @@
                 <mat-form-field fxFlex>
                     <mat-label>Search by tag</mat-label>
                     <mat-select
+                        aria-label="select-search-tags"
                         [(ngModel)]="selectedTag"
                         (selectionChange)="selectedTagsChanged($event)"
                         [disabled]="toBeFilteredtags!.length === 0 || searchExpenseForm.value['onlyUntagged']"
@@ -77,7 +78,7 @@
                 </div>
             </div>
             <div *ngIf="filterTags.length !== 0 && !searchExpenseForm.value['onlyUntagged']">
-                <mat-chip-list>
+                <mat-chip-list aria-label="search-tag-list">
                     <mat-chip
                         *ngFor="let tag of filterTags"
                         [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
@@ -114,7 +115,7 @@
         [showFirstLastButtons]="true"
         [pageSizeOptions]="pageSizeOptions"
         [pageIndex]="pageIndex | async"
-        aria-label="Select page"
+        aria-label="select-page"
     >
     </mat-paginator>
 
