@@ -2,6 +2,8 @@
 
 Author: Alfonsohh
 
+Deployed: https://www.finance-manager.net/
+
 ## About
 
 This project purpose is to improve my skills as a front end developer as well as furthering my knowledge of the angular framework.
