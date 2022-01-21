@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @import 'ag-grid-community/dist/styles/ag-grid.css';
 @import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+@import '~@angular/material/theming';
 
 @include mat.core();
 $my-primary: mat.define-palette(mat.$blue-palette, 500);
@@ -45,3 +46,18 @@ body {
 .route-container {
     margin: 15px;
 }
+
+@mixin theme-color-grabber($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: mat-color($primary);
+    }
+}
+@include theme-color-grabber($my-theme);
