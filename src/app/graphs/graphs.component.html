@@ -21,6 +21,7 @@
     <br />
 
     <div
+        style="overflow: scroll"
         fxLayout="column"
         fxLayoutAlign="start start"
         fxLayoutGap="25px"
@@ -30,7 +31,7 @@
         <div *ngFor="let year of $any(selectedYears | async)" fxFill>
             <h1>{{ year }}</h1>
 
-            <div fxLayout="row" fxLayoutAlign="space-between  center" fxLayoutGap="25px">
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between  center" fxLayoutGap="25px">
                 <app-donut-graph
                     fxFlex="35"
                     *ngIf="$any(selectedYearTags | async)[year]"
@@ -50,7 +51,7 @@
                 <mat-card>
                     <mat-card-title>{{ month }}/{{ year }}</mat-card-title>
                     <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="25px">
+                        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start stretch" fxLayoutGap="25px">
                             <app-donut-graph
                                 fxFlex="35"
                                 *ngIf="

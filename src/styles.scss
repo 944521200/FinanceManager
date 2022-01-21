@@ -56,8 +56,13 @@ body {
         width: 10px;
     }
 
+    ::-webkit-scrollbar-track {
+        border-radius: 5px;
+    }
+
     ::-webkit-scrollbar-thumb {
         background: mat-color($primary);
+        border-radius: 5px;
     }
 }
 @include theme-color-grabber($my-theme);
