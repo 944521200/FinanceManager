@@ -43,7 +43,6 @@
             <mat-label>Add Tags:</mat-label>
             <mat-select
                 [(ngModel)]="selectedTag"
-                [ngModelOptions]="{ standalone: true }"
                 (selectionChange)="selectedTagsChanged($event)"
                 [disabled]="(toBeAddedTags | async)!.length === 0"
             >

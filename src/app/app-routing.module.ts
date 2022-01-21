@@ -8,6 +8,7 @@ const routes: Routes = [
     // { path: 'tables', loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule) },
     { path: 'settings', loadChildren: () => import('./settings/settings.module').then((m) => m.SettingsModule) },
     { path: '', loadChildren: () => import('./home/home.module').then((m) => m.HomeModule) },
+    { path: 'privacy', loadChildren: () => import('./privacy/privacy.module').then((m) => m.PrivacyModule) },
     { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
