@@ -1,6 +1,6 @@
 <mat-card (click)="editTag()" style="cursor: pointer">
     <mat-card-title-group>
-        <button mat-raised-button color="warn" (click)="deleteTag()" style="height: 40pt">
+        <button mat-raised-button color="warn" (click)="deleteTag()" style="height: 40pt" aria-label="delete-tag">
             <mat-icon>delete</mat-icon>
         </button>
         <mat-card-title>{{ tag?.name }}</mat-card-title>
@@ -10,7 +10,7 @@
         >
     </mat-card-title-group>
     <mat-card-content>
-        <mat-chip-list>
+        <mat-chip-list aria-label="tag-preview">
             <mat-chip [style]="'background-color:' + tag?.bgColor + ';' + 'color:' + tag?.txtColor + ';'">
                 {{ tag?.name }}
             </mat-chip>
