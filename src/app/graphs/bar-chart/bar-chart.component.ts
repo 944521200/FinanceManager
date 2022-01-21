@@ -1,12 +1,30 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
 import { Chart, ChartItem, registerables } from 'chart.js';
+import { selectNightMode } from 'src/app/settings/store/settings.selectors';
 
+export const LIGHT_COLOR = '#BBBBBB';
+export const DARK_COLOR = '#444444';
+@UntilDestroy()
 @Component({
     selector: 'app-bar-chart',
     templateUrl: './bar-chart.component.html',
     styleUrls: ['./bar-chart.component.css'],
 })
 export class BarChartComponent {
+    color = LIGHT_COLOR;
+    constructor(private store: Store) {
+        this.store
+            .select(selectNightMode)
+            .pipe(untilDestroyed(this))
+            .subscribe((nightmode) => {
+                this.color = nightmode ? LIGHT_COLOR : DARK_COLOR;
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                if (this.chart) this.chart.update();
+            });
+    }
+
     @Input('labels') set labels(value: string[]) {
         this._labels = value;
         if (this.chart !== undefined) {
@@ -56,9 +74,25 @@ export class BarChartComponent {
                 labels: this._labels,
             },
             options: {
+                color: (c) => this.color,
+
                 scales: {
                     y: {
                         beginAtZero: true,
+                        ticks: {
+                            color: (c) => this.color,
+                        },
+                        grid: {
+                            color: (c) => this.color,
+                        },
+                    },
+                    x: {
+                        ticks: {
+                            color: (c) => this.color,
+                        },
+                        grid: {
+                            color: (c) => this.color,
+                        },
                     },
                 },
             },

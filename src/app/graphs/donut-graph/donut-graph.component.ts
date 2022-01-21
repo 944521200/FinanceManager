@@ -1,12 +1,30 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
 import { Chart, ChartItem, registerables } from 'chart.js';
+import { selectNightMode } from 'src/app/settings/store/settings.selectors';
 
+export const LIGHT_COLOR = '#BBBBBB';
+export const DARK_COLOR = '#444444';
+
+@UntilDestroy()
 @Component({
     selector: 'app-donut-graph',
     templateUrl: './donut-graph.component.html',
     styleUrls: ['./donut-graph.component.css'],
 })
 export class DonutGraphComponent {
+    color = LIGHT_COLOR;
+    constructor(private store: Store) {
+        this.store
+            .select(selectNightMode)
+            .pipe(untilDestroyed(this))
+            .subscribe((nightmode) => {
+                this.color = nightmode ? LIGHT_COLOR : DARK_COLOR;
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                if (this.chart) this.chart.update();
+            });
+    }
     @Input('labels') set labels(value: string[]) {
         this._labels = value;
         if (this.chart !== undefined) {
@@ -52,6 +70,10 @@ export class DonutGraphComponent {
                         hoverOffset: 4,
                     },
                 ],
+            },
+            options: {
+                borderColor: (c) => this.color,
+                color: (c) => this.color,
             },
         });
     }

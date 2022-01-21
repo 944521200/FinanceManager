@@ -5,14 +5,15 @@
 
 @include mat.core();
 $my-primary: mat.define-palette(mat.$blue-palette, 800);
-$my-accent: mat.define-palette(mat.$pink-palette, 500);
+$my-dark-accent: mat.define-palette(mat.$blue-gray-palette, 800);
+$my-light-accent: mat.define-palette(mat.$blue-gray-palette, 100);
 $my-warn: mat.define-palette(mat.$red-palette, 700);
 
 $my-theme: mat.define-light-theme(
     (
         color: (
             primary: $my-primary,
-            accent: $my-accent,
+            accent: $my-light-accent,
             warn: $my-warn,
         ),
     )
@@ -22,16 +23,11 @@ $my-dark-theme: mat.define-dark-theme(
     (
         color: (
             primary: $my-primary,
-            accent: $my-accent,
+            accent: $my-dark-accent,
             warn: $my-warn,
         ),
     )
 );
-.dark-theme {
-    @include mat.all-component-themes($my-dark-theme);
-}
-
-@include mat.all-component-themes($my-theme);
 
 html,
 body {
@@ -64,5 +60,15 @@ body {
         background: mat-color($primary);
         border-radius: 5px;
     }
+    mat-card {
+        background-color: mat-color($accent) !important;
+    }
 }
 @include theme-color-grabber($my-theme);
+
+.dark-theme {
+    @include mat.all-component-themes($my-dark-theme);
+    @include theme-color-grabber($my-dark-theme);
+}
+
+@include mat.all-component-themes($my-theme);
