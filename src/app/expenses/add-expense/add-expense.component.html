@@ -42,7 +42,6 @@
         <mat-form-field>
             <mat-label>Add Tags:</mat-label>
             <mat-select
-                [(ngModel)]="selectedTag"
                 (selectionChange)="selectedTagsChanged($event)"
                 [disabled]="(toBeAddedTags | async)!.length === 0"
             >

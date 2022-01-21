@@ -4,9 +4,9 @@
 @import '~@angular/material/theming';
 
 @include mat.core();
-$my-primary: mat.define-palette(mat.$blue-palette, 500);
-$my-accent: mat.define-palette(mat.$teal-palette, 500);
-$my-warn: mat.define-palette(mat.$red-palette, 500);
+$my-primary: mat.define-palette(mat.$blue-palette, 800);
+$my-accent: mat.define-palette(mat.$pink-palette, 500);
+$my-warn: mat.define-palette(mat.$red-palette, 700);
 
 $my-theme: mat.define-light-theme(
     (

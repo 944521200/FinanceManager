@@ -44,7 +44,6 @@
                     <mat-label>Search by tag</mat-label>
                     <mat-select
                         aria-label="select-search-tags"
-                        [(ngModel)]="selectedTag"
                         (selectionChange)="selectedTagsChanged($event)"
                         [disabled]="toBeFilteredtags!.length === 0 || searchExpenseForm.value['onlyUntagged']"
                     >

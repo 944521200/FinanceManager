@@ -28,8 +28,6 @@ export class AddExpenseComponent implements OnInit {
     toBeAddedTags!: Observable<Tag[]>;
     expenseTags!: Observable<Tag[]>;
 
-    selectedTag!: Tag | undefined;
-
     @Output()
     toggleTab: EventEmitter<never> = new EventEmitter<never>();
 
@@ -63,7 +61,9 @@ export class AddExpenseComponent implements OnInit {
             switchMap((tags) => {
                 return this.editingExpense.pipe(
                     map((expense) => {
-                        return [...tags.filter((tobeTag) => !expense.tags.includes(tobeTag.ID))];
+                        return [
+                            ...tags.filter((tobeTag) => !expense.tags.includes(tobeTag.ID)).map((tag) => ({ ...tag })),
+                        ];
                     }),
                 );
             }),
@@ -115,12 +115,10 @@ export class AddExpenseComponent implements OnInit {
     removeTag(tag: number) {
         this.updateExpense();
         this.store.dispatch(ExpensesActions.removeTagEditingExpense({ tagId: tag }));
-        this.selectedTag = undefined;
     }
 
     selectedTagsChanged(change: MatSelectChange) {
         this.updateExpense();
         this.store.dispatch(ExpensesActions.addTagsEditingExpense({ tags: [change.value.ID] }));
-        this.selectedTag = undefined;
     }
 }

@@ -35,8 +35,6 @@ export class SearchExpensesComponent implements OnInit {
 
     pageSizeOptions = [5, 10, 25, 50];
 
-    selectedTag!: Tag | undefined;
-
     ngOnInit(): void {
         this.searchExpenseForm = new FormGroup({
             name: new FormControl(),
@@ -101,14 +99,12 @@ export class SearchExpensesComponent implements OnInit {
     selectedTagsChanged(change: MatSelectChange) {
         this.filterTags = [...this.filterTags, change.value];
         this.toBeFilteredtags = [...this.toBeFilteredtags.filter((tag) => tag.ID !== change.value.ID)];
-        this.selectedTag = undefined;
         this.updateFilters();
     }
 
     removeTag(tag: Tag) {
-        this.toBeFilteredtags = [...this.toBeFilteredtags, tag];
+        this.toBeFilteredtags = [...this.toBeFilteredtags, { ...tag }];
         this.filterTags = [...this.filterTags.filter((filterTag) => filterTag.ID !== tag.ID)];
-        this.selectedTag = undefined;
         this.updateFilters();
     }
 
