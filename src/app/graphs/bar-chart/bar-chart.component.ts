@@ -74,24 +74,24 @@ export class BarChartComponent {
                 labels: this._labels,
             },
             options: {
-                color: (c) => this.color,
+                color: () => this.color,
 
                 scales: {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            color: (c) => this.color,
+                            color: () => this.color,
                         },
                         grid: {
-                            color: (c) => this.color,
+                            color: () => this.color,
                         },
                     },
                     x: {
                         ticks: {
-                            color: (c) => this.color,
+                            color: () => this.color,
                         },
                         grid: {
-                            color: (c) => this.color,
+                            color: () => this.color,
                         },
                     },
                 },

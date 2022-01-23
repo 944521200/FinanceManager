@@ -72,8 +72,8 @@ export class DonutGraphComponent {
                 ],
             },
             options: {
-                borderColor: (c) => this.color,
-                color: (c) => this.color,
+                borderColor: () => this.color,
+                color: () => this.color,
             },
         });
     }

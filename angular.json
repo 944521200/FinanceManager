@@ -31,8 +31,8 @@
                     },
                     "configurations": {
                         "production": {
-                            //"sourceMap": true,
-                            //"namedChunks": true,
+                            "sourceMap": true,
+                            "namedChunks": true,
                             "budgets": [
                                 {
                                     "type": "initial",
