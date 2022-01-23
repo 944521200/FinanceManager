@@ -115,7 +115,7 @@ export class SearchExpensesComponent implements OnInit {
             .pipe(take(1))
             .subscribe((tags) => {
                 this.allTags = tags;
-                this.toBeFilteredtags = tags;
+                this.toBeFilteredtags = tags.map((tag) => ({ ...tag }));
                 this.filterTags = [];
             });
     }

@@ -1,111 +1,138 @@
-<h2>Search expenses</h2>
-
 <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="25px">
-    <form [formGroup]="searchExpenseForm">
-        <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
-            <mat-form-field fxFlex>
-                <mat-label>Name</mat-label>
-                <input matInput type="text" formControlName="name" />
-            </mat-form-field>
+    <br />
+    <br />
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <h2>Search expenses</h2>
+        </mat-expansion-panel-header>
 
-            <mat-form-field fxFlex>
-                <mat-label>Description</mat-label>
-                <input matInput type="text" formControlName="description" />
-            </mat-form-field>
-        </div>
-
-        <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
-            <mat-form-field fxFlex>
-                <mat-label>Amount</mat-label>
-                <input matInput type="number" formControlName="amount" />
-            </mat-form-field>
-
-            <mat-form-field fxFlex>
-                <mat-label>Price</mat-label>
-                <input matInput type="number" formControlName="price" />
-            </mat-form-field>
-        </div>
-
-        <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
-            <mat-form-field fxFlex>
-                <mat-label>Since Date</mat-label>
-                <input matInput type="datetime-local" formControlName="dateFrom" />
-            </mat-form-field>
-
-            <mat-form-field fxFlex>
-                <mat-label>Until Date</mat-label>
-                <input matInput type="datetime-local" formControlName="dateTo" />
-            </mat-form-field>
-        </div>
-
-        <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="25px">
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="25px">
-                <mat-form-field fxFlex>
-                    <mat-label>Search by tag</mat-label>
-                    <mat-select
-                        aria-label="select-search-tags"
-                        (selectionChange)="selectedTagsChanged($event)"
-                        [disabled]="toBeFilteredtags!.length === 0 || searchExpenseForm.value['onlyUntagged']"
-                    >
-                        <mat-select-trigger> </mat-select-trigger>
-                        <mat-option *ngFor="let tag of toBeFilteredtags" [value]="tag">
-                            <mat-chip
-                                [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
-                                disabled="true"
-                            >
-                                {{ tag.name }}
-                            </mat-chip>
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
+        <ng-template matExpansionPanelContent>
+            <form [formGroup]="searchExpenseForm">
                 <div
-                    fxFlex
-                    fxLayoutAlign="start  center"
                     fxLayout="row"
                     fxLayout.lt-sm="column"
-                    fxLayoutGap="25px"
-                    fxLayoutGap.lt-sm="0px"
+                    fxLayoutAlign="space-between stretch"
+                    fxLayoutGap.gt-xs="25px"
                 >
-                    <mat-slide-toggle formControlName="onlyUntagged" color="primary"
-                        ><h3>Only untagged</h3></mat-slide-toggle
-                    >
-                    <br />
-                    <mat-slide-toggle formControlName="hideUntagged" color="primary"
-                        ><h3>Hide untagged</h3></mat-slide-toggle
-                    >
-                </div>
-            </div>
-            <div *ngIf="filterTags.length !== 0 && !searchExpenseForm.value['onlyUntagged']">
-                <mat-chip-list aria-label="search-tag-list">
-                    <mat-chip
-                        *ngFor="let tag of filterTags"
-                        [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
-                        (removed)="removeTag(tag)"
-                        [removable]="true"
-                    >
-                        {{ tag.name }}
-                        <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                </mat-chip-list>
-                <br />
-                <br />
-            </div>
-        </div>
+                    <mat-form-field fxFlex>
+                        <mat-label>Name</mat-label>
+                        <input matInput type="text" formControlName="name" />
+                    </mat-form-field>
 
-        <div fxLayout="row">
-            <button
-                mat-raised-button
-                type="button"
-                class="btn btn-custom-edit mt-3"
-                (click)="clearSearch()"
-                color="warn"
-            >
-                Clear
-            </button>
-        </div>
-    </form>
-    <mat-hint>*Click on any expense to edit</mat-hint>
+                    <mat-form-field fxFlex>
+                        <mat-label>Description</mat-label>
+                        <input matInput type="text" formControlName="description" />
+                    </mat-form-field>
+                </div>
+
+                <div
+                    fxLayout="row"
+                    fxLayout.lt-sm="column"
+                    fxLayoutAlign="space-between stretch"
+                    fxLayoutGap.gt-xs="25px"
+                >
+                    <mat-form-field fxFlex>
+                        <mat-label>Amount</mat-label>
+                        <input matInput type="number" formControlName="amount" />
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Price</mat-label>
+                        <input matInput type="number" formControlName="price" />
+                    </mat-form-field>
+                </div>
+
+                <div
+                    fxLayout="row"
+                    fxLayout.lt-sm="column"
+                    fxLayoutAlign="space-between stretch"
+                    fxLayoutGap.gt-xs="25px"
+                >
+                    <mat-form-field fxFlex>
+                        <mat-label>Since Date</mat-label>
+                        <input matInput type="datetime-local" formControlName="dateFrom" />
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex>
+                        <mat-label>Until Date</mat-label>
+                        <input matInput type="datetime-local" formControlName="dateTo" />
+                    </mat-form-field>
+                </div>
+
+                <div
+                    fxLayout="row"
+                    fxLayout.lt-sm="column"
+                    fxLayoutAlign="space-between stretch"
+                    fxLayoutGap.gt-xs="25px"
+                >
+                    <mat-form-field fxFlex>
+                        <mat-label>Search by tag</mat-label>
+                        <mat-select
+                            aria-label="select-search-tags"
+                            (selectionChange)="selectedTagsChanged($event)"
+                            [disabled]="toBeFilteredtags!.length === 0 || searchExpenseForm.value['onlyUntagged']"
+                        >
+                            <mat-select-trigger> </mat-select-trigger>
+                            <mat-option *ngFor="let tag of toBeFilteredtags" [value]="tag">
+                                <mat-chip
+                                    [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+                                    disabled="true"
+                                >
+                                    {{ tag.name }}
+                                </mat-chip>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div
+                        fxFlex
+                        fxLayoutAlign="start  center"
+                        fxLayout="row"
+                        fxLayout.lt-sm="column"
+                        fxLayoutGap.gt-xs="25px"
+                    >
+                        <mat-slide-toggle formControlName="onlyUntagged" color="primary"
+                            ><h3>Only untagged</h3></mat-slide-toggle
+                        >
+                        <br />
+                        <mat-slide-toggle formControlName="hideUntagged" color="primary"
+                            ><h3>Hide untagged</h3></mat-slide-toggle
+                        >
+                    </div>
+                </div>
+                <br />
+                <div fxLayout="row" *ngIf="filterTags.length !== 0 && !searchExpenseForm.value['onlyUntagged']">
+                    <mat-chip-list aria-label="search-tag-list">
+                        <mat-chip
+                            *ngFor="let tag of filterTags"
+                            [style]="'background-color:' + tag.bgColor + ';' + 'color:' + tag.txtColor + ';'"
+                            (removed)="removeTag(tag)"
+                            [removable]="true"
+                        >
+                            {{ tag.name }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <br />
+                    <br />
+                </div>
+                <br />
+                <div fxLayout="row">
+                    <button
+                        mat-raised-button
+                        type="button"
+                        class="btn btn-custom-edit mt-3"
+                        (click)="clearSearch()"
+                        color="warn"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </form>
+            <br />
+            <mat-hint>*Click on any expense to edit</mat-hint>
+        </ng-template>
+    </mat-expansion-panel>
 
     <mat-paginator
         (page)="handlePageEvent($event)"

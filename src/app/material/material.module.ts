@@ -18,6 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule, MAT_PAGINATOR_DEFAULT_OPTIONS } from '@angular/material/paginator';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
     providers: [
@@ -44,6 +45,7 @@ import { MatPaginatorModule, MAT_PAGINATOR_DEFAULT_OPTIONS } from '@angular/mate
         MatSnackBarModule,
         MatTabsModule,
         MatPaginatorModule,
+        MatExpansionModule,
     ],
 })
 export class MaterialModule {}

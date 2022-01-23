@@ -1,27 +1,32 @@
-<h2>Search tags</h2>
-
 <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="25px">
-    <form
-        [formGroup]="searchTagsForm"
-        fxLayout="row"
-        fxLayout.lt-sm="column"
-        fxLayoutAlign="space-between stretch"
-        fxLayoutGap="25px"
-    >
-        <mat-form-field fxFlex>
-            <mat-label>Name search</mat-label>
-            <input matInput type="text" formControlName="name" />
-        </mat-form-field>
+    <br /><br />
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <h2>Search tags</h2>
+        </mat-expansion-panel-header>
 
-        <mat-form-field fxFlex>
-            <mat-label>Description search</mat-label>
-            <input matInput type="text" formControlName="description" />
-        </mat-form-field>
-    </form>
+        <ng-template matExpansionPanelContent>
+            <form
+                [formGroup]="searchTagsForm"
+                fxLayout="row"
+                fxLayout.lt-sm="column"
+                fxLayoutAlign="space-between stretch"
+                fxLayoutGap="25px"
+            >
+                <mat-form-field fxFlex>
+                    <mat-label>Name search</mat-label>
+                    <input matInput type="text" formControlName="name" />
+                </mat-form-field>
 
-    <div fxLayout="row">
-        <button mat-raised-button type="button" (click)="clearSearch()" color="warn">Clear</button>
-    </div>
+                <mat-form-field fxFlex>
+                    <mat-label>Description search</mat-label>
+                    <input matInput type="text" formControlName="description" />
+                </mat-form-field>
+            </form>
+            <button mat-raised-button type="button" (click)="clearSearch()" color="warn">Clear</button>
+        </ng-template>
+    </mat-expansion-panel>
+
     <br />
     <mat-hint>*Click on any tag to edit</mat-hint>
 
