@@ -47,55 +47,57 @@ export class BarChartComponent {
     chart!: Chart;
 
     ngAfterViewInit(): void {
-        Chart.register(...registerables);
-        this.chart = new Chart(this.chartElementRef.nativeElement as ChartItem, {
-            type: 'bar',
-            data: {
-                datasets: [
-                    {
-                        label: 'Expenses',
-                        data: this._data,
-                        backgroundColor: [
-                            '#DD6E6E',
-                            '#6EA4DD',
-                            '#5AD39F',
-                            '#E7E887',
-                            '#DD6E6E',
-                            '#6EA4DD',
-                            '#5AD39F',
-                            '#E7E887',
-                            '#DD6E6E',
-                            '#6EA4DD',
-                            '#5AD39F',
-                            '#E7E887',
-                        ],
-                    },
-                ],
-                labels: this._labels,
-            },
-            options: {
-                color: () => this.color,
+        setTimeout(() => {
+            Chart.register(...registerables);
+            this.chart = new Chart(this.chartElementRef.nativeElement as ChartItem, {
+                type: 'bar',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Expenses',
+                            data: this._data,
+                            backgroundColor: [
+                                '#DD6E6E',
+                                '#6EA4DD',
+                                '#5AD39F',
+                                '#E7E887',
+                                '#DD6E6E',
+                                '#6EA4DD',
+                                '#5AD39F',
+                                '#E7E887',
+                                '#DD6E6E',
+                                '#6EA4DD',
+                                '#5AD39F',
+                                '#E7E887',
+                            ],
+                        },
+                    ],
+                    labels: this._labels,
+                },
+                options: {
+                    color: () => this.color,
 
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: () => this.color,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: () => this.color,
+                            },
+                            grid: {
+                                color: () => this.color,
+                            },
                         },
-                        grid: {
-                            color: () => this.color,
-                        },
-                    },
-                    x: {
-                        ticks: {
-                            color: () => this.color,
-                        },
-                        grid: {
-                            color: () => this.color,
+                        x: {
+                            ticks: {
+                                color: () => this.color,
+                            },
+                            grid: {
+                                color: () => this.color,
+                            },
                         },
                     },
                 },
-            },
+            });
         });
     }
 }

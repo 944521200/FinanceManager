@@ -57,24 +57,26 @@ export class DonutGraphComponent {
     chart!: Chart;
 
     ngAfterViewInit(): void {
-        Chart.register(...registerables);
-        this.chart = new Chart(this.chartElementRef.nativeElement as ChartItem, {
-            type: 'doughnut',
-            data: {
-                labels: this._labels,
-                datasets: [
-                    {
-                        label: 'My First Dataset',
-                        data: this._data,
-                        backgroundColor: this._bgColor,
-                        hoverOffset: 4,
-                    },
-                ],
-            },
-            options: {
-                borderColor: () => this.color,
-                color: () => this.color,
-            },
+        setTimeout(() => {
+            Chart.register(...registerables);
+            this.chart = new Chart(this.chartElementRef.nativeElement as ChartItem, {
+                type: 'doughnut',
+                data: {
+                    labels: this._labels,
+                    datasets: [
+                        {
+                            label: 'My First Dataset',
+                            data: this._data,
+                            backgroundColor: this._bgColor,
+                            hoverOffset: 4,
+                        },
+                    ],
+                },
+                options: {
+                    borderColor: () => this.color,
+                    color: () => this.color,
+                },
+            });
         });
     }
 }
