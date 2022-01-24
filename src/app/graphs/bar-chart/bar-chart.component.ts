@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Chart, ChartItem, registerables } from 'chart.js';
 import { selectNightMode } from 'src/app/settings/store/settings.selectors';
 
-export const LIGHT_COLOR = '#BBBBBB';
+export const LIGHT_COLOR = '#EEEEEE';
 export const DARK_COLOR = '#444444';
 @UntilDestroy()
 @Component({
