@@ -119,7 +119,6 @@ function calculateTagCounter(tags: Tag[]) {
 }
 
 function getStateFromLocalStorage() {
-    const localStorage: Storage = window.localStorage;
     const tagsSTR = localStorage.getItem(STORAGE_KEY);
     if (tagsSTR != null && tagsSTR != '') {
         console.log('Tags database found');
