@@ -23,7 +23,6 @@ export const settingsReducer = createReducer(
     }),
 );
 function getStateFromLocalStorage() {
-    const localStorage: Storage = window.localStorage;
     const settingsSTR = localStorage.getItem(STORAGE_KEY);
     if (settingsSTR != null && settingsSTR != '') {
         console.log('settings database found');

@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 @NgModule({
     declarations: [AppComponent],
     imports: [
-        BrowserModule,
+        BrowserModule.withServerTransition({ appId: 'serverApp' }),
         BrowserAnimationsModule,
         /** Only necesary for the icon registry */
         HttpClientModule,

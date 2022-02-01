@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -10,6 +10,7 @@ import { selectCollapsedSidenav, selectNightMode } from '../settings/store/setti
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
+import { isPlatformServer } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -23,6 +24,7 @@ export class LayoutComponent implements OnInit {
         private store: Store,
         private matIconRegistry: MatIconRegistry,
         private domSanitizer: DomSanitizer,
+        @Inject(PLATFORM_ID) private platformId: string,
     ) {}
 
     ngOnInit(): void {
@@ -41,7 +43,12 @@ export class LayoutComponent implements OnInit {
             .pipe(untilDestroyed(this))
             .subscribe((darkmode) => this.updateDarkTheme(darkmode));
 
-        this.matIconRegistry.addSvgIcon('FM_Logo', this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icon.svg'));
+        const domain = isPlatformServer(this.platformId) ? 'http://localhost:4000/' : '';
+
+        this.matIconRegistry.addSvgIcon(
+            'FM_Logo',
+            this.domSanitizer.bypassSecurityTrustResourceUrl(domain + 'assets/icon.svg'),
+        );
     }
 
     @HostBinding('class') className = '';

@@ -183,7 +183,6 @@ function calculateExpenseCounter(expenses: Expense[]) {
 }
 
 function getStateFromLocalStorage() {
-    const localStorage: Storage = window.localStorage;
     const expensesSTR = localStorage.getItem(STORAGE_KEY);
     if (expensesSTR != null && expensesSTR != '') {
         console.log('Expenses database found');
