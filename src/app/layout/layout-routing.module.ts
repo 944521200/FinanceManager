@@ -4,36 +4,36 @@ import { LayoutComponent } from './layout.component';
 
 const routes: Routes = [
     {
-        path: 'expenses',
-        component: LayoutComponent,
-        loadChildren: () => import('../expenses/expenses.module').then((m) => m.ExpensesModule),
-    },
-    {
-        path: 'tags',
-        component: LayoutComponent,
-        loadChildren: () => import('../tags/tags.module').then((m) => m.TagsModule),
-    },
-    {
-        path: 'graphs',
-        component: LayoutComponent,
-        loadChildren: () => import('../graphs/graphs.module').then((m) => m.GraphsModule),
-    },
-    // { path: 'tables',component: LayoutComponent, loadChildren: () => import('../reports/reports.module').then((m) => m.ReportsModule) },
-    {
-        path: 'settings',
-        component: LayoutComponent,
-        loadChildren: () => import('../settings/settings.module').then((m) => m.SettingsModule),
-    },
-    {
-        path: 'privacy',
-        component: LayoutComponent,
-        loadChildren: () => import('../privacy/privacy.module').then((m) => m.PrivacyModule),
-    },
-    {
         path: '',
-        pathMatch: 'full',
         component: LayoutComponent,
-        loadChildren: () => import('../home/home.module').then((m) => m.HomeModule),
+        children: [
+            {
+                path: 'expenses',
+                loadChildren: () => import('../expenses/expenses.module').then((m) => m.ExpensesModule),
+            },
+            {
+                path: 'tags',
+                loadChildren: () => import('../tags/tags.module').then((m) => m.TagsModule),
+            },
+            {
+                path: 'graphs',
+                loadChildren: () => import('../graphs/graphs.module').then((m) => m.GraphsModule),
+            },
+            // { path: 'tables', loadChildren: () => import('../reports/reports.module').then((m) => m.ReportsModule) },
+            {
+                path: 'settings',
+                loadChildren: () => import('../settings/settings.module').then((m) => m.SettingsModule),
+            },
+            {
+                path: 'privacy',
+                loadChildren: () => import('../privacy/privacy.module').then((m) => m.PrivacyModule),
+            },
+            {
+                path: '',
+                pathMatch: 'full',
+                loadChildren: () => import('../home/home.module').then((m) => m.HomeModule),
+            },
+        ],
     },
 ];
 

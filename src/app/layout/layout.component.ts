@@ -5,11 +5,9 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { setCollapsedSivdenav, setNightMode } from '../settings/store/settings.actions';
 import { selectCollapsedSidenav, selectNightMode } from '../settings/store/settings.selectors';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
-import { take } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -18,12 +16,12 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent implements OnInit {
-    constructor(
-        private breakpointObserver: BreakpointObserver,
-        private store: Store,
-        private matIconRegistry: MatIconRegistry,
-        private domSanitizer: DomSanitizer,
-    ) {}
+    isMobile = false;
+    openned = true;
+    title = 'financeManager';
+    collapsed = true;
+
+    constructor(private breakpointObserver: BreakpointObserver, private store: Store) {}
 
     ngOnInit(): void {
         this.breakpointObserver
@@ -40,8 +38,6 @@ export class LayoutComponent implements OnInit {
             .select(selectNightMode)
             .pipe(untilDestroyed(this))
             .subscribe((darkmode) => this.updateDarkTheme(darkmode));
-
-        this.matIconRegistry.addSvgIcon('FM_Logo', this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icon.svg'));
     }
 
     @HostBinding('class') className = '';
@@ -73,8 +69,4 @@ export class LayoutComponent implements OnInit {
     closeSidenavIfMobile() {
         if (this.isMobile) this.sidenav.close();
     }
-    isMobile = false;
-    openned = true;
-    title = 'financeManager';
-    collapsed = true;
 }
