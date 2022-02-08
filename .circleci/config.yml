@@ -19,7 +19,7 @@ workflows:
                       - aws-s3/sync:
                             from: dist/financeManager/
                             to: s3://finance-manager-prod
-                            arguments: --recursive
+                            arguments: --delete
                             aws-access-key-id: AWS_ACCESS_KEY_ID
                             aws-region: AWS_REGION
                             aws-secret-access-key: AWS_SECRET_ACCESS_KEY
