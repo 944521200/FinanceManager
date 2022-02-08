@@ -1,0 +1,24 @@
+version: 2.1
+
+orbs:
+    node: circleci/node@4.1
+    aws-s3: circleci/aws-s3@2.0
+
+workflows:
+    deploy:
+        jobs:
+            - node/test:
+                  version: '14.16'
+                  filters:
+                      branches:
+                          only:
+                              - deploy
+                  post-steps:
+                      - run: npm run build
+                      - aws-s3/copy:
+                            from: dist/financeManager/
+                            to: s3://finance-manager-prod
+                            arguments: --recursive
+                            aws-access-key-id: AWS_ACCESS_KEY_ID
+                            aws-region: AWS_REGION
+                            aws-secret-access-key: AWS_SECRET_ACCESS_KEY

@@ -5,9 +5,9 @@
         "ng": "ng",
         "start": "ng serve -o",
         "start-prod": "ng serve -o --configuration production",
-        "build": "ng build --prod",
+        "build": "ng build",
         "watch": "ng build --watch --configuration development",
-        "test": "ng test",
+        "test": "echo TESTS DISABLED",
         "lint": "eslint --ext .ts ./src",
         "prettier": "prettier --write .",
         "source-map-explorer": "source-map-explorer dist/financeManager/**/*.js"
