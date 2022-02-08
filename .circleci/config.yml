@@ -16,7 +16,7 @@ workflows:
                               - deploy
                   post-steps:
                       - run: npm run build
-                      - aws-s3/copy:
+                      - aws-s3/sync:
                             from: dist/financeManager/
                             to: s3://finance-manager-prod
                             arguments: --recursive
