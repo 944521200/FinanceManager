@@ -10,7 +10,8 @@
         "test": "echo TESTS DISABLED ",
         "lint": "eslint --ext .ts ./src",
         "prettier": "prettier --write .",
-        "source-map-explorer": "source-map-explorer dist/financeManager/**/*.js"
+        "source-map-explorer": "source-map-explorer dist/financeManager/**/*.js",
+        "circle-ci:deploy": " git checkout deploy && git merge master && git push origin HEAD && git checkout master"
     },
     "private": true,
     "dependencies": {
