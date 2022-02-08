@@ -23,3 +23,4 @@ workflows:
                             aws-access-key-id: AWS_ACCESS_KEY_ID
                             aws-region: AWS_REGION
                             aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+                      - run: aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths /*
