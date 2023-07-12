@@ -1,7 +1,5 @@
 # Finance manager
 
-By Alfonsohh
-
 https://www.finance-manager.net/
 
 ![CircleCI](https://circleci.com/gh/Alfonsohh99/FinanceManager/tree/deploy.svg?style=shield)
